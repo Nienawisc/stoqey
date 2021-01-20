@@ -3,5 +3,29 @@
   "workspaces": [
     "backend",
     "mobile"
-  ]
+  ],
+  "description": "<div align=\"center\">",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stoqey/stoqey.git"
+  },
+  "keywords": [
+    "stoqey",
+    "stocks",
+    "options",
+    "forex",
+    "ai",
+    "algo-trading"
+  ],
+  "author": "",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/stoqey/stoqey/issues"
+  },
+  "homepage": "https://github.com/stoqey/stoqey#readme"
 }
