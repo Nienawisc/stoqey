@@ -1,0 +1,21 @@
+# Backend
+.idea/
+.vscode/
+node_modules/
+node_modules/**/*
+build/
+tmp/
+temp/
+keys/
+.env
+
+# Mobile
+.expo/*
+npm-debug.*
+*.jks
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+web-report/

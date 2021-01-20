@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Stoqey",
+    "slug": "stoqey",
+    "privacy": "public",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#fdd445"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stoqey.app"
+    },
+    "android": {
+      "package": "com.stoqey.app"
+    },
+    "description": "Beat wall street From anywhere​"
+  }
+}

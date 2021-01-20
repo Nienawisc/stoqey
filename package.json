@@ -1,0 +1,7 @@
+{
+  "name": "stoqey",
+  "workspaces": [
+    "backend",
+    "mobile"
+  ]
+}
