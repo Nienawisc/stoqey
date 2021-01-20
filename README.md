@@ -136,10 +136,10 @@ Stoqey has three big installation steps:
 
 1. **Install Couchbase**: See [the Couchbase documentation](https://docs.couchbase.com/server/current/install/install-intro.html) for instructions on installing it with your OS.
 2. **Install Redis**: See [the Redis documentation](https://redis.io/download) for instructions on installing it with your OS.
-3. **Install the dependencies**: Because it's pretty tedious to install the dependencies for each worker individually we've created a script that goes through and runs `npm install` for every worker for you: (this takes a couple minutes, so dive into the [technical docs](./docs) in the meantime)
+3. **Install the dependencies**: You need NVM v7.X.X because we are using npm workspaces
 
   ```sh
-  node shared/install-dependencies.js
+npm install  --legacy-peer-deps
   ```
 
 You've now finished installing everything! Let's migrate the database and you'll be ready to go :100:
