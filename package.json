@@ -1,8 +1,8 @@
 {
   "name": "stoqey",
   "workspaces": [
-    "backend",
-    "mobile"
+    "./backend",
+    "./mobile"
   ],
   "description": "<div align=\"center\">",
   "version": "1.0.0",
