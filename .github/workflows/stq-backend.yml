@@ -1,9 +1,9 @@
 name: stq-backend
 
-# on:
-#   push:
-#     branches:
-#       - "master"
+on:
+  push:
+    branches:
+      - "master"
 
 env:
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
@@ -63,6 +63,7 @@ jobs:
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           --build-arg NPM_AUTH_TOKEN="$NPM_AUTH_TOKEN" \
+          -f backend/Dockerfile
           .
     # Push the Docker image to Google Container Registry
     - name: Push image to GCR
