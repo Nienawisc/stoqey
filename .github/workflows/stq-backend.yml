@@ -15,8 +15,8 @@ env:
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
   NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} 
   CLUSTER: cloudx
-  DEPLOYMENT_NAME: stqbackend
-  IMAGE: stqbackend
+  DEPLOYMENT_NAME: stq-backend
+  IMAGE: stq-backend
 
 jobs:
   setup-build-publish-deploy:
@@ -50,7 +50,7 @@ jobs:
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           --build-arg NPM_AUTH_TOKEN="$NPM_AUTH_TOKEN" \
-          -f backend.Dockerfile
+          -f backend.Dockerfile \
           .
     # Push the Docker image to Google Container Registry
     - name: Push image to GCR
