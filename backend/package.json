@@ -50,6 +50,9 @@
     "dev": "nodemon src/index",
     "test": "mocha src/marketdata/*test.ts --exit",
     "trans": "mocha src/shared/*test.ts --exit",
-    "paypal": "mocha src/paypal/*test.ts --exit"
+    "paypal": "mocha src/paypal/*test.ts --exit",
+    "clean": "rm -rf build",
+    "build:server": "tsc --skipLibCheck",
+    "build": "npm run clean && npm run build:server"
   }
 }

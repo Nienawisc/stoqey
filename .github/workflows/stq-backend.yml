@@ -22,7 +22,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: check modified files
+    - name: check if backend modified files
       id: check_files
       run: |
         echo "=============== list modified files ==============="
@@ -43,7 +43,10 @@ jobs:
         done < files.txt      
 
     # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+    - name: gcloud_setup
+      needs: check_files
+      if: needs.check_files.outputs.run_job == 'true'
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '290.0.1'
         service_account_key: ${{ secrets.GKE_SA_KEY }}
@@ -63,7 +66,7 @@ jobs:
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           --build-arg NPM_AUTH_TOKEN="$NPM_AUTH_TOKEN" \
-          -f backend/Dockerfile
+          -f backend.Dockerfile
           .
     # Push the Docker image to Google Container Registry
     - name: Push image to GCR
