@@ -61,7 +61,7 @@ ServerConfig.getExpress().then(({appExpress, pubsub}) => {
     const httpServer = http.createServer(appExpress);
     server.installSubscriptionHandlers(httpServer)
 
-    startCouchbase({ useCollections: false }).then(() => {
+    startCouchbase().then(() => {
         httpServer.listen(Number(PORT), () => {
             log(chalk.green(`Server started on port ${PORT}`))
         });

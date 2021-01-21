@@ -40,6 +40,7 @@ export const Pagination = async (args: PaginationArgs): Promise<any[]> => {
   console.log('select is', JSON.stringify(select));
   const dbName = "stq";
   const offset = page * limit;
+  // @ts-ignore
   const cluster = ottoman.getDefaultConnection().cluster;
 
   try {

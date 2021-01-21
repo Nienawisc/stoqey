@@ -8,7 +8,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ios": "cd mobile && npm run ios",
+    "be": "cd backend && npm run dev"
   },
   "repository": {
     "type": "git",
