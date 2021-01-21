@@ -45,8 +45,8 @@ It is difficult to trade, maintain and measure the impact of investments. Invest
       - [Getting the secrets](#getting-the-secrets)
     - [Running the app locally](#running-the-app-locally)
       - [Background services](#background-services)
-      - [Start the servers](#start-the-servers)
-      - [Develop the web UI](#develop-the-web-ui)
+      - [Start the servers/backend](#start-the-serversbackend)
+      - [Develop the Mobile UI](#develop-the-mobile-ui)
   - [License](#license)
 
 ## Contributing
@@ -90,7 +90,6 @@ Here is a list of all the big technologies we use:
 - **Redis**: Background jobs and caching
 - **GraphQL**: API, powered by the entire Apollo toolchain
 - **TypeScript**: Best Type-safe JavaScript
-- **Firebase**: Authentication
 - **React**: Frontend React app
 - **ReactNative**: Mobile Frontend React native app
 
@@ -164,7 +163,7 @@ npm run db:reset
 The `testing` database used in end to end tests is managed separately. It is built, migrated, and seeded when you run:
 
 ```sh
-npm run start:api:test
+npm run be
 ```
 
 To drop the `testing` database, go to http://localhost:8091/ui/index.html# while `couchbase` is running, and click Delete bucket from the ui.
@@ -177,7 +176,7 @@ While the app will run without any secrets set up, you won't be able to sign in 
 cp env.example .env
 ```
 
-> Note: If you're an employee at Stoqey we've got a more complete list of secrets that also lets you upload images etc. in 1Password, search for "secrets.json" to find it.
+> Note: If you're an engineer at Stoqey we've got a more complete list of secrets that also lets you upload images etc. in 1Password, search for "secrets.json" to find it.
 
 Now you're ready to run the app locally and sign into your local instance!
 
@@ -185,20 +184,23 @@ Now you're ready to run the app locally and sign into your local instance!
 
 #### Background services
 
-Whenever you want to run Stoqey locally you have to have Coucbase and Redis running in the background.  
+Whenever you want to run Stoqey locally you have to have Couchbase and Redis running in the background.  
 
-#### Start the servers
+#### Start the servers/backend
 
-Depending on what you're trying to work on you'll need to start the server. Generally, by running `npm run dev:backend`
-
-No matter what you're trying to do though, you'll want to have the API running, so start that in a background tab:
-
-#### Develop the web UI
-
-To develop the frontend and web UI run
+No matter what you're trying to do though, you'll want to have the API running from the backend, so start that in a background tab:
 
 ```
-npm run dev:web
+npm run be
+```
+
+#### Develop the Mobile UI
+
+To develop the mobile UI run any
+
+```
+npm run ios
+npm run android
 ```
 
 > Note: If something didn't work or you ran into troubles please submit PRs to improve this doc and keep it up to date!	
