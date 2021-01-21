@@ -41,17 +41,7 @@ ServerConfig.getExpress().then(({appExpress, pubsub}) => {
         context: ({ req, res }) => {
              // get the user token from the headers
             const token = _get(req,'headers.authorization', '');
-
-            // console.log('token is', token);
-
-            // if(!isDev){
-            //     // Check for  token on on production
-            //     if(demoToken !== token){
-            //         throw new Error('you must be logged in'); 
-            //     }
-            // }
             
-          
             return ({ req, res, pubsub })
         },
     });
