@@ -176,7 +176,7 @@ While the app will run without any secrets set up, you won't be able to sign in 
 cp env.example .env
 ```
 
-> Note: If you're an engineer at Stoqey we've got a more complete list of secrets that also lets you upload images etc. in 1Password, search for "secrets.json" to find it.
+> Note: If you're an engineer at Stoqey we've got a more complete list of secrets that also lets you upload images etc. in LastPass, search for "secrets" to find it.
 
 Now you're ready to run the app locally and sign into your local instance!
 
