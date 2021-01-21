@@ -5,6 +5,7 @@ ARG NPM_AUTH_TOKEN
 WORKDIR /srv
 
 COPY . .
+RUN rm -rf mobile
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh libc6-compat
 RUN npm config set @stoqeyx:registry https://npm.pkg.github.com
