@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "noEmit": true,
     "jsx": "react-native",
     "target": "es2020",
-    "lib": ["dom", "dom.iterable", "esnext", "es2020"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "es2020"
+    ],
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
@@ -12,6 +18,16 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "assets/*": [
+        "assets/*"
+      ]
+    },
+    "exclude": [
+      "node_modules",
+      "./node_modules",
+      "./node_modules/*"
+    ],
   }
 }
