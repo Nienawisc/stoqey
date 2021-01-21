@@ -46,11 +46,11 @@ jobs:
     - name: Build image
       run: |-
         docker build \
+          --file backend.Dockerfile \
           --tag "gcr.io/$GKE_PROJECT/$IMAGE:${GITHUB_SHA:0:7}" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           --build-arg NPM_AUTH_TOKEN="$NPM_AUTH_TOKEN" \
-          -f backend.Dockerfile \
           .
     # Push the Docker image to Google Container Registry
     - name: Push image to GCR
