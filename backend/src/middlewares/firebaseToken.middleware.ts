@@ -1,10 +1,4 @@
 import {
-  Resolver,
-  Query,
-  Subscription,
-  Ctx,
-  Root,
-  Arg,
   MiddlewareFn,
 } from "type-graphql";
 import get from "lodash/get";
