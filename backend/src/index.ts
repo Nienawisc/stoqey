@@ -12,7 +12,7 @@ import ServerConfig from "./server.config";
 import { log } from './log';
 import { bindEventsToPubSub } from './events';
 
-import { PORT, nodeEnv, isDev, demoToken, graphqlPath} from './config';
+import { PORT, graphqlPath} from './config';
 export interface Context {
     ibkrEvents: Event;
 }
