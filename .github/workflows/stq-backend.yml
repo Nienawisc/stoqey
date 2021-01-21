@@ -15,8 +15,8 @@ env:
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
   NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} 
   CLUSTER: cloudx
-  DEPLOYMENT_NAME: stq-backend
-  IMAGE: stq-backend
+  DEPLOYMENT_NAME: stqbackend
+  IMAGE: stqbackend
 
 jobs:
   setup-build-publish-deploy:
