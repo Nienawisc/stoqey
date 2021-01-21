@@ -1,0 +1,94 @@
+import React, { useContext } from 'react';
+import { StyleSheet, StatusBar, SafeAreaView, Platform, InteractionManager, View } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import { Store } from '../store';
+import { INavProps, ICoin, INews, IInvestInfo } from '../store/interfaces';
+import {
+  fetchCoinListAction,
+  fetchLatestNewsAction,
+  transactAction,
+  updateAllPricesAction,
+  fetchTopListtAction,
+} from '../store/actions';
+import { Colors, Transact } from '../enums';
+import { Main } from '../components';
+import { useNavigation } from '@react-navigation/native';
+import { setToDarkStatusBar } from '../utils/theme';
+
+const Home = (props: INavProps): React.ReactElement<any> => {
+  const navigation = useNavigation();
+  // get the state data using react hooks (useContext)
+  const {
+    state: { favourites, news, wallets, coins, isLoading, toplist },
+    dispatch,
+  } = useContext(Store);
+  // fetch news from news action when the component mounted using useEffect hook
+  React.useEffect((): any => {
+    const homeNavListener = navigation.addListener('focus', (): void => setToDarkStatusBar());
+    // run the fetching after navigation completely animate.
+    InteractionManager.runAfterInteractions(() => {
+      fetchLatestNewsAction(dispatch);
+      fetchTopListtAction(dispatch);
+      fetchCoinListAction(20, 0, dispatch);
+    });
+
+    return (): void => navigation.removeListener('focus', homeNavListener); // cleanup
+  }, []);
+  // navigate to the selected coin
+  const populateCoin = (coin: ICoin) => {
+    //setCurrentCoin(coin, dispatch); // set current coin state
+    return navigateToScreen('Coin', { coin });
+  };
+  // generic nav to any screen based on the screen name
+  const navigateToScreen = (screen: string, params?: any) => navigation.navigate(screen, params);
+
+  // refresh the coins and wallets data
+  const onRefresh = (): void => {
+    fetchCoinListAction(20, 0, dispatch); //get all coins
+  };
+  // refresh favouirte coins prices
+  const onRefreshPrices = (): void => {
+    if (coins.length) updateAllPricesAction(coins, dispatch);
+
+    if (toplist.length) fetchTopListtAction(dispatch);
+  };
+  //handle pressing on the a news item
+  const onNewsPress = async (news: INews): Promise<any> => {
+    await WebBrowser.openBrowserAsync(news.url);
+  };
+  // handle sell button press ==> called from the modal
+  const onSellBtnPress = (data: IInvestInfo): void => {
+    transactAction(data, Transact.SELL, wallets, dispatch);
+  };
+  // handle buy button press ==> called from the modal
+  const onBuyBtnPress = (data: IInvestInfo): void => {
+    transactAction(data, Transact.BUY, wallets, dispatch);
+  };
+  return (
+    <View style={styles.container}>
+      {/* <StatusBar backgroundColor={Colors.white} barStyle="light-content" /> */}
+      <Main
+        onBuyBtnPress={onBuyBtnPress}
+        onSellBtnPress={onSellBtnPress}
+        onNewsPress={onNewsPress}
+        onRefresh={onRefresh}
+        navigateToScreen={navigateToScreen}
+        populateCoin={populateCoin}
+        wallets={wallets}
+        toplist={toplist}
+        favourites={favourites}
+        news={news}
+        onRefreshPrices={onRefreshPrices}
+        isRefreshingPrice={isLoading}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // take up the whole screen
+    backgroundColor: Colors.trueBlue,
+  },
+});
+export default Home;
