@@ -6,8 +6,6 @@ import Redis from "ioredis";
 import _get from 'lodash/get';
 
 import { createConnection } from "./couchbase";
-import { PayPalPage } from "./paypal/paypal";
-import { log } from "./log";
 import { expressfyPayPal } from "./paypal/paypal.app";
 
 // import { verify } from "jsonwebtoken";
