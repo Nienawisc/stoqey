@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:10.19 AS builder
+FROM mhart/alpine-node:15.6 AS builder
 
 ARG NPM_AUTH_TOKEN
 
@@ -23,7 +23,7 @@ RUN mkdir -p src/keys && echo "{}" > src/keys/service.account.json
 RUN npm run be:build
 
 # use lighter image
-FROM mhart/alpine-node:slim-10.19
+FROM mhart/alpine-node:slim-15.6
 RUN apk add libc6-compat
 COPY --from=builder /srv .
 ENV NODE_ENV=production
