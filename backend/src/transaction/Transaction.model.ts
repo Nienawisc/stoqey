@@ -5,6 +5,7 @@ import { CommonSchema, CommonType, ResType, StatusType } from "../shared";
 import { log } from "../log";
 import { UserModel } from "../user";
 import WalletModel, { WalletType } from "../wallet/Wallet.model";
+import { defineCouchbaseModel } from "../couchbase/models";
 
 const modelName = "Transaction";
 /**
@@ -45,7 +46,7 @@ const transactionSchema = new Schema({
   amount: Number,
 });
 
-export const TransactionModel = () => model(modelName, transactionSchema);
+export const TransactionModel = () => defineCouchbaseModel(modelName, transactionSchema);
 
 interface MakeTrans {
   walletId: string;

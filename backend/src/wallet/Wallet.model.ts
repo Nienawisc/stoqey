@@ -1,6 +1,7 @@
 import { Schema, model } from "ottoman";
 import { CommonSchema, CommonType, TradingEnvType } from "../shared";
 import { ObjectType, Field, Int } from "type-graphql";
+import { defineCouchbaseModel } from "../couchbase/models";
 
 const modelName = 'Wallet';
 /**
@@ -47,6 +48,6 @@ const walletSchema = new Schema({
   balance: Number,
 });
 
-export const WalletModel = () => model(modelName, walletSchema);
+export const WalletModel = () => defineCouchbaseModel(modelName, walletSchema);
 
 export default WalletModel;

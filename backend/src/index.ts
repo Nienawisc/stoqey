@@ -13,6 +13,7 @@ import { log } from './log';
 import { bindEventsToPubSub } from './events';
 
 import { PORT, graphqlPath} from './config';
+import { startCouchbaseAndNext } from './couchbase';
 export interface Context {
     ibkrEvents: Event;
 }
@@ -51,7 +52,7 @@ ServerConfig.getExpress().then(({appExpress, pubsub}) => {
     const httpServer = http.createServer(appExpress);
     server.installSubscriptionHandlers(httpServer)
 
-    startCouchbase().then(() => {
+    startCouchbaseAndNext().then(() => {
         httpServer.listen(Number(PORT), () => {
             log(chalk.green(`Server started on port ${PORT}`))
         });

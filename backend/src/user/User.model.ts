@@ -1,9 +1,11 @@
 import { Schema, model } from "ottoman";
+import * as ottoman from 'ottoman';
 import { ObjectType, Field, Int } from "type-graphql";
 import { isEmpty } from "lodash";
 import { ResType } from "../shared";
+import { defineCouchbaseModel } from "../couchbase/models";
 
-const modelName = 'User';
+const modelName = "User";
 /**
  * GraphQL Types start
  */
@@ -50,7 +52,6 @@ export class UserType {
 
   @Field({ nullable: true })
   balance?: number;
-
 }
 @ObjectType()
 export class LoginResponseType extends ResType {
@@ -70,7 +71,6 @@ export class LoginResponseType extends ResType {
 
 // Couchbase schema start
 const userSchema = new Schema({
-
   id: String,
   email: String,
   password: String,
@@ -87,7 +87,6 @@ const userSchema = new Schema({
 
   currency: String,
   balance: Number,
-
 });
 
 userSchema.index.findByEmail = {
@@ -95,18 +94,20 @@ userSchema.index.findByEmail = {
   type: "refdoc",
 };
 
-export const UserModel = () => model(modelName, userSchema);
+export const UserModel = () => defineCouchbaseModel(modelName, userSchema);
 
 /**
  * Methods
  */
-export const incrementRefreshToken = async (userId: string): Promise<boolean> => {
+export const incrementRefreshToken = async (
+  userId: string
+): Promise<boolean> => {
   const existing = await UserModel().findById(userId);
-  if(!isEmpty(existing)){
+  if (!isEmpty(existing)) {
     const currentVersion = existing.tokenVersion || 0;
     existing.tokenVersion = currentVersion + 1;
     await existing.save();
-    return true
+    return true;
   }
   return false;
 };

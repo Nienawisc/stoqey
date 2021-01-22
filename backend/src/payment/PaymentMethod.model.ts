@@ -2,6 +2,7 @@ import { Schema, model } from "ottoman";
 import { ObjectType, Field, Int } from "type-graphql";
 import { isEmpty } from "lodash";
 import { CommonSchema, CommonType, ResType, TradingEnvType } from "../shared";
+import { defineCouchbaseModel } from "../couchbase/models";
 
 const modelName = 'PaymentMethod';
 /**
@@ -35,6 +36,6 @@ const paymentMethodSchema = new Schema({
   info: String,
 });
 
-export const PaymentMethodModel = () => model(modelName, paymentMethodSchema);
+export const PaymentMethodModel = () => defineCouchbaseModel(modelName, paymentMethodSchema);
 
 export default PaymentMethodModel;

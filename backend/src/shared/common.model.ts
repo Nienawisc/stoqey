@@ -84,3 +84,12 @@ export  const CommonSchema = {
   updatedAt: Date,
   deleted: Boolean,
 }
+
+export const RegisterModel = () => {
+
+}
+
+export const getModel = (name: string) => {
+
+  
+}

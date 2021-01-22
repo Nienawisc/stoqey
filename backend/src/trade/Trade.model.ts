@@ -1,4 +1,5 @@
 import { Schema, model } from "ottoman";
+import { defineCouchbaseModel } from "../couchbase/models";
 import { ObjectType, Field } from "type-graphql";
 import { ActionType, CommonSchema, CommonType, SymbolSecType, TradingEnvType, TradingStatusType } from "../shared";
 
@@ -78,7 +79,7 @@ const tradeSchema = new Schema({
 //   payment: Any, // for buying actualSymbol
 });
 
-export const TradeModel = () => model(modelName, tradeSchema);
+export const TradeModel = () => defineCouchbaseModel(modelName, tradeSchema);
 
 /**
  * Methods

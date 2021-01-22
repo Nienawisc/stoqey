@@ -1,4 +1,5 @@
 import { Schema, model } from "ottoman";
+import { defineCouchbaseModel } from "../couchbase/models";
 import { ObjectType, Field, Float} from "type-graphql";
 
 const modelName = 'Marketdata';
@@ -79,7 +80,7 @@ const marketDataSchema = new Schema({
   date: Date
 });
 
-export const MarketDataModel = () => model(modelName, marketDataSchema);
+export const MarketDataModel = () => defineCouchbaseModel(modelName, marketDataSchema);
 
 
 export default MarketDataModel;

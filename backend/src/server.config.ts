@@ -5,7 +5,7 @@ import { RedisPubSub as PubSub } from "graphql-redis-subscriptions";
 import Redis from "ioredis";
 import _get from 'lodash/get';
 
-import { createConnection } from "./couchbase";
+// import { createConnection } from "./couchbase";
 import { expressfyPayPal } from "./paypal/paypal.app";
 
 // import { verify } from "jsonwebtoken";
@@ -15,7 +15,6 @@ import { expressfyPayPal } from "./paypal/paypal.app";
 
 export default class ServerConfig {
   static async getExpress() {
-    createConnection();
 
     const redisHost = _get(process.env, 'REDIS_HOST', 'localhost');
 
