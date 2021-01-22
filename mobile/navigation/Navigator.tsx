@@ -194,7 +194,7 @@ const TabsNavigator = () => (
 // Auth represents Auth Screen
 const AuthStacks = createStackNavigator();
 const AuthStackScreens = () => (
-  <AuthStacks.Navigator initialRouteName="Portfolio">
+  <AuthStacks.Navigator initialRouteName="Login">
     <AuthStacks.Screen
       name="PayPal"
       component={PayPalScreen}

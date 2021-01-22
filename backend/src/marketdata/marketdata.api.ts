@@ -82,6 +82,8 @@ export class MarketDataAPI {
 
       const data = marketDataItems;
 
+      log(`marketdata items are ${data && data.length}`)
+
       return data.map((da) => {
         const { close, open, date, volume, high, low } = da;
         return {

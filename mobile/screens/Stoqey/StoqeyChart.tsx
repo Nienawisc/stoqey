@@ -94,7 +94,7 @@ const StoqeyChart = (props: any): React.ReactElement => {
 
   React.useEffect((): any => {
     // run the fetching after navigation completely animate.
-    InteractionManager.runAfterInteractions(() =>
+    InteractionManager.runAfterInteractions(async () =>
       getMarketDataApi({
         args: {
           symbol,

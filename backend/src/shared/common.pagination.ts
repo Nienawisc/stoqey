@@ -37,7 +37,7 @@ export const Pagination = async (args: PaginationArgs): Promise<any[]> => {
     select = select.map(i => ({ $field: i}));
   };
 
-  console.log('select is', JSON.stringify(select));
+  log('select is', JSON.stringify(select));
   const dbName = "stq";
   const offset = page * limit;
 
