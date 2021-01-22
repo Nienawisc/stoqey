@@ -114,7 +114,7 @@ const TradesStackScreens = () => (
         screenWithHeader({
           ...props,
           headerStyle: styles.header,
-          headerTintColor: '#fff',
+          headerTintColor: '#000',
         })
       }
     />
@@ -124,24 +124,31 @@ const TradesStackScreens = () => (
 );
 
 // AccountsStack represents Accounts Screen
-const TransactionStack = createStackNavigator();
-const TransactionStackScreens = () => (
-  <TransactionStack.Navigator initialRouteName="Transactions">
-    <TransactionStack.Screen
+const PortfolioStack = createStackNavigator();
+const PortfolioStackScreens = () => (
+  <PortfolioStack.Navigator initialRouteName="Transactions">
+    <PortfolioStack.Screen
       name="Transactions"
-      component={TransactionsScreen}
+      component={PortfolioScreen}
       options={props =>
         screenWithHeader(
           {
             ...props,
             headerStyle: styles.header,
-            headerTintColor: '#fff',
+            headerTintColor: '#000',
           },
           'Portfolio',
         )
       }
     />
-  </TransactionStack.Navigator>
+  </PortfolioStack.Navigator>
+);
+
+const InvestStack = createStackNavigator();
+const InvestStackScreens = () => (
+  <InvestStack.Navigator initialRouteName="Invest">
+    <InvestStack.Screen name="Invest" component={InvestScreen} options={props => screenWithoutHeader(props)} />
+  </InvestStack.Navigator>
 );
 
 //Invite Stack
@@ -170,12 +177,12 @@ const TabsNavigator = () => (
     />
     <Tabs.Screen
       name="Portfolio"
-      component={PortfolioScreen}
+      component={PortfolioStackScreens}
       options={props => bottomNavigationOptions('pie-chart', 'Feather', 'Portfolio')}
     />
     <Tabs.Screen
       name="Invest"
-      component={InvestScreen}
+      component={InvestStackScreens}
       options={props => bottomNavigationOptions('swap', 'AntDesign', ' ', true)}
     />
     <Tabs.Screen

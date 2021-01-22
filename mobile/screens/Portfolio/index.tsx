@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { StyleSheet, View, Dimensions, Text } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import { Container } from 'native-base';
 // import { InnerLayout } from '../../layout/InnerLayout';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Dots from 'react-native-dots-pagination';
