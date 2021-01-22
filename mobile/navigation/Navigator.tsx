@@ -169,8 +169,8 @@ const TabsNavigator = () => (
       options={props => bottomNavigationOptions('home', 'Feather', 'Home')}
     />
     <Tabs.Screen
-      name="Accounts"
-      component={TransactionStackScreens}
+      name="Portfolio"
+      component={PortfolioScreen}
       options={props => bottomNavigationOptions('pie-chart', 'Feather', 'Portfolio')}
     />
     <Tabs.Screen

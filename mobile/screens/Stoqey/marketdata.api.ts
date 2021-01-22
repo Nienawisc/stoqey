@@ -22,7 +22,7 @@ export const getMarketDataApi = async ({
       variables: args,
     });
 
-    log.info('get marketdata api', dataResponse);
+    // log.info('get marketdata api', dataResponse);
 
     if (!dataResponse) {
       throw new Error('error getting marketdata data');

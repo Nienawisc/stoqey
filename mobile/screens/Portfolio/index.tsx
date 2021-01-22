@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { StyleSheet, View, Dimensions, Text } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 // import { InnerLayout } from '../../layout/InnerLayout';
@@ -8,6 +9,7 @@ import Dots from 'react-native-dots-pagination';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import StoqeyChart from '../Stoqey/StoqeyChart';
 import { Colors } from '../../enums';
+import TransactionScreen from '../Transactions/Transactions';
 
 // import { Chart } from './linechat';
 // import { useSubscription } from '@apollo/react-hooks';
@@ -22,8 +24,24 @@ import { Colors } from '../../enums';
 const { width, height } = Dimensions.get('window');
 const initialLayout = { width };
 
-function PortfolioScreen() {
+interface Props {
+  route?: {
+    params: {
+      showTransactions: boolean;
+    };
+  };
+  showTransactions: boolean;
+}
+
+function PortfolioScreen(props: Props) {
+  const shouldShowTransactions = _.get(
+    props,
+    'route.params.showTransactions',
+    (props && props.showTransactions) || true,
+  );
+
   const date = [{ name: 'Profit & Loss', value: '$0.00' }];
+
   const PerformanceSummary = () => {
     return (
       <View style={style.title}>
@@ -129,6 +147,7 @@ function PortfolioScreen() {
     performance: () => (
       <>
         <StoqeyChart />
+        {shouldShowTransactions && <TransactionScreen />}
         {/* <Chart /> */}
       </>
     ),
