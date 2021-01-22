@@ -1,4 +1,4 @@
-import * as ottoman from "ottoman";
+import { Ottoman } from "ottoman";
 import { start } from "ottoman";
 import { log } from "../log";
 import get from "lodash/get";
@@ -13,27 +13,48 @@ const bucketName = get(process.env, "COUCHBASE_BUCKET", "stq");
 const username = get(process.env, "COUCHBASE_USERNAME", "admin");
 const password = get(process.env, "COUCHBASE_PASSWORD", "123456");
 
-export const createConnection = (): any => {
-  return ottoman.connect({
-    connectionString,
-    bucketName,
-    username,
-    password,
-  });
+const connectionOptions = {
+  connectionString,
+  bucketName,
+  username,
+  password,
 };
+export class CouchbaseService {
+  private couchbaseClient: Ottoman;
+
+  constructor() {}
+
+  async connect(): Promise<Ottoman> {
+    if (!this.couchbaseClient) {
+      const ottoman = new Ottoman({ collectionName: "_default" });
+      this.couchbaseClient = await ottoman.connect(connectionOptions);
+    }
+    return this.couchbaseClient;
+  }
+}
 
 export const startCouchbaseAndNext = (): Promise<boolean> => {
-  createConnection();
+  const couchbase = new CouchbaseService();
+
   log(
     "Couchbase",
     chalk.yellow(
       "...starting",
-      JSON.stringify({ host: connectionString, bucket: bucketName, username, password })
+      JSON.stringify({
+        host: connectionString,
+        bucket: bucketName,
+        username,
+        password,
+      })
     )
   );
   return new Promise((res, rej) => {
-    start()
+    // @ts-ignore
+    couchbase.connect()
+      .then(() => start())
       .then(() => {
+        // registerAllModels();
+        // Register all models
         log(
           "Couchbase",
           chalk.greenBright(
@@ -46,3 +67,5 @@ export const startCouchbaseAndNext = (): Promise<boolean> => {
       .catch((error) => rej(error));
   });
 };
+
+
