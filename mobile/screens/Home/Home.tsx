@@ -11,7 +11,7 @@ import {
   fetchTopListtAction,
 } from '../../store/actions';
 import { Colors, Transact } from '../../enums';
-import { Main } from '../../components';
+import Main from './Main';
 import { useNavigation } from '@react-navigation/native';
 import { setToDarkStatusBar } from '../../utils/theme';
 
@@ -66,7 +66,6 @@ const Home = (props: INavProps): React.ReactElement<any> => {
   };
   return (
     <View style={styles.container}>
-      {/* <StatusBar backgroundColor={Colors.white} barStyle="light-content" /> */}
       <Main
         onBuyBtnPress={onBuyBtnPress}
         onSellBtnPress={onSellBtnPress}
