@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { isEmpty } from 'lodash';
 import React, { useEffect } from 'react';
 import { Container } from 'native-base';
 import moment from 'moment';
@@ -15,9 +15,21 @@ import { setToDarkStatusBar } from '../../utils/theme';
 
 const LazyTradeList = React.lazy((): any => import('../../components/Stoqey/TradesList'));
 
-const TradesScreen: React.FC<INavProps> = () => {
+interface Props {
+  route?: {
+    params: {
+      paginate: boolean;
+    };
+  };
+  paginate?: boolean;
+}
+
+const TradesScreen: React.FC<INavProps> = ({ route, paginate: shouldPaginateProps = true }: Props) => {
   const navigation = useNavigation();
   const client = useApolloClient();
+
+  // whether it should paginate or note
+  const paginate: boolean = _.get(route, 'params.paginate', shouldPaginateProps);
 
   const limit = 30;
   const [page, setPage] = React.useState<number>(0); // default is 1
@@ -26,21 +38,22 @@ const TradesScreen: React.FC<INavProps> = () => {
   const [isAssetLoading, setLoading] = React.useState<boolean>(true);
 
   const handleTrades = async (trades: TradeType[]) => {
-    const newAssets: ITrade[] = trades.map((i: TradeType) => {
-      const coin: ITrade = {
-        id: i.id,
-        symbol: i.symbol,
-        time: moment(new Date(i.createdAt)).fromNow(),
-        price: '0',
-        change: 1,
-        changePct: 3,
-        icon: `https://storage.googleapis.com/iex/api/logos/${i.symbol}.png`,
-      };
-      return coin;
-    });
-
     setLoading(false);
-    setAssets(_.concat(assets, newAssets));
+    if (!isEmpty(trades)) {
+      const newAssets: ITrade[] = trades.map((i: TradeType) => {
+        const coin: ITrade = {
+          id: i.id,
+          symbol: i.symbol,
+          time: moment(new Date(i.createdAt)).fromNow(),
+          price: '0',
+          change: 1,
+          changePct: 3,
+          icon: `https://storage.googleapis.com/iex/api/logos/${i.symbol}.png`,
+        };
+        return coin;
+      });
+      setAssets(_.concat(assets, newAssets));
+    }
   };
   //navigate to coin details.
   // const navigateToDetail = (coin: ICoin): boolean => props.navigation.navigate('Coin', { coin });
@@ -52,17 +65,11 @@ const TradesScreen: React.FC<INavProps> = () => {
   useEffect(() => {
     // Api here
     InteractionManager.runAfterInteractions(async () => {
-      // const arrangedCoins = coins.map((c: ICoin) =>
-      //   wallets.find((w: IWallet): boolean => w.symbol === c.symbol)
-      //     ? { ...c, tradable: true }
-      //     : { ...c, tradable: false },
-      // );
-
       getTradesPaginationApi({
         args: { limit, page },
         client,
         done: async (trades: TradeType[]) => handleTrades(trades),
-        err: async () => {},
+        err: async () => handleTrades([]),
       });
 
       // setLoading(false);
@@ -76,7 +83,12 @@ const TradesScreen: React.FC<INavProps> = () => {
     <Container>
       {!isAssetLoading && assets.length ? (
         <React.Suspense fallback={<LoadingSpinner />}>
-          <LazyTradeList withAction={false} items={assets} onPress={() => {}} handleLoadMore={handleLoadMore} />
+          <LazyTradeList
+            withAction={false}
+            items={assets}
+            onPress={() => {}}
+            handleLoadMore={paginate ? handleLoadMore : () => {}}
+          />
         </React.Suspense>
       ) : (
         <LoadingSpinner />
