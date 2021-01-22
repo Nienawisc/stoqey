@@ -174,8 +174,8 @@ const TabsNavigator = () => (
       options={props => bottomNavigationOptions('pie-chart', 'Feather', 'Portfolio')}
     />
     <Tabs.Screen
-      name="Transact"
-      component={OpStackScreens}
+      name="Invest"
+      component={InvestScreen}
       options={props => bottomNavigationOptions('swap', 'AntDesign', ' ', true)}
     />
     <Tabs.Screen

@@ -96,14 +96,6 @@ const Main: React.FC<IProps> = ({
 
               {/* Trades summary */}
               <TradesSummary navigateTo={navigation} />
-
-              <LazyTopCoins
-                items={_.take(toplist, 5)}
-                onPress={populateCoin}
-                navigateTo={navigateToScreen}
-                itemStyle={{ height: verticalScale(60) }}
-                isLoading={isRefreshingPrice}
-              />
             </React.Suspense>
           </View>
         </View>
