@@ -29,7 +29,7 @@ export class MarketDataResolver {
     @Arg("limit", { nullable: true }) limit?: number
   ): Promise<MarketDataType[]> {
     try {
-      console.log("getMarketData", { start, end, range, limit });
+      log("getMarketData", { symbol, start, end, range, limit });
       const mkdapi = new MarketDataAPI();
       const gotCandles = await mkdapi.getCandles(
         symbol,
