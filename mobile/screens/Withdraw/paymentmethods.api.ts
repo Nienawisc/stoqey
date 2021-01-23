@@ -25,6 +25,7 @@ export const getPaymentMethodsApi = async ({
     const { data: dataResponse }: any = await client.query({
       query: GET_PAYMENT_METHODS,
       variables: args,
+      fetchPolicy: 'network-only',
     });
 
     if (!dataResponse) {
