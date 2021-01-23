@@ -1,5 +1,6 @@
 import { ApolloClient } from '@apollo/react-hooks';
 import { PaymentMethodType, GET_PAYMENT_METHODS, CREATE_PAYMENTMETHOD_MUTATION, ResType } from '@stoqey/client-graphql';
+import AsyncStorageDB from '../../db/AsyncStorageDB';
 import { log } from '../../config';
 
 interface GetPaymentMethodsApiArgs {
@@ -7,6 +8,8 @@ interface GetPaymentMethodsApiArgs {
   limit: number;
   owner: string;
 }
+
+const db = AsyncStorageDB.Instance;
 
 export const getPaymentMethodsApi = async ({
   args,
@@ -19,9 +22,13 @@ export const getPaymentMethodsApi = async ({
   error?: (error: Error) => Promise<any>;
   success?: (data: PaymentMethodType[]) => Promise<any>;
 }) => {
-  log.info('getPaymentMethodsApi', JSON.stringify(args));
-
   try {
+    const user = await db.getUserAuthObject();
+    const owner = user.id;
+    args.owner = owner;
+  
+    log.info('getPaymentMethodsApi', JSON.stringify(args));
+
     const { data: dataResponse }: any = await client.query({
       query: GET_PAYMENT_METHODS,
       variables: args,
@@ -61,9 +68,13 @@ export const createPaymentMethodsApi = async ({
   error?: (error: Error) => Promise<any>;
   success?: (data: ResType) => Promise<any>;
 }) => {
-  log.info('createPaymentMethodsApi', JSON.stringify(args));
-
   try {
+    const user = await db.getUserAuthObject();
+    const owner = user.id;
+    args.owner = owner;
+
+    log.info('createPaymentMethodsApi', JSON.stringify(args));
+
     const { data: dataResponse }: any = await client.mutate({
       mutation: CREATE_PAYMENTMETHOD_MUTATION,
       variables: args,

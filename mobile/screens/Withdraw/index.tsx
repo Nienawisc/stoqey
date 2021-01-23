@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Form, Item, Input, Picker, Icon, Label, Textarea } from 'native-base';
+import { PaymentMethodType } from '@stoqey/client-graphql';
 import Modal from 'react-native-modal';
-import ButtonComponent from '../../components/Button';
 import { scale } from 'react-native-size-matters';
+
+import { getPaymentMethodsApi, createPaymentMethodsApi } from './paymentmethods.api';
+import ButtonComponent from '../../components/Button';
 import { Colors } from '../../enums';
+import { useUserInfo } from '../../hooks/useUserInfo';
+import { useApolloClient } from '@apollo/react-hooks';
 
 interface AddPaymentState {
   name: string;
@@ -16,7 +21,12 @@ export const WithDrawScreen = () => {
   // Get all payment methods
   // Add payment method
   // name, type, details
+
+  const client = useApolloClient();
+  // const user = useUserInfo();
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodType[]>([]);
 
   const [addPaymentMethod, setAddPaymentMethod] = useState<AddPaymentState>({
     name: '',
@@ -25,12 +35,10 @@ export const WithDrawScreen = () => {
   });
 
   const hideShow = () => {
-    setShowModal(!showModal)
-  }
+    setShowModal(!showModal);
+  };
 
   const { name, paymentMethod, details } = addPaymentMethod;
-
-
 
   const handleChangeAddPayment = (fieldName: string) => {
     return (val: any) => {
@@ -40,6 +48,21 @@ export const WithDrawScreen = () => {
       });
     };
   };
+
+  useEffect(() => {
+    getPaymentMethodsApi({
+      client,
+      args: {
+        page: 1,
+        limit: 100,
+        owner: '',
+      },
+      // error: async (error: Error) => { },
+      success: async (pm: PaymentMethodType[]) => {
+        setPaymentMethods(pm);
+      },
+    });
+  }, [showModal]);
 
   return (
     <View style={styles.root}>
@@ -65,6 +88,7 @@ export const WithDrawScreen = () => {
                 selectedValue={paymentMethod}
                 onValueChange={handleChangeAddPayment('paymentMethod')}>
                 <Picker.Item label="E-transfer" value="etransfer" />
+                <Picker.Item label="PayPal" value="paypal" />
                 <Picker.Item label="Bank account" value="bank" />
               </Picker>
             </Item>
