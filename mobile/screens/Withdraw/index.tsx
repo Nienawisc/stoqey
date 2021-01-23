@@ -4,6 +4,7 @@ import { Form, Item, Input, Picker, Icon, Label, Textarea } from 'native-base';
 import Modal from 'react-native-modal';
 import ButtonComponent from '../../components/Button';
 import { scale } from 'react-native-size-matters';
+import { Colors } from '../../enums';
 
 interface AddPaymentState {
   name: string;
@@ -23,7 +24,13 @@ export const WithDrawScreen = () => {
     details: '',
   });
 
+  const hideShow = () => {
+    setShowModal(!showModal)
+  }
+
   const { name, paymentMethod, details } = addPaymentMethod;
+
+
 
   const handleChangeAddPayment = (fieldName: string) => {
     return (val: any) => {
@@ -68,6 +75,7 @@ export const WithDrawScreen = () => {
             </Item>
 
             <ButtonComponent text="Save payment method" onPress={() => {}} />
+            <ButtonComponent text="Cancel" onPress={() => hideShow()} style={{ backgroundColor: Colors.darkGrayish }} />
           </Form>
         </View>
       </Modal>
