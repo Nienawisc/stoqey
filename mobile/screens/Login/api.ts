@@ -1,6 +1,6 @@
 import { ApolloClient } from '@apollo/react-hooks';
 import { log } from '../../config';
-import { LoginResponseType, LOGIN_MUTATION } from '../../graphql/user';
+import { LoginResponseType, LOGIN_MUTATION } from '@stoqey/client-graphql';
 
 interface LoginCreds {
   password: string;

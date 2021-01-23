@@ -5,7 +5,9 @@ import MarketDataResolver from './marketdata/marketdata.resolver';
 import TradeResolver from './trade/trade.resolver';
 import TransactionResolver from './transaction/Transaction.resolver';
 import TransactionAdminResolver from './transaction/Transaction.resolver.admin';
+import PaymentMethodResolver from './payment/PaymentMethod.resolver';
 
 import {NonEmptyArray} from "type-graphql/dist/interfaces/NonEmptyArray";
 
-export const Resolvers: NonEmptyArray<Function> | any = () => [UserResolver, UserResolverAdmin, WalletResolver, MarketDataResolver, TradeResolver, TransactionResolver, TransactionAdminResolver]
+
+export const Resolvers: NonEmptyArray<Function> | any = () => [UserResolver, UserResolverAdmin, WalletResolver, MarketDataResolver, TradeResolver, TransactionResolver, TransactionAdminResolver, PaymentMethodResolver]

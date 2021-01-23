@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 // import { CommonActions } from '@react-navigation/native';
 // import { AppRoute } from '../../config/AppRoute';
 
-import { LoginResponseType } from '../../graphql/user';
+import { LoginResponseType } from '@stoqey/client-graphql';
 import AsyncStorageDB from '../../db/AsyncStorageDB';
 import styles from './styles';
 import { loginApi } from './api';

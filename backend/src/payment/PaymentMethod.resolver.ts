@@ -8,13 +8,13 @@ import { log } from "../log";
 import PaymentMethodModel, { PaymentMethodType } from "./PaymentMethod.model";
 import { ResType, StatusType, TradingEnvType } from "../shared";
 import { Pagination } from "../shared/common.pagination";
-import { TransactionModel, TransactionType } from "src/transaction";
-import { UserModel, UserType } from "src/user";
+import { TransactionModel, TransactionType } from "../transaction";
+import { UserModel, UserType } from "../user";
 
 const transModelName = "PaymentMethod";
 
 @Resolver()
-export class TransactionResolver {
+export class PaymentMethodResolver {
 
   @Query(() => [PaymentMethodType])
   async paymentMethods(
@@ -111,4 +111,4 @@ export class TransactionResolver {
   
 }
 
-export default TransactionResolver;
+export default PaymentMethodResolver;
