@@ -15,20 +15,20 @@ const modelName = "Transaction";
 @ObjectType()
 export class TransactionType extends CommonType {
   @Field({ nullable: true })
-  type?: string; // withdraw or deposit
+  type: string; // withdraw or deposit
 
   @Field(type => StatusType, { nullable: true })
-  status?: StatusType; //
+  status: StatusType; //
 
   @Field({ nullable: true })
-  source?: string; // paypal, credit card, interact
+  source: string; // paypal, credit card, interact
   @Field({ nullable: true })
   sourceId?: string; // paypal, credit card, interact
 
   @Field({ nullable: true })
-  currency?: string;
+  currency: string;
   @Field({ nullable: true })
-  amount?: number;
+  amount: number;
 }
 
 /**

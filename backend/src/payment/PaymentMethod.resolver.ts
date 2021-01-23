@@ -6,8 +6,10 @@ import {
 } from "type-graphql";
 import { log } from "../log";
 import PaymentMethodModel, { PaymentMethodType } from "./PaymentMethod.model";
-import { ResType, TradingEnvType } from "../shared";
+import { ResType, StatusType, TradingEnvType } from "../shared";
 import { Pagination } from "../shared/common.pagination";
+import { TransactionModel, TransactionType } from "src/transaction";
+import { UserModel, UserType } from "src/user";
 
 const transModelName = "PaymentMethod";
 
@@ -64,18 +66,43 @@ export class TransactionResolver {
   }
 
   @Mutation(() => ResType)
-  async createPayment(
+  async createWithdrawPayment(
     @Arg("paymentMethodId") paymentMethodId: string,
     @Arg("owner") owner: string,
     @Arg("amount") amount: number,
   ): Promise<ResType> {
     try {
-      // If updating
-      const newPaymentMethod: PaymentMethodType = {
-        name, type, info, owner,
+      // Create payment
+      // make it pending
+      // confirm from admin that's when we run updateUserWallet
+
+      const thisPaymentMethod: PaymentMethodType = await PaymentMethodModel().findById(paymentMethodId);
+      if(!thisPaymentMethod){
+        throw new Error('payment method not found');
       };
-      const created = await PaymentMethodModel().create(newPaymentMethod);
+
+      const thisUser: UserType = UserModel().findById(owner);
+      if(!thisUser){
+        throw new Error('user not found');
+      }
+
+      // Check if user has enough money on account
+      if(thisUser.balance??0 < amount){
+        throw new Error('Not enough fund in the account');
+      }
+
+      const createdPaymentTransaction: TransactionType = {
+        type: 'withdraw', // withdraw or deposit
+        status: StatusType.PENDING,
+        source: thisPaymentMethod.type, // paypal, credit card, interact
+        sourceId: thisPaymentMethod.id, // paypal, credit card, interact
+        currency: 'USD',
+        amount
+      };
+
+      const created = await TransactionModel().create(createdPaymentTransaction);
       return { success: true, data: created };
+    
     } catch (err) {
       console.log(err);
       return { success: false, message: err && err.message };
