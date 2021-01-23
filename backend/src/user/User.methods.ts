@@ -7,7 +7,8 @@ import UserModel from "./User.model";
 export const updateUserWallet = async (
   userId: string,
   amount: number,
-  source: string
+  source: string,
+  sourceId?: string
 ): Promise<ResType> => {
   try {
     const existingUser = await UserModel().findById(userId);
@@ -23,7 +24,7 @@ export const updateUserWallet = async (
         owner: userId,
         type: transType, // withdraw or deposit
         source: source || "", // paypal, credit card, interact
-        sourceId: "", // paypal, credit card, interact
+        sourceId: sourceId || "", // paypal, credit card, interact
         currency: "USD",
         amount,
         createdAt: new Date(),

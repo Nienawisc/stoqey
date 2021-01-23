@@ -17,7 +17,7 @@ export class TransactionResolver {
   @Query(() => [PaymentMethodType])
   async paymentMethods(
     // @Arg("tradeEnv") tradeEnv: TradingEnvType,
-    @Arg("owner") owner: number,
+    @Arg("owner") owner: string,
     @Arg("page") page: number,
     @Arg("limit") limit: number
   ): Promise<PaymentMethodType[]> {
@@ -43,12 +43,31 @@ export class TransactionResolver {
     }
   }
 
-    @Mutation(() => ResType)
+  @Mutation(() => ResType)
   async createPaymentMethod(
     @Arg("type") type: string,
     @Arg("name") name: string,
     @Arg("owner") owner: string,
     @Arg("info") info: string,
+  ): Promise<ResType> {
+    try {
+      // If updating
+      const newPaymentMethod: PaymentMethodType = {
+        name, type, info, owner,
+      };
+      const created = await PaymentMethodModel().create(newPaymentMethod);
+      return { success: true, data: created };
+    } catch (err) {
+      console.log(err);
+      return { success: false, message: err && err.message };
+    }
+  }
+
+  @Mutation(() => ResType)
+  async createPayment(
+    @Arg("paymentMethodId") paymentMethodId: string,
+    @Arg("owner") owner: string,
+    @Arg("amount") amount: number,
   ): Promise<ResType> {
     try {
       // If updating
