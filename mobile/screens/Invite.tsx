@@ -10,9 +10,9 @@ import { INavProps } from '../store/interfaces';
 import { scale, moderateScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 // terms and conditions link
-const termsUrl = 'https://cryptostream-app.appducks.com/licenses';
+const termsUrl = 'https://stoqey.com/licenses';
 // the invite link user share with their network. it could be different from ios to android devices
-const _inviteLink = `https://cryptostream-app.appducks.com?src=${Platform.OS === 'ios' ? 'ios-link' : 'android-link'}`;
+const _inviteLink = `https://stoqey.com?src=${Platform.OS === 'ios' ? 'ios-link' : 'android-link'}`;
 // the component sub title to display
 const subTitle = `Introduce a friend to Stoqey App`;
 // the body of the email or sms or social network post when sharing with the invites with friends
@@ -20,7 +20,7 @@ const message = `Hi,
 
 This is a random gibberish text for email and text messages to sending an invite to your customer's friends. You must modify it to fit your needs
 
-Claim your invite now: https://cryptostream-app.appducks.com?src=${
+Claim your invite now: https://stoqey.com?src=${
   Platform.OS === 'ios' ? 'ios-email-invite' : 'android-email-invite'
 } 
 
