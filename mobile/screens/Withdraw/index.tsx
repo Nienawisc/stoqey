@@ -103,7 +103,7 @@ export const WithDrawScreen = () => {
           <Form>
             <Item fixedLabel>
               <Label>Name</Label>
-              <Input placeholder="e.g my e-transfer" />
+              <Input placeholder="e.g my e-transfer" onChangeText={handleChangeAddPayment('name')} />
             </Item>
 
             <Item fixedLabel>
