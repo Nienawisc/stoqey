@@ -58,7 +58,7 @@ export const WithDrawScreen = () => {
     };
   };
 
-  useEffect(() => {
+  const fetchPaymentMethods = () =>
     getPaymentMethodsApi({
       client,
       args: {
@@ -71,7 +71,10 @@ export const WithDrawScreen = () => {
         setPaymentMethods(pm);
       },
     });
-  }, [showModal]);
+
+  useEffect(() => {
+    fetchPaymentMethods();
+  }, []);
 
   const createPaymentMethod = () =>
     createPaymentMethodsApi({
@@ -84,8 +87,12 @@ export const WithDrawScreen = () => {
       client,
       success: async () => {
         showToast('Successfully created payment method', true);
-        resetForm();
-        hideShow();
+
+        setTimeout(() => {
+          fetchPaymentMethods();
+          resetForm();
+          hideShow();
+        }, 1500);
       },
       error: async (error: Error) => {
         showToast(error && error.message, false);
