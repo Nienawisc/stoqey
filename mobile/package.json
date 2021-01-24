@@ -6,6 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
+    "reset": "expo r -c",
     "lint": "eslint './**/*.{ts,tsx}'",
     "postinstall": "expo-yarn-workspaces postinstall"
   },
