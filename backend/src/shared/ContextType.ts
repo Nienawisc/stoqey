@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { ObjectType, Field, Int } from "type-graphql";
+import GraphQLJSON from 'graphql-type-json';
 export interface ContextType {
     req: Request; 
     res: Response;
@@ -22,6 +23,6 @@ export class ResType {
   @Field({ nullable: true })
   message?: string;
 
-  @Field({ nullable: true })
+  @Field(type => GraphQLJSON)
   data?: string;
 }
