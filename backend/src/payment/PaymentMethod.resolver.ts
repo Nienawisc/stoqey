@@ -11,7 +11,7 @@ import { Pagination } from "../shared/common.pagination";
 import { TransactionModel, TransactionType } from "../transaction";
 import { UserModel, UserType } from "../user";
 
-const transModelName = "PaymentMethod";
+const paymentMethodname = "PaymentMethod";
 
 @Resolver()
 export class PaymentMethodResolver {
@@ -26,9 +26,10 @@ export class PaymentMethodResolver {
     try {
       // TODO add not deleted
       const data = await Pagination({
+        select: ['id', 'owner','name','info', 'type', 'createdAt'],
         where: {
           where: {
-            _type: { $eq: transModelName },
+            _type: { $eq: paymentMethodname },
             // tradeEnv: { $eq: tradeEnv },
             owner: { $eq: owner },
             
@@ -55,7 +56,7 @@ export class PaymentMethodResolver {
     try {
       // If updating
       const newPaymentMethod: PaymentMethodType = {
-        name, type, info, owner,
+        name, type, info, owner, createdAt: new Date()
       };
       const created = await PaymentMethodModel().create(newPaymentMethod);
       return { success: true, data: created };
