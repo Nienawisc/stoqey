@@ -8,8 +8,8 @@ import { scale } from 'react-native-size-matters';
 import { getPaymentMethodsApi, createPaymentMethodsApi } from './paymentmethods.api';
 import ButtonComponent from '../../components/Button';
 import { Colors } from '../../enums';
-import { useUserInfo } from '../../hooks/useUserInfo';
 import { useApolloClient } from '@apollo/react-hooks';
+import { showToast } from '../../components/Toast';
 
 interface AddPaymentState {
   name: string;
@@ -34,6 +34,14 @@ export const WithDrawScreen = () => {
     details: '',
   });
 
+  const resetForm = () => {
+    setAddPaymentMethod({
+      name: '',
+      paymentMethod: 'etransfer',
+      details: '',
+    });
+  };
+
   const hideShow = () => {
     setShowModal(!showModal);
   };
@@ -53,9 +61,9 @@ export const WithDrawScreen = () => {
     getPaymentMethodsApi({
       client,
       args: {
-        page: 1,
+        page: 0,
         limit: 100,
-        owner: '',
+        owner: '', // to be fetched from api
       },
       // error: async (error: Error) => { },
       success: async (pm: PaymentMethodType[]) => {
@@ -63,6 +71,26 @@ export const WithDrawScreen = () => {
       },
     });
   }, [showModal]);
+
+  const createPaymentMethod = () =>
+    createPaymentMethodsApi({
+      args: {
+        type: paymentMethod,
+        name,
+        info: details,
+        owner: '', // to be fetched from api
+      },
+      client,
+      success: async () => {
+        showToast('Successfully created payment method', true);
+        resetForm();
+        hideShow();
+      },
+      error: async (error: Error) => {
+        showToast(error && error.message, false);
+        hideShow();
+      },
+    });
 
   return (
     <View style={styles.root}>
@@ -98,7 +126,7 @@ export const WithDrawScreen = () => {
               <Input onChangeText={handleChangeAddPayment('details')} placeholder="e.g email/bank account info" />
             </Item>
 
-            <ButtonComponent text="Save payment method" onPress={() => {}} />
+            <ButtonComponent text="Save payment method" onPress={() => createPaymentMethod()} />
             <ButtonComponent text="Cancel" onPress={() => hideShow()} style={{ backgroundColor: Colors.darkGrayish }} />
           </Form>
         </View>
