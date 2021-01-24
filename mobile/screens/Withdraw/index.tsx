@@ -95,7 +95,7 @@ export const WithDrawScreen = () => {
 
   return (
     <View style={styles.root}>
-      <PaymentMethodList />
+      <PaymentMethodList items={paymentMethods} />
       <ButtonComponent text={'Add payment method'} onPress={() => setShowModal(!showModal)} />
       <Modal isVisible={showModal}>
         <View style={styles.modalView}>
