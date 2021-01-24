@@ -10,6 +10,7 @@ import ButtonComponent from '../../components/Button';
 import { Colors } from '../../enums';
 import { useApolloClient } from '@apollo/react-hooks';
 import { showToast } from '../../components/Toast';
+import PaymentMethodList from './paymentmethod.list';
 
 interface AddPaymentState {
   name: string;
@@ -94,6 +95,7 @@ export const WithDrawScreen = () => {
 
   return (
     <View style={styles.root}>
+      <PaymentMethodList />
       <ButtonComponent text={'Add payment method'} onPress={() => setShowModal(!showModal)} />
       <Modal isVisible={showModal}>
         <View style={styles.modalView}>

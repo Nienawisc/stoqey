@@ -1,3 +1,5 @@
+import { StyleSheet } from "react-native";
+
 export const localeAmount = (num: number): string => {
   return `${num}`.toLocaleLowerCase();
 };
@@ -18,3 +20,24 @@ export function validateEmail(email) {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
+
+export const FONTS = StyleSheet.create({
+  h1: {
+    fontSize: 30,
+  },
+  h2: {
+    fontSize: 25,
+  },
+  h3: {
+    fontSize: 20,
+  },
+  h4: {
+    fontSize: 15,
+  },
+  h5: {
+    fontSize: 10,
+  },
+  h6: {
+    fontSize: 9,
+  }
+})
