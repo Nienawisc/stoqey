@@ -13,6 +13,7 @@ import { Colors } from '../../enums';
 import { showToast } from '../../components/Toast';
 import PaymentMethodList from './paymentmethod.list';
 import TransactionScreen from '../Transactions/Transactions';
+import { isEmpty } from 'lodash';
 
 const { width, height } = Dimensions.get('window');
 const initialLayout = { width };
@@ -23,16 +24,26 @@ interface AddPaymentState {
 }
 
 export const WithDrawScreen = ({ navigation }) => {
-  // Get all payment methods
-  // Add payment method
-  // name, type, details
-
   const client = useApolloClient();
-  // const user = useUserInfo();
+
+  // for withdrawing
+  const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
+  const [withdrawForm, setWithdrawForm] = useState<{ methodId: string; amount: number }>({ methodId: '', amount: 0 });
+  const handleWithdrawForm = (fieldName: string) => {
+    return (val: any) => {
+      setWithdrawForm({
+        ...withdrawForm,
+        [fieldName]: val,
+      });
+    };
+  };
+  const hideWithDrawModal = () => {
+    setShowWithdrawModal(!showWithdrawModal);
+  };
+
+  // for adding payment modal
   const [showModal, setShowModal] = useState<boolean>(false);
-
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodType[]>([]);
-
   const [addPaymentMethod, setAddPaymentMethod] = useState<AddPaymentState>({
     name: '',
     paymentMethod: 'etransfer',
@@ -112,6 +123,14 @@ export const WithDrawScreen = ({ navigation }) => {
       <>
         <PaymentMethodList items={paymentMethods} />
         <ButtonComponent text={'Add payment method'} onPress={() => setShowModal(!showModal)} />
+
+        {!isEmpty(paymentMethods) && (
+          <ButtonComponent
+            text={'Withdraw money'}
+            onPress={() => setShowWithdrawModal(!showWithdrawModal)}
+            style={{ backgroundColor: Colors.trueYellow }}
+          />
+        )}
       </>
     );
   };
@@ -135,6 +154,8 @@ export const WithDrawScreen = ({ navigation }) => {
     ),
   });
 
+
+
   return (
     <View style={styles.root}>
       <TabView
@@ -142,8 +163,10 @@ export const WithDrawScreen = ({ navigation }) => {
         renderScene={renderScene}
         onIndexChange={setIndexTab}
         initialLayout={initialLayout}
-        // renderTabBar={props => <View />}
+      // renderTabBar={props => <View />}
       />
+
+      {/* BEGIN Add payment method form */}
       <Modal isVisible={showModal}>
         <View style={styles.modalView}>
           <Text style={styles.h3}> Add payment method </Text>
@@ -180,6 +203,52 @@ export const WithDrawScreen = ({ navigation }) => {
           </Form>
         </View>
       </Modal>
+      {/* END Add payment method form */}
+
+      {/* BEGIN Withdraw money form */}
+      <Modal isVisible={showWithdrawModal}>
+        <View style={styles.modalView}>
+          <Text style={styles.h3}> Withdraw Money </Text>
+          <Form>
+            <Item fixedLabel>
+              <Label>Amount</Label>
+              <Input
+                type="numeric"
+                value={`${withdrawForm.amount}`}
+                keyboardType="numeric"
+                placeholder="e.g my e-transfer"
+                onChangeText={handleWithdrawForm('amount')}
+              />
+            </Item>
+
+            <Item fixedLabel>
+              <Label>Payment Method</Label>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{ width: undefined }}
+                placeholder="Payment method type"
+                placeholderStyle={{ color: '#bfc6ea' }}
+                placeholderIconColor="#007aff"
+                selectedValue={withdrawForm.methodId}
+                onValueChange={handleWithdrawForm('methodId')}>
+                {paymentMethods.map(i => {
+                  return <Picker.Item key={i.id} label={i.name} value={i.id} />;
+                })}
+              </Picker>
+            </Item>
+
+            <ButtonComponent text="Submit" onPress={() => { }} />
+            <ButtonComponent
+              text="Cancel"
+              onPress={() => hideWithDrawModal()}
+              style={{ backgroundColor: Colors.darkGrayish }}
+            />
+          </Form>
+        </View>
+      </Modal>
+      {/* END Withdraw money form */}
+
     </View>
   );
 };
