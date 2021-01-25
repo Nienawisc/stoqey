@@ -47,7 +47,7 @@ export class UserResolverAdmin {
   ):Promise<ResType> {
 
     try {
-
+      log('mutation updateUserWallet', JSON.stringify({ userId, amount, source }));
       const updatedWallet = await updateUserWallet(userId, amount, source);
 
       if(updatedWallet.success){

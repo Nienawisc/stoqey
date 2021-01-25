@@ -11,7 +11,13 @@ export const updateUserWallet = async (
   sourceId?: string
 ): Promise<ResType> => {
   try {
-    const existingUser = await UserModel().findById(userId);
+    log(
+      "updateUserWallet",
+      JSON.stringify({ userId, amount, source, sourceId })
+    );
+
+    const { rows } = await UserModel().find({ id: userId });
+    const existingUser = rows[0];
 
     if (!isEmpty(existingUser)) {
       const currentBalance = existingUser.balance || 0;

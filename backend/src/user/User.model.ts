@@ -2,7 +2,7 @@ import { Schema, model } from "ottoman";
 import * as ottoman from 'ottoman';
 import { ObjectType, Field, Int } from "type-graphql";
 import { isEmpty } from "lodash";
-import { ResType } from "../shared";
+import { CommonSchema, CommonType, ResType } from "../shared";
 import { defineCouchbaseModel } from "../couchbase/models";
 
 const modelName = "User";
@@ -10,9 +10,7 @@ const modelName = "User";
  * GraphQL Types start
  */
 @ObjectType()
-export class UserType {
-  @Field(() => String)
-  id: string;
+export class UserType extends CommonType {
   @Field(() => String)
   email: string;
 
@@ -71,7 +69,7 @@ export class LoginResponseType extends ResType {
 
 // Couchbase schema start
 const userSchema = new Schema({
-  id: String,
+  ...CommonSchema,
   email: String,
   password: String,
   tokenVersion: Number,
