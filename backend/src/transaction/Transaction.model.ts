@@ -1,7 +1,7 @@
 import { Schema, model } from "ottoman";
 import { ObjectType, Field, Int } from "type-graphql";
 import { isEmpty } from "lodash";
-import { CommonSchema, CommonType, ResType, StatusType } from "../shared";
+import { CommonSchema, CommonType, ResType, StatusType, WithdrawOrDeposit } from "../shared";
 import { log } from "../log";
 import { UserModel } from "../user";
 import WalletModel, { WalletType } from "../wallet/Wallet.model";
@@ -14,7 +14,7 @@ const modelName = "Transaction";
 
 @ObjectType()
 export class TransactionType extends CommonType {
-  @Field({ nullable: true })
+  @Field(type => WithdrawOrDeposit, { nullable: true })
   type: string; // withdraw or deposit
 
   @Field(type => StatusType, { nullable: true })
