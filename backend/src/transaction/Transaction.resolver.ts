@@ -10,7 +10,7 @@ import { log } from "../log";
 import { TransactionType } from "./Transaction.model";
 import { TradeModel, TradeType } from "../trade";
 
-import { ResType, TradingEnvType } from "../shared";
+import { ResType, StatusType, TradingEnvType } from "../shared";
 import { Pagination } from "../shared/common.pagination";
 
 const transModelName = "Transaction";
@@ -18,19 +18,26 @@ const transModelName = "Transaction";
 export class TransactionResolver {
   @Query(() => [TransactionType])
   async transactions(
+    @Arg("filter", { nullable: true }) filter: StatusType,
     @Arg("tradeEnv", { nullable: true }) tradeEnv: TradingEnvType,
     @Arg("owner") owner: string,
     @Arg("page", { nullable: true }) page: number,
     @Arg("limit", { nullable: true }) limit: number
   ): Promise<TransactionType[]> {
     try {
+      const wheres: any = {
+        _type: { $eq: transModelName },
+        owner: { $eq: owner },
+      }
+
+      // If filter by status
+      if(filter){
+        wheres.status = { $eq: filter }
+      };
+
       const data = await Pagination({
         where: {
-          where: {
-            _type: { $eq: transModelName },
-            // tradeEnv: { $eq: tradeEnv || TradingEnvType.LIVE },
-            owner: { $eq: owner },
-          },
+          where: wheres,
         },
         limit,
         page,
