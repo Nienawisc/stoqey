@@ -9,7 +9,6 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { INavProps } from '../../store/interfaces';
 import { LoadingSpinner } from '../../components';
 import { getTransactionsPaginationApi } from './transaction.api';
-import { TradeType } from '../../graphql/trade';
 import { setToDarkStatusBar } from '../../utils/theme';
 import { TransactionType } from '../../graphql/transactions';
 import AsyncStorageDB from '../../db/AsyncStorageDB';
@@ -25,6 +24,7 @@ interface Props {
 
   filter?: string; // type of transactions
 }
+
 const TransactionScreen: React.FC<INavProps> = (props: Props) => {
   // UserId
   const db = AsyncStorageDB.Instance;

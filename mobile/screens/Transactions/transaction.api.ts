@@ -20,6 +20,7 @@ export const getTransactionsPaginationApi = async ({
     const { data: dataResponse }: any = await client.query({
       query: GET_MY_TRANSACTIONS,
       variables: args,
+      fetchPolicy: 'network-only',
     });
 
     if (!dataResponse) {

@@ -130,7 +130,7 @@ export const WithDrawScreen = ({ navigation }) => {
     ),
     history: () => (
       <>
-        <TransactionScreen navigation={navigation} />
+        <TransactionScreen navigation={navigation} filter="withdraw" />
       </>
     ),
   });

@@ -59,11 +59,11 @@ export enum WithdrawOrDeposit {
   WITHDRAW = 'withdraw',
   DEPOSIT = 'deposit'
 };
-
 registerEnumType(WithdrawOrDeposit, {
   name: "WithdrawOrDeposit", // this one is mandatory
   description: "Transaction type withdraw or deposit", // this one is optional
 });
+
 @ObjectType()
 export class CommonType {
   @Field(() => String)
