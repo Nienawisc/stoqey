@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { Form, Item, Input, Picker, Icon, Label, Textarea } from 'native-base';
 import { PaymentMethodType } from '@stoqey/client-graphql';
 import Modal from 'react-native-modal';
 import { scale } from 'react-native-size-matters';
+import { TabView, SceneMap } from 'react-native-tab-view';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import { getPaymentMethodsApi, createPaymentMethodsApi } from './paymentmethods.api';
 import ButtonComponent from '../../components/Button';
 import { Colors } from '../../enums';
-import { useApolloClient } from '@apollo/react-hooks';
 import { showToast } from '../../components/Toast';
 import PaymentMethodList from './paymentmethod.list';
+import TransactionScreen from '../Transactions/Transactions';
 
+const { width, height } = Dimensions.get('window');
+const initialLayout = { width };
 interface AddPaymentState {
   name: string;
   paymentMethod: string;
   details: string;
 }
 
-export const WithDrawScreen = () => {
+export const WithDrawScreen = ({ navigation }) => {
   // Get all payment methods
   // Add payment method
   // name, type, details
@@ -100,10 +104,46 @@ export const WithDrawScreen = () => {
       },
     });
 
+  /**
+   * Payment methods screen
+   */
+  const PaymentMethodsScreen = () => {
+    return (
+      <>
+        <PaymentMethodList items={paymentMethods} />
+        <ButtonComponent text={'Add payment method'} onPress={() => setShowModal(!showModal)} />
+      </>
+    );
+  };
+
+  const [indexTab, setIndexTab] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'methods', title: 'Payment methods' },
+    { key: 'history', title: 'Withdraw History' },
+  ]);
+
+  const renderScene = SceneMap({
+    methods: () => (
+      <>
+        <PaymentMethodsScreen />
+      </>
+    ),
+    history: () => (
+      <>
+        <TransactionScreen navigation={navigation} />
+      </>
+    ),
+  });
+
   return (
     <View style={styles.root}>
-      <PaymentMethodList items={paymentMethods} />
-      <ButtonComponent text={'Add payment method'} onPress={() => setShowModal(!showModal)} />
+      <TabView
+        navigationState={{ index: indexTab, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndexTab}
+        initialLayout={initialLayout}
+        // renderTabBar={props => <View />}
+      />
       <Modal isVisible={showModal}>
         <View style={styles.modalView}>
           <Text style={styles.h3}> Add payment method </Text>

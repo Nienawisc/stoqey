@@ -16,9 +16,20 @@ import AsyncStorageDB from '../../db/AsyncStorageDB';
 
 const TransactionsList = React.lazy((): any => import('../../components/Stoqey/TransactionList'));
 
-const TransactionScreen: React.FC<INavProps> = () => {
+interface Props {
+  route?: {
+    params: {
+      filter: string; // type of transactions
+    };
+  };
+
+  filter?: string; // type of transactions
+}
+const TransactionScreen: React.FC<INavProps> = (props: Props) => {
   // UserId
   const db = AsyncStorageDB.Instance;
+
+  const filter = _.get(props, 'route.params.filter', props && props.filter);
 
   const navigation = useNavigation();
   const client = useApolloClient();
@@ -48,12 +59,12 @@ const TransactionScreen: React.FC<INavProps> = () => {
       if (!isEmpty(user)) {
         const owner = user.id;
 
-        // await getTransactionsPaginationApi({
-        //   args: { owner, limit, page },
-        //   client,
-        //   done: async (transactions: TransactionType[]) => handleTransactions(transactions),
-        //   err: async () => handleTransactions([]),
-        // });
+        await getTransactionsPaginationApi({
+          args: { owner, limit, page, filter },
+          client,
+          done: async (transactions: TransactionType[]) => handleTransactions(transactions),
+          err: async () => handleTransactions([]),
+        });
       }
     });
 

@@ -1,7 +1,7 @@
 import { ApolloClient } from '@apollo/react-hooks';
 import isEmpty from 'lodash/isEmpty';
 import { log } from '../../config';
-import { GET_MY_TRANSACTIONS, TransactionType } from '../../graphql/transactions';
+import { GET_MY_TRANSACTIONS, TransactionType } from '@stoqey/client-graphql';
 
 export const getTransactionsPaginationApi = async ({
   args,
@@ -9,7 +9,7 @@ export const getTransactionsPaginationApi = async ({
   err,
   done,
 }: {
-  args: { owner: string; limit: number; page: number };
+  args: { owner: string; limit: number; page: number; filter?: string };
   client: ApolloClient<any>;
   err?: (error: Error) => Promise<any>;
   done?: (data: any[]) => Promise<any>;
