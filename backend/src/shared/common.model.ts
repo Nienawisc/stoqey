@@ -55,6 +55,15 @@ registerEnumType(TradingStatusType, {
   description: "Trading status type, either pending, live, complete, or draft", // this one is optional
 });
 
+export enum WithdrawOrDeposit {
+  WITHDRAW = 'withdraw',
+  DEPOSIT = 'deposit'
+};
+
+registerEnumType(WithdrawOrDeposit, {
+  name: "WithdrawOrDeposit", // this one is mandatory
+  description: "Transaction type withdraw or deposit", // this one is optional
+});
 @ObjectType()
 export class CommonType {
   @Field(() => String)
@@ -83,13 +92,4 @@ export  const CommonSchema = {
   createdAt: Date,
   updatedAt: Date,
   deleted: Boolean,
-}
-
-export const RegisterModel = () => {
-
-}
-
-export const getModel = (name: string) => {
-
-  
 }
