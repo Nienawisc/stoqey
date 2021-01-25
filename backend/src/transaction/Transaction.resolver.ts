@@ -10,7 +10,7 @@ import { log } from "../log";
 import { TransactionType } from "./Transaction.model";
 import { TradeModel, TradeType } from "../trade";
 
-import { ResType, StatusType, TradingEnvType } from "../shared";
+import { ResType, StatusType, TradingEnvType, WithdrawOrDeposit } from "../shared";
 import { Pagination } from "../shared/common.pagination";
 
 const transModelName = "Transaction";
@@ -18,7 +18,7 @@ const transModelName = "Transaction";
 export class TransactionResolver {
   @Query(() => [TransactionType])
   async transactions(
-    @Arg("filter", { nullable: true }) filter: StatusType,
+    @Arg("filter", { nullable: true }) filter: WithdrawOrDeposit,
     @Arg("tradeEnv", { nullable: true }) tradeEnv: TradingEnvType,
     @Arg("owner") owner: string,
     @Arg("page", { nullable: true }) page: number,
@@ -32,7 +32,7 @@ export class TransactionResolver {
 
       // If filter by status
       if(filter){
-        wheres.status = { $eq: filter }
+        wheres.type = { $eq: filter }
       };
 
       const data = await Pagination({
