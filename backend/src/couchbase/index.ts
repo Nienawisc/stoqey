@@ -26,7 +26,7 @@ export class CouchbaseService {
 
   async connect(): Promise<Ottoman> {
     if (!this.couchbaseClient) {
-      const ottoman = new Ottoman();
+      const ottoman = new Ottoman({ collectionName: "_default" });
       this.couchbaseClient = await ottoman.connect(connectionOptions);
     }
     return this.couchbaseClient;

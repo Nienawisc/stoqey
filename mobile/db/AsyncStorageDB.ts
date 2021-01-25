@@ -40,6 +40,8 @@ class AsyncStorageDB {
 
   public db: AsyncStorageStatic;
 
+  public user: UserAuthObject;
+
   public static get Instance() {
     return this._instance || (this._instance = new this());
   }
@@ -101,6 +103,7 @@ class AsyncStorageDB {
   public async getUserAuthObject(): Promise<UserAuthObject | null> {
     try {
       const existingData = await this.readFromDb(USER_DB_PATH);
+      this.user = existingData;
       return existingData;
     } catch (error) {
       log.error('Error updating user auth', error);

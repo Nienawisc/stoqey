@@ -1,5 +1,21 @@
-import { useState } from 'react';
+import { log } from '../config';
+import { useState, useEffect } from 'react';
 import AsyncStorageDB, { UserAuthObject } from '../db/AsyncStorageDB';
+
+// export function useUserInfo(): UserAuthObject {
+//   const [userInfo, setUserInfo] = useState<UserAuthObject>(null);
+//   async function getData() {
+//     const user = await getUserInfo();
+//     log.info(`USER ${JSON.stringify(user)}`);
+//     setUserInfo(user);
+//   }
+
+//   useEffect(() => {
+//     getData();
+//   }, []);
+
+//   return userInfo;
+// }
 
 export function useUserInfo(): UserAuthObject {
   const db = AsyncStorageDB.Instance;
@@ -11,6 +27,10 @@ export function useUserInfo(): UserAuthObject {
 
   return !userInfo ? ({} as any) : userInfo;
 }
+
+export const getUserStatic = (): UserAuthObject => {
+  return AsyncStorageDB.Instance.user;
+};
 
 export function getUserInfo(): Promise<UserAuthObject> {
   return new Promise(resolve => {

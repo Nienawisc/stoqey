@@ -14,6 +14,8 @@ import { showToast } from '../../components/Toast';
 import PaymentMethodList from './paymentmethod.list';
 import TransactionScreen from '../Transactions/Transactions';
 import { isEmpty } from 'lodash';
+import { getUserStatic, useUserInfo } from '../../hooks/useUserInfo';
+import { log } from '../../config';
 
 const { width, height } = Dimensions.get('window');
 const initialLayout = { width };
@@ -25,6 +27,9 @@ interface AddPaymentState {
 
 export const WithDrawScreen = ({ navigation }) => {
   const client = useApolloClient();
+  const user = getUserStatic();
+
+  log.info(`static user is ` + JSON.stringify(user))
 
   // for withdrawing
   const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
@@ -144,6 +149,7 @@ export const WithDrawScreen = ({ navigation }) => {
   const renderScene = SceneMap({
     methods: () => (
       <>
+        <Text> Some text {user && user.balance}</Text>
         <PaymentMethodsScreen />
       </>
     ),
@@ -154,7 +160,11 @@ export const WithDrawScreen = ({ navigation }) => {
     ),
   });
 
+  // if (isEmpty(user)) {
+  //   return null;
+  // }
 
+  log.info(`User account is ${user && user.balance}`);
 
   return (
     <View style={styles.root}>
@@ -248,7 +258,6 @@ export const WithDrawScreen = ({ navigation }) => {
         </View>
       </Modal>
       {/* END Withdraw money form */}
-
     </View>
   );
 };

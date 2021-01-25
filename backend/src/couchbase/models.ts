@@ -7,5 +7,5 @@ export const defineCouchbaseModel = (modelName: string, schema: any): any => {
       return ottoman.getDefaultInstance().getModel(modelName);
     }
     // const collectionName = `${modelName.toLowerCase()}s`;
-    return ottoman.model(modelName, schema, { collectionName: modelName });
+    return ottoman.model(modelName, schema);
 }

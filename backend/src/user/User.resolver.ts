@@ -99,16 +99,19 @@ export class UserResolver {
 
       const user: UserType = {
         fullname,
+        // @ts-ignore
         firstname,
+        // @ts-ignore
         lastname,
         phone,
         email,
         password: hashedPassword,
         balance: 0,
         currency: "USD",
-      } as any;
+        createdAt: new Date()
+      };
 
-      log('New user account', user);
+      log('New user account', JSON.stringify(user));
 
       const userItem = _.pickBy(user, _.identity);
       // Create the user
