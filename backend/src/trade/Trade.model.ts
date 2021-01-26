@@ -19,13 +19,13 @@ export class TradeType extends CommonType {
   secType: SymbolSecType;
   @Field(() => ActionType)
   action: ActionType;
-  @Field(() => String)
+  @Field({ nullable: true })
   exchange?: string;
 
   @Field(() => TradingStatusType)
   status?: TradingStatusType;
 
-  @Field(() => Number)
+  @Field({ nullable: true })
   size: number; // number of shares
   @Field({ nullable: true })
   filled?: number; // profit and loss
@@ -35,12 +35,12 @@ export class TradeType extends CommonType {
   @Field({ nullable: true })
   pnl?: number; // profit and loss
 
-  @Field(() => Number)
+  @Field({ nullable: true })
   averageCost?: number;
   @Field({ nullable: true })
   marketPrice?: number;
 
-  @Field(() => Date)
+  @Field({ nullable: true })
   entryTime: Date; // time when entered trade
   @Field({ nullable: true })
   exitTime?: Date; // when closed
