@@ -3,11 +3,6 @@ import {
   Query,
   Mutation,
   Arg,
-  // ObjectType,
-  // Field,
-  Ctx,
-  UseMiddleware,
-  // Int,
 } from "type-graphql";
 import isEmpty from "lodash/isEmpty";
 import TradeModel, {
@@ -19,7 +14,6 @@ import {
   ActionType,
   TradingEnvType,
 } from "../shared";
-import { Pagination } from "../shared/common.pagination";
 import { log } from "../log";
 
 @Resolver()
@@ -31,9 +25,9 @@ export class TradeResolver {
     @Arg("limit") limit: number,
   ): Promise<TradeType[]> {
     try {
-      const data = await Pagination({
+      const data = await TradeModel.pagination({
         select: ['id', 'owner', 'symbol', 'secType', 'action', 'averageCost', 'marketPrice', 'createdAt'],
-        where:  { where: { _type: { $eq: "Trade" } } },
+        // where:  { where: { _type: { $eq: "Trade" } } },
         limit,
         page
       });
@@ -60,12 +54,12 @@ export class TradeResolver {
       // If updating
       if (!isEmpty(id)) {
         // update trade now
-        const existing = await TradeModel().findById(id);
+        const existing = await TradeModel.findById(id);
         if (!isEmpty(existing)) {
           existing.action = action;
           existing.size = size;
           existing.execNow = execNow;
-          await existing.save();
+          await TradeModel.save(existing);
           return { success: true, data: existing };
         }
       }
@@ -81,7 +75,7 @@ export class TradeResolver {
         entryTime: new Date(),
       };
 
-      const created = await TradeModel().create(newTrade);
+      const created = await TradeModel.create(newTrade);
 
       //   TODO submit if execNow
       return { success: true, data: created };

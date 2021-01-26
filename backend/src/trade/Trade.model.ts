@@ -1,6 +1,6 @@
 import { Model } from '@stoqey/sofa';
 import { ObjectType, Field } from "type-graphql";
-import { ActionType, CommonSchema, CommonType, SymbolSecType, TradingEnvType, TradingStatusType } from "../shared";
+import { ActionType, CommonType, SymbolSecType, TradingStatusType } from "../shared";
 
 const modelName = "Trade";
 
@@ -15,14 +15,14 @@ export class TradeType extends CommonType {
 
   @Field({ nullable: true })
   symbol: string;
-  @Field(type => SymbolSecType)
+  @Field(() => SymbolSecType)
   secType: SymbolSecType;
-  @Field(type => ActionType)
+  @Field(() => ActionType)
   action: ActionType;
   @Field(() => String)
   exchange?: string;
 
-  @Field(type => TradingStatusType)
+  @Field(() => TradingStatusType)
   status?: TradingStatusType;
 
   @Field(() => Number)
