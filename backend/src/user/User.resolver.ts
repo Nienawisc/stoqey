@@ -88,7 +88,9 @@ export class UserResolver {
     const hashedPassword = await hash(password, 12);
     try {
       const findIfExits = await UserModel.pagination({
-        where: { email: { $eq: email }, $or: { phone: { $eq: phone } } },
+        where: {
+          $or: [{ email: { $eq: email } }, { phone: phone }],
+        },
       });
 
       if (!isEmpty(findIfExits)) {
@@ -153,12 +155,13 @@ export class UserResolver {
       const username = email.toLowerCase();
       log(`LOGIN: username=${email} -> ${(password || "").slice(0, 2)}`);
 
-      const users = await UserModel.pagination({ 
+      const users = await UserModel.pagination({
+        select: "*",
         where: {
-          email: { $eq: username}, $or: { phone: { $eq: username }}
-        }
-       });
-    
+          $or: [{ email: { $eq: username } }, { phone: username }],
+        },
+      });
+
       const user = users[0]; // get first document
 
       if (!user) {
