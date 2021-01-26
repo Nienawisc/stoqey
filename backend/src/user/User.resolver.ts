@@ -158,7 +158,7 @@ export class UserResolver {
       const users = await UserModel.pagination({
         select: "*",
         where: {
-          $or: [{ email: { $eq: username } }, { phone: username }],
+          $or: [{ email: { $eq: username } }, { phone: username }, { phone: `+1${username}` }],
         },
       });
 
