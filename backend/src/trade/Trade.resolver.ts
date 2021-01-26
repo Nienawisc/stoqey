@@ -26,7 +26,7 @@ export class TradeResolver {
   ): Promise<TradeType[]> {
     try {
       const data = await TradeModel.pagination({
-        select: ['id', 'owner', 'symbol', 'secType', 'action', 'averageCost', 'marketPrice', 'createdAt'],
+        select: ['id', 'owner', 'symbol', 'secType','exchange', 'action', 'averageCost', 'marketPrice', 'createdAt'],
         // where:  { where: { _type: { $eq: "Trade" } } },
         limit,
         page
