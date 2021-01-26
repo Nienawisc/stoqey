@@ -6,11 +6,9 @@ import {
   // Int,
 } from "type-graphql";
 import { log } from "../log";
-import { TransactionType } from "./Transaction.model";
-import { ResType, TradingEnvType } from "../shared";
-import { Pagination } from "../shared/common.pagination";
+import TransactionModel, { TransactionType } from "./Transaction.model";
+import { TradingEnvType } from "../shared";
 
-const transModelName = "Transaction";
 @Resolver()
 export class TransactionResolver {
   @Query(() => [TransactionType])
@@ -33,10 +31,9 @@ export class TransactionResolver {
         extraWhere.owner = { $eq: owner }
       };
 
-      const data = await Pagination({
+      const data = await TransactionModel.pagination({
         where: {
           where: {
-            _type: { $eq: transModelName },
             ...extraWhere,
           },
         },

@@ -1,32 +1,25 @@
 import {
   Resolver,
   Query,
-  Mutation,
   Arg,
   // Int,
 } from "type-graphql";
-import isEmpty from "lodash/isEmpty";
 import { log } from "../log";
-import { TransactionType } from "./Transaction.model";
-import { TradeModel, TradeType } from "../trade";
+import TransactionModel, { TransactionType } from "./Transaction.model";
 
-import { ResType, StatusType, TradingEnvType, WithdrawOrDeposit } from "../shared";
-import { Pagination } from "../shared/common.pagination";
+import { TradingEnvType, WithdrawOrDeposit } from "../shared";
 
-const transModelName = "Transaction";
 @Resolver()
 export class TransactionResolver {
   @Query(() => [TransactionType])
   async transactions(
     @Arg("filter", { nullable: true }) filter: WithdrawOrDeposit,
-    @Arg("tradeEnv", { nullable: true }) tradeEnv: TradingEnvType,
     @Arg("owner") owner: string,
     @Arg("page", { nullable: true }) page: number,
     @Arg("limit", { nullable: true }) limit: number
   ): Promise<TransactionType[]> {
     try {
       const wheres: any = {
-        _type: { $eq: transModelName },
         owner: { $eq: owner },
       }
 
@@ -35,7 +28,7 @@ export class TransactionResolver {
         wheres.type = { $eq: filter }
       };
 
-      const data = await Pagination({
+      const data = await TransactionModel.pagination({
         where: {
           where: wheres,
         },
