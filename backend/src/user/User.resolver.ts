@@ -84,7 +84,8 @@ export class UserResolver {
     @Arg("user") user: RegisterArgs,
     @Ctx() { res }: ContextType
   ): Promise<LoginResponseType> {
-    const { password, email, phone, firebaseToken, fullname } = user;
+    const { password, email: ogEmail, phone, firebaseToken, fullname } = user;
+    const email = ogEmail.toLocaleLowerCase();
     const hashedPassword = await hash(password, 12);
     try {
       // TODO find phone and email
