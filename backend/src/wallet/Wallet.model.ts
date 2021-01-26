@@ -1,7 +1,6 @@
-import { Schema, model } from "ottoman";
+import { Model } from '@stoqey/sofa';
 import { CommonSchema, CommonType, TradingEnvType } from "../shared";
 import { ObjectType, Field, Int } from "type-graphql";
-import { defineCouchbaseModel } from "../couchbase/models";
 
 const modelName = 'Wallet';
 /**
@@ -41,13 +40,6 @@ export class WalletActivityType {
  * GraphQL Types end
  */
 
-// Couchbase schema start
-const walletSchema = new Schema({
-  ...CommonSchema,
-  currency: String,
-  balance: Number,
-});
-
-export const WalletModel = () => defineCouchbaseModel(modelName, walletSchema);
+export const WalletModel: Model = new Model(modelName);
 
 export default WalletModel;

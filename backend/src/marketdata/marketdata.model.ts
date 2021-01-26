@@ -1,5 +1,4 @@
-import { Schema, model } from "ottoman";
-import { defineCouchbaseModel } from "../couchbase/models";
+import { Model } from '@stoqey/sofa';
 import { ObjectType, Field, Float} from "type-graphql";
 
 const modelName = 'Marketdata';
@@ -68,19 +67,7 @@ export class MarketSymbolInfo {
  * GraphQL Types end
  */
 
-// Couchbase schema start
-const marketDataSchema = new Schema({
-  id: String,
-  symbol: String, // Symbol Ticker
-  volume: Number,
-  open: Number,
-  close: Number,
-  high: Number,
-  low: Number,
-  date: Date
-});
-
-export const MarketDataModel = () => defineCouchbaseModel(modelName, marketDataSchema);
+export const MarketDataModel: Model = new Model(modelName);
 
 
 export default MarketDataModel;

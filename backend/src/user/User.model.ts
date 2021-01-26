@@ -1,9 +1,7 @@
-import { Schema, model } from "ottoman";
-import * as ottoman from 'ottoman';
+import { Model } from '@stoqey/sofa';
 import { ObjectType, Field, Int } from "type-graphql";
 import { isEmpty } from "lodash";
 import { CommonSchema, CommonType, ResType } from "../shared";
-import { defineCouchbaseModel } from "../couchbase/models";
 
 const modelName = "User";
 /**
@@ -63,36 +61,7 @@ export class LoginResponseType extends ResType {
   user: UserType;
 }
 
-/**
- * GraphQL Types end
- */
-
-// Couchbase schema start
-const userSchema = new Schema({
-  ...CommonSchema,
-  email: String,
-  password: String,
-  tokenVersion: Number,
-
-  fullname: String,
-  firstname: String,
-  lastname: String,
-  phone: String,
-  website: String,
-  address: String,
-  country: String,
-  bio: String,
-
-  currency: String,
-  balance: Number,
-});
-
-userSchema.index.findByEmail = {
-  by: "email",
-  type: "refdoc",
-};
-
-export const UserModel = () => defineCouchbaseModel(modelName, userSchema);
+export const UserModel: Model = new Model(modelName);
 
 /**
  * Methods

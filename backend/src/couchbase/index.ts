@@ -1,5 +1,4 @@
-import { Ottoman } from "ottoman";
-import { start } from "ottoman";
+import { startSofa } from '@stoqey/sofa';
 import { log } from "../log";
 import get from "lodash/get";
 import chalk from "chalk";
@@ -19,22 +18,8 @@ const connectionOptions = {
   username,
   password,
 };
-export class CouchbaseService {
-  private couchbaseClient: Ottoman;
-
-  constructor() {}
-
-  async connect(): Promise<Ottoman> {
-    if (!this.couchbaseClient) {
-      const ottoman = new Ottoman();
-      this.couchbaseClient = await ottoman.connect(connectionOptions);
-    }
-    return this.couchbaseClient;
-  }
-}
 
 export const startCouchbaseAndNext = (): Promise<boolean> => {
-  const couchbase = new CouchbaseService();
 
   log(
     "Couchbase",
@@ -50,11 +35,8 @@ export const startCouchbaseAndNext = (): Promise<boolean> => {
   );
   return new Promise((res, rej) => {
     // @ts-ignore
-    couchbase.connect()
-      .then(() => start())
+    startSofa(connectionOptions)
       .then(() => {
-        // registerAllModels();
-        // Register all models
         log(
           "Couchbase",
           chalk.greenBright(

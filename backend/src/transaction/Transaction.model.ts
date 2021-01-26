@@ -1,11 +1,10 @@
-import { Schema, model } from "ottoman";
+import { Model } from '@stoqey/sofa';
 import { ObjectType, Field, Int } from "type-graphql";
 import { isEmpty } from "lodash";
 import { CommonSchema, CommonType, ResType, StatusType, WithdrawOrDeposit } from "../shared";
 import { log } from "../log";
 import { UserModel } from "../user";
 import WalletModel, { WalletType } from "../wallet/Wallet.model";
-import { defineCouchbaseModel } from "../couchbase/models";
 
 const modelName = "Transaction";
 /**
@@ -35,18 +34,8 @@ export class TransactionType extends CommonType {
  * GraphQL Types end
  */
 
-// Couchbase schema start
-const transactionSchema = new Schema({
-  ...CommonSchema,
-  type: String, // add type
-  status: String,
-  source: String, // paypal, credit card, interac
-  sourceId: String, // paypal, credit card, interac
-  currency: String,
-  amount: Number,
-});
 
-export const TransactionModel = () => defineCouchbaseModel(modelName, transactionSchema);
+export const TransactionModel: Model = new Model(modelName);
 
 interface MakeTrans {
   walletId: string;
@@ -71,7 +60,7 @@ export const makeTransaction = async (
     // Create the transaction
 
     // Get User
-    const { rows: existingUser } = await UserModel().findById(owner);
+    const { rows: existingUser } = await UserModel.findById(owner);
     if (isEmpty(existingUser)) {
       throw new Error("user does not exist");
     }
