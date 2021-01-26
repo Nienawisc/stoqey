@@ -10,7 +10,6 @@ import {
   UserModel,
 } from "./User.model";
 import { ResType } from "../shared";
-import { Pagination } from "../shared/common.pagination";
 import { log } from '../log';
 
 import { updateUserWallet } from './User.methods'
@@ -24,9 +23,9 @@ export class UserResolverAdmin {
     @Arg("page", { nullable: true }) page: number
   ): Promise<UserType[]> {
     try {
-      const data = await Pagination({
+      const data = await UserModel.pagination({
         select: ["id", "email", "phone","fullname", "balance"],
-        where: { where: { _type: { $eq: "User" } } },
+        // where: { where: { _type: { $eq: "User" } } }, // already defined in Model @stoqey/sofa
         limit,
         page,
       });

@@ -69,11 +69,11 @@ export const UserModel: Model = new Model(modelName);
 export const incrementRefreshToken = async (
   userId: string
 ): Promise<boolean> => {
-  const existing = await UserModel().findById(userId);
+  const existing = await UserModel.findById(userId);
   if (!isEmpty(existing)) {
     const currentVersion = existing.tokenVersion || 0;
     existing.tokenVersion = currentVersion + 1;
-    await existing.save();
+    await UserModel.save(existing);
     return true;
   }
   return false;

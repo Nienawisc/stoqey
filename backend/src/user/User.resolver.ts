@@ -26,7 +26,7 @@ import {
 import { isAuth } from "../auth";
 import { log } from "../log";
 import isEmpty from "lodash/isEmpty";
-import _ from 'lodash'
+import _ from "lodash";
 import { verify } from "jsonwebtoken";
 import { FirebaseTokenVerify } from "../middlewares/firebaseToken.middleware";
 
@@ -69,8 +69,7 @@ export class UserResolver {
     try {
       const token = authorization.split(" ")[1];
       const verified: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-      const { rows } = await UserModel().findById(verified.userId);
-      const user = rows[0];
+      const user = await UserModel.findById(verified.userId);
       return user;
     } catch (err) {
       console.log(err);
@@ -84,12 +83,14 @@ export class UserResolver {
     @Arg("user") user: RegisterArgs,
     @Ctx() { res }: ContextType
   ): Promise<LoginResponseType> {
-    const { password, email: ogEmail, phone, firebaseToken, fullname } = user;
+    const { password, email: ogEmail, phone, fullname } = user;
     const email = ogEmail.toLocaleLowerCase();
     const hashedPassword = await hash(password, 12);
     try {
-      // TODO find phone and email
-      const { rows: findIfExits } = await UserModel().find({ email });
+      const findIfExits = await UserModel.pagination({
+        where: { email: { $eq: email }, $or: { phone: { $eq: phone } } },
+      });
+
       if (!isEmpty(findIfExits)) {
         throw new Error("user already exists");
       }
@@ -109,14 +110,15 @@ export class UserResolver {
         password: hashedPassword,
         balance: 0,
         currency: "USD",
-        createdAt: new Date()
       };
 
-      log('New user account', JSON.stringify(user));
+      log("New user account", JSON.stringify(user));
 
       const userItem = _.pickBy(user, _.identity);
       // Create the user
-      const createdUser = await UserModel().create(userItem);
+      const createdUser: UserType = (await UserModel.create(
+        userItem
+      )) as UserType;
 
       const refreshToken = createRefreshToken(createdUser);
       const accessToken = createAccessToken(createdUser);
@@ -150,8 +152,15 @@ export class UserResolver {
     try {
       const username = email.toLowerCase();
       log(`LOGIN: username=${email} -> ${(password || "").slice(0, 2)}`);
-      const { rows } = await UserModel().find({ email: username });
-      const user = rows[0];
+
+      const users = await UserModel.pagination({ 
+        where: {
+          email: { $eq: username}, $or: { phone: { $eq: username }}
+        }
+       });
+    
+      const user = users[0]; // get first document
+
       if (!user) {
         throw new Error("could not find user");
       }

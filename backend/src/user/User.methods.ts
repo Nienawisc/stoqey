@@ -16,8 +16,7 @@ export const updateUserWallet = async (
       JSON.stringify({ userId, amount, source, sourceId })
     );
 
-    const { rows } = await UserModel().find({ id: userId });
-    const existingUser = rows[0];
+    const existingUser = await UserModel.findById(userId);
 
     if (!isEmpty(existingUser)) {
       const currentBalance = existingUser.balance || 0;
@@ -39,8 +38,8 @@ export const updateUserWallet = async (
 
       // TODO create marketdata for this wallet
       existingUser.balance = currentBalance + amount;
-      await existingUser.save();
-      await TransactionModel().create(newTransaction);
+      await UserModel.save(existingUser);
+      await TransactionModel.create(newTransaction);
 
       return { message: "successfully update user balance", success: true };
     }
