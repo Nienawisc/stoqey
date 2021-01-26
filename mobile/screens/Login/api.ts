@@ -24,6 +24,7 @@ export const loginApi = async ({
     const { data: dataResponse }: any = await client.mutate({
       mutation: LOGIN_MUTATION,
       variables: creds,
+      fetchPolicy: 'no-cache',
     });
 
     if (!dataResponse) {

@@ -1,11 +1,10 @@
-import { Schema, model } from "ottoman";
-import { ObjectType, Field, Int } from "type-graphql";
+import { Model } from '@stoqey/sofa';
+import { ObjectType, Field } from "type-graphql";
 import { isEmpty } from "lodash";
-import { CommonSchema, CommonType, ResType, StatusType, WithdrawOrDeposit } from "../shared";
+import { CommonType, StatusType, WithdrawOrDeposit } from "../shared";
 import { log } from "../log";
 import { UserModel } from "../user";
-import WalletModel, { WalletType } from "../wallet/Wallet.model";
-import { defineCouchbaseModel } from "../couchbase/models";
+import WalletModel from "../wallet/Wallet.model";
 
 const modelName = "Transaction";
 /**
@@ -14,10 +13,10 @@ const modelName = "Transaction";
 
 @ObjectType()
 export class TransactionType extends CommonType {
-  @Field(type => WithdrawOrDeposit, { nullable: true })
+  @Field(() => WithdrawOrDeposit, { nullable: true })
   type: string; // withdraw or deposit
 
-  @Field(type => StatusType, { nullable: true })
+  @Field(() => StatusType, { nullable: true })
   status: StatusType; //
 
   @Field({ nullable: true })
@@ -35,18 +34,8 @@ export class TransactionType extends CommonType {
  * GraphQL Types end
  */
 
-// Couchbase schema start
-const transactionSchema = new Schema({
-  ...CommonSchema,
-  type: String, // add type
-  status: String,
-  source: String, // paypal, credit card, interac
-  sourceId: String, // paypal, credit card, interac
-  currency: String,
-  amount: Number,
-});
 
-export const TransactionModel = () => defineCouchbaseModel(modelName, transactionSchema);
+export const TransactionModel: Model = new Model(modelName);
 
 interface MakeTrans {
   walletId: string;
@@ -71,15 +60,13 @@ export const makeTransaction = async (
     // Create the transaction
 
     // Get User
-    const { rows: existingUser } = await UserModel().findById(owner);
+    const existingUser = await UserModel.findById(owner);
     if (isEmpty(existingUser)) {
       throw new Error("user does not exist");
     }
 
     // Get the wallet
-    const {
-      rows: existingWallet,
-    }: { rows: WalletType & any } = await WalletModel().findById(walletId);
+    const existingWallet = await WalletModel.findById(walletId);
     if (isEmpty(existingWallet)) {
       throw new Error("wallet does not exist");
     }
@@ -100,7 +87,7 @@ export const makeTransaction = async (
       existingWallet.balance = newWalletBalance;
 
       // Save wallet
-      await existingWallet.save();
+      await WalletModel.save(existingWallet);
 
       return { message: "", success: true };
     }
@@ -115,7 +102,7 @@ export const makeTransaction = async (
       existingWallet.balance = newWalletBalance;
 
       // Save wallet
-      await existingWallet.save();
+      await WalletModel.save(existingWallet);
 
       // Do the transaction here
 

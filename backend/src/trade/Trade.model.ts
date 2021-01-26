@@ -1,7 +1,6 @@
-import { Schema, model } from "ottoman";
-import { defineCouchbaseModel } from "../couchbase/models";
+import { Model } from '@stoqey/sofa';
 import { ObjectType, Field } from "type-graphql";
-import { ActionType, CommonSchema, CommonType, SymbolSecType, TradingEnvType, TradingStatusType } from "../shared";
+import { ActionType, CommonType, SymbolSecType, TradingStatusType } from "../shared";
 
 const modelName = "Trade";
 
@@ -16,14 +15,14 @@ export class TradeType extends CommonType {
 
   @Field({ nullable: true })
   symbol: string;
-  @Field(type => SymbolSecType)
+  @Field(() => SymbolSecType)
   secType: SymbolSecType;
-  @Field(type => ActionType)
+  @Field(() => ActionType)
   action: ActionType;
   @Field(() => String)
   exchange?: string;
 
-  @Field(type => TradingStatusType)
+  @Field(() => TradingStatusType)
   status?: TradingStatusType;
 
   @Field(() => Number)
@@ -55,31 +54,7 @@ export class TradeType extends CommonType {
  * GraphQL Types end
  */
 
-// Couchbase schema start
-const tradeSchema = new Schema({
-  ...CommonSchema,
-  symbol: String, // info
-  secType: String,
-  action: String,
-  exchange: String,
-  
-  status: String,
-
-
-  size: Number,
-  filled: Number,
-  remaining: Number,
-
-  pnl: Number, // profit and loss
-  averageCode: Number,
-  marketPrice: Number,
-
-  entryTime: Date, // time when entered trade
-  exitTime: Date, // when closed
-//   payment: Any, // for buying actualSymbol
-});
-
-export const TradeModel = () => defineCouchbaseModel(modelName, tradeSchema);
+export const TradeModel: Model = new Model(modelName);
 
 /**
  * Methods

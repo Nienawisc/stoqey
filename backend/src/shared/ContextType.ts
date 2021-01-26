@@ -24,5 +24,5 @@ export class ResType {
   message?: string;
 
   @Field(type => GraphQLJSON)
-  data?: string;
+  data?: any;
 }

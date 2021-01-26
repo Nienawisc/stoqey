@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import "dotenv/config";
-import { start as startCouchbase } from "ottoman";
 import { get as _get } from 'lodash';
 import {ApolloServer} from 'apollo-server-express';
 import {buildSchemaSync} from 'type-graphql';
