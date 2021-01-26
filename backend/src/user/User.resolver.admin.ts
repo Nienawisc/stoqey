@@ -25,7 +25,6 @@ export class UserResolverAdmin {
     try {
       const data = await UserModel.pagination({
         select: ["id", "email", "phone","fullname", "balance"],
-        // where: { where: { _type: { $eq: "User" } } }, // already defined in Model @stoqey/sofa
         limit,
         page,
       });

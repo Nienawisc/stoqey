@@ -33,9 +33,7 @@ export class TransactionResolver {
 
       const data = await TransactionModel.pagination({
         where: {
-          where: {
             ...extraWhere,
-          },
         },
         limit,
         page,
