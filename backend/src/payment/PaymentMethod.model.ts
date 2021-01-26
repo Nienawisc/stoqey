@@ -1,7 +1,6 @@
 import { Model } from '@stoqey/sofa';
-import { ObjectType, Field, Int } from "type-graphql";
-import { isEmpty } from "lodash";
-import { CommonSchema, CommonType, ResType, TradingEnvType } from "../shared";
+import { ObjectType, Field } from "type-graphql";
+import { CommonType } from "../shared";
 
 const modelName = 'PaymentMethod';
 /**
