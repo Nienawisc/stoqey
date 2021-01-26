@@ -10,17 +10,14 @@ import {
   // Int,
 } from "type-graphql";
 import { hash, compare } from "bcryptjs";
-import {
-  UserType,
-  UserModel,
-} from "../user/User.model";
+import { UserType, UserModel } from "../user/User.model";
 import { ContextType, ResType, TradingEnvType } from "../shared";
 import { isAuth } from "../auth";
 import isEmpty from "lodash/isEmpty";
 import { verify } from "jsonwebtoken";
 import WalletModel, { WalletType } from "./Wallet.model";
 
-import { log } from '../log';
+import { log } from "../log";
 
 @Resolver()
 export class WalletResolver {
@@ -38,7 +35,10 @@ export class WalletResolver {
 
   @Query(() => UserType, { nullable: true })
   @UseMiddleware(isAuth)
-  async meWallet(@Ctx() context: ContextType, @Arg("tradeEnv") tradeEnv: TradingEnvType): Promise<WalletType | null> {
+  async meWallet(
+    @Ctx() context: ContextType,
+    @Arg("tradeEnv") tradeEnv: TradingEnvType
+  ): Promise<WalletType | null> {
     const authorization = context.req.headers["authorization"];
 
     if (!authorization) {
@@ -51,7 +51,15 @@ export class WalletResolver {
 
       const owner = verified.userId;
 
-      const { rows: findIfExits } = await WalletModel().find({ owner, tradeEnv });
+      const wallets = await WalletModel.pagination({
+        where: {
+          owner: { $eq: owner },
+          tradeEnv: { $eq: tradeEnv },
+        },
+      });
+
+      const findIfExits = wallets[0] as WalletType;
+
       if (isEmpty(findIfExits)) {
         const createdNewWallet = await createMeWallet(owner, tradeEnv);
         return createdNewWallet;
@@ -63,29 +71,28 @@ export class WalletResolver {
       return null;
     }
   }
-
 }
 
-
-export const createMeWallet = async (owner:  string, tradeEnv: TradingEnvType): Promise<WalletType | null> => {
+export const createMeWallet = async (
+  owner: string,
+  tradeEnv: TradingEnvType
+): Promise<WalletType | null> => {
   try {
-
     const newWallet: WalletType = {
       owner,
-      currency: 'USD',
+      currency: "USD",
       balance: 0,
       tradeEnv,
-    }
+    };
 
-    await WalletModel().create(newWallet);
+    await WalletModel.create(newWallet);
 
     return newWallet;
-
-  }catch(error){
-    log('error creating wallet', error);
+  } catch (error) {
+    log("error creating wallet", error);
     return null;
   }
-}
+};
 
 // TODO record wallet activity
 export default WalletResolver;
