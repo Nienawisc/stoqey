@@ -8,7 +8,7 @@ import { YellowBox, ImageRequireSource } from 'react-native';
 import { RootAppWithApollo } from './api/RootAppWithApollo';
 YellowBox.ignoreWarnings(['VirtualizedLists', 'Non-serializable']);
 
-const images: ImageRequireSource[] = [require('./assets/coinbase.png'), require('./assets/icon.png')];
+const images: ImageRequireSource[] = [require('./assets/stoqey_robot.png'), require('./assets/icon.png')];
 const fonts: { [key: string]: number } | any = {
   // ...Icon.Ionicons.font,
   Roboto: require('native-base/Fonts/Roboto.ttf'),

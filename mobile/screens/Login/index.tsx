@@ -16,8 +16,6 @@ import { log } from '../../config';
 import { FormComponent, IField } from '../../components/Form/FormComponent';
 import { showToast } from '../../components/Toast';
 
-const Gradient_m6QXECq = require('../../assets/Gradient_m6QXECq.png');
-
 interface PwUn {
   email: string;
   password: string;
