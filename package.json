@@ -13,6 +13,8 @@
     "expo:reset": "cd mobile && npm run reset",
     "expo": "cd mobile && npm run start",
     "expo:prod": "cd mobile && npm run publish:prod",
+    "expo:build:ios": "cd mobile && npm run build:ios",
+    "expo:build:android": "cd mobile && npm run build:android",
     "expo:stage": "cd mobile && npm run publish:stage",
     "be": "cd backend && npm run dev",
     "be:build": "cd backend && npm run build"
