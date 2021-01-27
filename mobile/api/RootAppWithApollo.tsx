@@ -10,7 +10,7 @@ import { RetryLink } from 'apollo-link-retry';
 import { getMainDefinition } from 'apollo-utilities';
 import { onError } from 'apollo-link-error';
 import contains from 'lodash/includes';
-import { WS_HOST, API_HOST } from '../config';
+import { getEnvironment } from '../config';
 import AsyncStorageDB from '../db/AsyncStorageDB';
 import { getLastChar } from '../utils';
 import { log } from '../config';
@@ -20,16 +20,17 @@ const appEvents = AppEvents.Instance;
 
 // eslint-disable-next-line no-unused-vars
 function getApolloClient(token?: string): ApolloClient<any> {
-  log.info('apollo url', API_HOST);
+  const { ws: wsUrl, host: hostUrl } = getEnvironment();
+  log.info('apollo url', hostUrl);
 
   // Create an http link:
   const httpLink = new HttpLink({
-    uri: API_HOST,
+    uri: hostUrl,
   });
 
   // Create a WebSocket link:
   const wsLink = new WebSocketLink({
-    uri: WS_HOST,
+    uri: wsUrl,
     options: {
       reconnect: true,
     },

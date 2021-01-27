@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import _get from 'lodash/get';
 export type ExpoEnvType = 'DEVELOPMENT' | 'PRODUCTION' | 'STAGING';
 export interface AppEnv {
   env: ExpoEnvType;
@@ -8,7 +9,7 @@ export interface AppEnv {
 }
 
 export function getEnvironment(): AppEnv {
-  let releaseChannel = Constants.manifest.releaseChannel;
+  let releaseChannel = _get(Constants, 'manifest.releaseChannel', ''); // Constants.manifest.releaseChannel;
 
   // default in dev
   let env: ExpoEnvType = 'DEVELOPMENT';
