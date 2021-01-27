@@ -10,8 +10,7 @@
     "githubUrl": "https://github.com/stoqey/stoqey",
     "notification": {
       "icon": "./assets/icon_96.png",
-      "iosDisplayInForeground": true,
-
+      "iosDisplayInForeground": true
     },
     "splash": {
       "image": "./assets/splash.png",
