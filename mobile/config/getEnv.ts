@@ -1,7 +1,6 @@
 import Constants from 'expo-constants';
 export type ExpoEnvType = 'DEVELOPMENT' | 'PRODUCTION' | 'STAGING';
-
-interface AppEnv {
+export interface AppEnv {
   env: ExpoEnvType;
   host: string;
   api: string;
