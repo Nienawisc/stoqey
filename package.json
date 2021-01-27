@@ -12,8 +12,11 @@
     "ios": "cd mobile && npm run ios",
     "expo:reset": "cd mobile && npm run reset",
     "expo": "cd mobile && npm run start",
+    "expo:prod": "cd mobile && npm run publish:prod",
+    "expo:stage": "cd mobile && npm run publish:stage",
     "be": "cd backend && npm run dev",
     "be:build": "cd backend && npm run build"
+    
   },
   "repository": {
     "type": "git",
