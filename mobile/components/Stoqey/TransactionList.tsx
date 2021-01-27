@@ -1,10 +1,12 @@
 import React from 'react';
+import isEmpty from 'lodash/isEmpty';
 import { FlatList } from 'react-native';
+import { scale } from 'react-native-size-matters';
+import { TransactionType } from '@stoqey/client-graphql';
+
 import TransactionItem from './TransactionItem';
 import { IAssetTransaction } from '../../store/interfaces';
 import { Colors, IS_ANDROID } from '../../enums';
-import { scale } from 'react-native-size-matters';
-import { TransactionType } from '../../graphql/transactions';
 
 
 interface IProps extends IAssetTransaction {
@@ -27,6 +29,10 @@ const TransactionList = ({ items, onPress, handleLoadMore }): React.ReactElement
   const _handleLoadMore = (): void => {
     handleLoadMore();
   };
+
+  if(isEmpty(items)){
+    return null;
+  }
 
   return (
     <FlatList

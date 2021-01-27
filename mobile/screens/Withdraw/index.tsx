@@ -86,7 +86,9 @@ export const WithDrawScreen = ({ navigation }) => {
         limit: 100,
         owner: '', // to be fetched from api
       },
-      // error: async (error: Error) => { },
+      error: async (error: Error) => { 
+        setPaymentMethods([]);
+      },
       success: async (pm: PaymentMethodType[]) => {
         setPaymentMethods(pm);
       },

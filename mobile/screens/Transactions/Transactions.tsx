@@ -42,7 +42,10 @@ const TransactionScreen: React.FC<INavProps> = (props: Props) => {
 
   const handleTransactions = async (transactions: TransactionType[]) => {
     setLoading(false);
-    setAssets(_.concat(assets, transactions));
+
+    if (!isEmpty(transactions)) {
+      setAssets(_.concat(assets, transactions));
+    }
   };
   //navigate to coin details.
   // const navigateToDetail = (coin: ICoin): boolean => props.navigation.navigate('Coin', { coin });
@@ -74,12 +77,12 @@ const TransactionScreen: React.FC<INavProps> = (props: Props) => {
 
   return (
     <Container>
-      {!isAssetLoading && assets.length > 0 && (
+      {/* {!isAssetLoading && assets.length > 0 && ( */}
         <React.Suspense fallback={<LoadingSpinner />}>
           <TransactionsList withAction={false} items={assets} onPress={() => {}} handleLoadMore={handleLoadMore} />
         </React.Suspense>
-      )}
-      {isAssetLoading && <LoadingSpinner />}
+
+      {/* {isAssetLoading && <LoadingSpinner />} */}
     </Container>
   );
 };
