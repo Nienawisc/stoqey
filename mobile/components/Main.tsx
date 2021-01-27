@@ -111,7 +111,6 @@ const Main: React.FC<IProps> = ({
   // dummy rendering for props received from Home Screen
   return (
     <View style={styles.container}>
-      
       <View style={styles.welcome}>
         {!isRefreshingPrice ? (
           <Image
