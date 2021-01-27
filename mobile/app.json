@@ -7,6 +7,12 @@
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "githubUrl": "https://github.com/stoqey/stoqey",
+    "notification": {
+      "icon": "./assets/icon_96.png",
+      "iosDisplayInForeground": true,
+
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
@@ -18,10 +24,13 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stoqey.app"
+      "bundleIdentifier": "com.stoqey.app",
+      "buildNumber": 1
     },
     "android": {
-      "package": "com.stoqey.app"
+      "package": "com.stoqey.app",
+      "enableDangerousExperimentalLeanBuilds": true,
+      "versionCode": 1
     },
     "description": "Beat Wall Street from anywhere​"
   }
