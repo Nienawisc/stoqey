@@ -7,16 +7,18 @@ on:
     # - 'mobile/**' # Ignore changes towards the .github directory
     paths:
       - "backend/**"
+      - ".github/**"
+      - "backend.Dockerfile"
     branches:
-    - develop # Only trigger on the master branch
+    - develop # Only trigger on the develop branch
 
 env:
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
   NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} 
   CLUSTER: cloudx
-  DEPLOYMENT_NAME: stq-backend
-  IMAGE: stq-backend
+  DEPLOYMENT_NAME: stq-backend-dev
+  IMAGE: stq-backend-dev
 
 jobs:
   setup-build-publish-deploy:
@@ -29,11 +31,11 @@ jobs:
 
     # Setup gcloud CLI
     - name: Gcloud setup
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@master
       with:
-        version: '290.0.1'
         service_account_key: ${{ secrets.GKE_SA_KEY }}
-        GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
+        project_id: ${{ secrets.GKE_PROJECT }}
+        export_default_credentials: true
 
     # Configure Docker to use the gcloud command-line tool as a credential
     # helper for authentication
