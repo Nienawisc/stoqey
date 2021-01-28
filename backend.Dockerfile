@@ -18,7 +18,7 @@ RUN apk add --no-cache --virtual .gyp \
     && npm install \
     && apk del .gyp
 
-RUN mkdir -p src/keys && echo "{}" > src/keys/service.account.json
+RUN mkdir -p backend/src/keys && echo "{}" > backend/src/keys/service.account.json
 
 RUN npm run be:build
 
