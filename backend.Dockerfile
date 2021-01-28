@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:15.6 AS builder
+FROM mhart/alpine-node:15.7.0 AS builder
 
 ARG NPM_AUTH_TOKEN
 
@@ -8,12 +8,11 @@ COPY . .
 RUN rm -rf mobile
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh libc6-compat
-RUN npm install -g npm@7.4.3
 RUN npm config set @stoqeyx:registry https://npm.pkg.github.com
 RUN npm config set //npm.pkg.github.com/:_authToken=$NPM_AUTH_TOKEN
 
 RUN apk add --no-cache --virtual .gyp \
-        python \
+        python3 \
         make \
         g++ \
     && npm install \
@@ -24,7 +23,7 @@ RUN mkdir -p backend/src/keys && echo "{}" > backend/src/keys/service.account.js
 RUN npm run be:build
 
 # use lighter image
-FROM mhart/alpine-node:slim-15.6
+FROM mhart/alpine-node:slim-15.7.0
 RUN apk add libc6-compat
 COPY --from=builder /srv .
 ENV NODE_ENV=production
