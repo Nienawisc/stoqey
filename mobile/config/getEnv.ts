@@ -13,9 +13,9 @@ export function getEnvironment(): AppEnv {
 
   // default in dev
   let env: ExpoEnvType = 'DEVELOPMENT';
-  let host = '192.168.2.26:3099';
-  let api = `http://${host}/graphql`;
-  let ws = `ws://${host}/graphql`;
+  let host = 'stq-api.cloudaxe.co';
+  let api = `https://${host}/graphql`;
+  let ws = `wss://${host}/graphql`;
 
   // matches prod-v1, prod-v2, prod-v3
   if (releaseChannel.indexOf('prod') !== -1) {

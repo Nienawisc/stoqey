@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   root: {
@@ -10,20 +12,34 @@ const styles = StyleSheet.create({
   },
   rect: {
     flex: 1,
+    flexDirection: 'column'
   },
+  dontHaveAccountButton: {
+    borderWidth: 2,
+    backgroundColor: 'transparent',
+    borderColor: 'grey'
+  },
+
+  textStyle: {
+    color: 'black'
+  },
+
   rect_imageStyle: {},
   logo: {
-    // width: 102,
-    height: 111,
+    backgroundColor: 'red',
     alignSelf: 'center',
   },
   endWrapperFiller: {
     flex: 1,
+    marginLeft: '10%',
+    marginTop: '40%'
   },
   text3: {
     color: '#000',
-    fontSize: 60,
-    marginBottom: 4,
+    fontSize: 25,
+    marginBottom: 30,
+    fontWeight: 'bold',
+    marginRight: '40%'
   },
   rect7: {
     height: 8,
@@ -95,19 +111,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   logoColumn: {
-    marginTop: 130,
-    marginLeft: 41,
-    marginRight: 41,
+    marginLeft: '10%',
+    marginRight: '10%',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: '40%',
   },
   logoColumnFiller: {
     flex: 1,
   },
   footerTexts: {
-    flexDirection: 'row',
-    marginBottom: 36,
-    marginLeft: 37,
-    marginRight: 36,
-    justifyContent: 'space-between'
+    flex: 1,
+    top: '25%'
   },
   button2: {
     alignSelf: 'flex-end',

@@ -15,6 +15,7 @@ import { loginApi } from './api';
 import { log } from '../../config';
 import { FormComponent, IField } from '../../components/Form/FormComponent';
 import { showToast } from '../../components/Toast';
+import PatButton from '../../components/patButton';
 
 interface PwUn {
   email: string;
@@ -86,30 +87,28 @@ const Login: React.FC<any> = props => {
     <View style={styles.root}>
       <View style={styles.background}>
         <View style={styles.rect}>
+          <View style={{
+            alignItems: 'flex-end',
+            marginRight: 30,
+            top: '8%'
+          }}>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('Forgot')}>
+              <Text style={{ fontSize: 15, color: 'grey' }}>Trouble logging in?</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.endWrapperFiller}>
+            <Text style={styles.text3}>Welcome Back!</Text>
+            <Text style={{ color: 'grey', fontSize: 15, }}>Enter your credentials to continue</Text>
+          </View>
           <View style={styles.logoColumn}>
-            <View style={styles.logo}>
-              <View style={styles.endWrapperFiller}></View>
-              <View style={styles.text3Column}>
-                <Text style={styles.text3}>Welcome</Text>
-                <View style={styles.rect7}></View>
-              </View>
-            </View>
-
             <View style={styles.form}>
               <FormComponent fields={fields} onSubmit={(data: any) => login(data)} buttonText={'Login'} />
             </View>
           </View>
           {/* <View style={styles.logoColumnFiller}></View> */}
           <View style={styles.footerTexts}>
-            <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')} style={styles.button2}>
-              <View style={styles.createAccountFiller}></View>
-              <Text style={styles.createAccount}>Create Account</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => props.navigation.navigate('Forgot')} style={{ alignSelf: 'flex-start' }}>
-              <View style={styles.button2Filler}></View>
-              <Text style={styles.needHelp}>Forgot password?</Text>
-            </TouchableOpacity>
+          <PatButton onClick={() => props.navigation.navigate('SignUp')} buttomText={`OPS...I DON'T HAVE AN ACCOUNT YET `} style={styles.dontHaveAccountButton} textStyle={styles.textStyle}/>
           </View>
         </View>
       </View>

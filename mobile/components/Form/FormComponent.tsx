@@ -1,9 +1,15 @@
 import React, { Component, useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Label } from 'native-base';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
-import { Colors, Screen } from '../../enums';
+import { Form, } from 'native-base';
+import {  scale, verticalScale } from 'react-native-size-matters';
+import { Colors } from '../../enums';
+import TextInput from '../../components/TextHorder/TextInput';
+import PatButton from '../../components/patButton';
 
+{/* <Ionicons name="person-outline" size={24} color="black" /> */ }
+{/* <MaterialCommunityIcons name="lock" size={24} color="black" /> */ }
+{/* <MaterialIcons name="person" size={24} color="black" /> */ }
+{/* <MaterialIcons name="lock" size={24} color="black" /> */ }
 export interface IField {
   name: string;
   label: string;
@@ -18,11 +24,10 @@ interface Props {
 }
 
 export const FormComponent = (props: Props) => {
-  const { fields = [], buttonText = 'Submit', onSubmit } = props;
-
+  const { fields = [], buttonText = 'Submit', onSubmit, } = props;
   const [state, setState] = useState<any>(null);
-
   const handleChange = (fieldName: string) => {
+    
     return val => {
       const newState = {
         ...state,
@@ -30,6 +35,7 @@ export const FormComponent = (props: Props) => {
       };
       setState(newState);
     };
+    
   };
 
   return (
@@ -37,29 +43,33 @@ export const FormComponent = (props: Props) => {
       <Form>
         {fields.map(i => {
           const { label, inputProps, labelProps } = i;
+          const inputIcon = label === 'Phone/email' ? 'person' : 'lock';
           return (
-            <Item key={i.name} {...labelProps}>
-              <Label>{label}</Label>
-              <Input onChangeText={handleChange(i.name)} {...inputProps} />
-            </Item>
+            <View key={i.name} {...labelProps} style={{ paddingBottom: 60 }}>
+              {/* <Label>{label}</Label> */}
+              {/* <Input onChangeText={handleChange(i.name)} {...inputProps} /> */}
+              <TextInput
+                onChangeText={handleChange(i.name)} {...inputProps}
+                icon={inputIcon}
+                placeholder={label}
+                autoCapitalize='none'
+                autoCompleteType='email'
+                keyboardType='email-address'
+                keyboardAppearance='dark'
+                returnKeyType='next'
+                returnKeyLabel='next'
+              />
+              <View style={{
+                borderBottomColor: 'grey',
+                borderBottomWidth: 1,
+              }} />
+            </View>
           );
         })}
       </Form>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={{
-            zIndex: -1,
-            backgroundColor: Colors.green,
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 5,
-            height: moderateScale(50),
-          }}
-          onPress={() => onSubmit(state)}>
-          <Text style={[styles.title, { fontSize: scale(16), fontWeight: '600' }]}>{buttonText}</Text>
-        </TouchableOpacity>
+        <PatButton onClick={() => onSubmit(state)} buttomText={buttonText} style={styles.buttonColor}  />
       </View>
     </>
   );
@@ -69,7 +79,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 30,
+    paddingTop: 20,
+    flex: 1, 
   },
   title: {
     color: Colors.white,
@@ -77,4 +88,10 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(10),
     fontWeight: '600',
   },
+  buttonColor: {
+    backgroundColor: '#1902F7'
+  },
+  buttonContent: {
+  fontSize: 15
+  }
 });
