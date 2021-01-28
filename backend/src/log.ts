@@ -1,6 +1,9 @@
 import debug from 'debug';
+import _get from 'lodash/get';
 
-const libraryPrefix = 'auth-server';
+const appName = _get(process.env, 'APP_NAME', 'stoqey');
+
+const libraryPrefix = appName;
 
 /**
  * Use to log in general case
