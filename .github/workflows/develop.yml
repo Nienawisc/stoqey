@@ -18,7 +18,7 @@ env:
   NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} 
   CLUSTER: cloudx
   DEPLOYMENT_NAME: stq-backend
-  IMAGE: stq-backend
+  IMAGE: stq-backend-dev
 
 jobs:
   setup-build-publish-deploy:
