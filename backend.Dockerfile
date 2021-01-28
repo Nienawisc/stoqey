@@ -8,6 +8,7 @@ COPY . .
 RUN rm -rf mobile
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh libc6-compat
+RUN npm install -g npm@7.4.3
 RUN npm config set @stoqeyx:registry https://npm.pkg.github.com
 RUN npm config set //npm.pkg.github.com/:_authToken=$NPM_AUTH_TOKEN
 

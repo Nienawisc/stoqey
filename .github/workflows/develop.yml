@@ -7,6 +7,8 @@ on:
     # - 'mobile/**' # Ignore changes towards the .github directory
     paths:
       - "backend/**"
+      - ".github/**"
+      - "backend.Dockerfile"
     branches:
     - develop # Only trigger on the master branch
 
