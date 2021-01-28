@@ -23,8 +23,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stoqey.app",
-      "buildNumber": 1
+      "bundleIdentifier": "com.stoqey.app"
     },
     "android": {
       "package": "com.stoqey.app",
