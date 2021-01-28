@@ -10,7 +10,7 @@ on:
       - ".github/**"
       - "backend.Dockerfile"
     branches:
-    - develop # Only trigger on the master branch
+    - develop # Only trigger on the develop branch
 
 env:
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
