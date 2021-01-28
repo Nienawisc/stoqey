@@ -1,4 +1,4 @@
-name: stq-backend
+name: production
 
 on:
   workflow_dispatch:
