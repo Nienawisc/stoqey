@@ -13,6 +13,7 @@ import {
   Transact,
   Prices,
   LoginScreen,
+  LoginIntro,
   SignUpScreen,
   StoqeyScreen,
   PayPalScreen,
@@ -201,7 +202,7 @@ const TabsNavigator = () => (
 // Auth represents Auth Screen
 const AuthStacks = createStackNavigator();
 const AuthStackScreens = () => (
-  <AuthStacks.Navigator initialRouteName="Login">
+  <AuthStacks.Navigator initialRouteName="LoginIntro">
     <AuthStacks.Screen
       name="PayPal"
       component={PayPalScreen}
@@ -220,6 +221,7 @@ const AuthStackScreens = () => (
     <AuthStacks.Screen name="StoqeyScreen" component={StoqeyScreen} options={props => screenWithoutHeader(props)} />
     <AuthStacks.Screen name="Invest" component={InvestScreen} options={props => screenWithoutHeader(props)} />
     <AuthStacks.Screen name="Portfolio" component={PortfolioScreen} options={props => screenWithHeader(props)} />
+    <AuthStacks.Screen name="LoginIntro" component={LoginIntro} options={props => screenWithoutHeader(props)} />
     <AuthStacks.Screen name="Login" component={LoginScreen} options={props => screenWithoutHeader(props)} />
     <AuthStacks.Screen name="Forgot" component={ForgotPasswordScreen} options={props => screenWithoutHeader(props)} />
     <AuthStacks.Screen name="SignUp" component={SignUpScreen} options={props => screenWithoutHeader(props)} />

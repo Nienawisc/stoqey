@@ -9,6 +9,7 @@ export { default as Transact } from './Transact';
 export { default as PayPalScreen } from './PayPal/index';
 export { default as PortfolioScreen } from './Portfolio';
 export { default as LoginScreen } from './Login';
+export { default as LoginIntro } from './LoginIntro';
 export { default as SignUpScreen } from './Signup';
 export { default as WithdrawScreen } from './Withdraw';
 export { default as InvestScreen } from './Invest';
