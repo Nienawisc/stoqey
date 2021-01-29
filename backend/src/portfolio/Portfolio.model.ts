@@ -10,6 +10,7 @@ import { ObjectType, Field, Int } from "type-graphql";
 import TradeModel, { TradeType } from "../trade/Trade.model";
 import { CommonSchema, CommonType } from "../shared";
 import MarketDataAPI from "src/marketdata/marketdata.api";
+import StoqeyStockExchangeApi from "src/exchange/sse.api";
 
 const modelName = "Portfolio";
 /**
@@ -75,11 +76,10 @@ export const closePortfolioPosition = async (
         symbol,
         secType,
         action,
-        exchange = "stqn",
+        exchange = "SSE",
         size,
         averageCost,
-        entryTime,
-        exitTime,
+        entryTime
       } = existingPortfolio;
 
       // Get quote
@@ -110,12 +110,16 @@ export const closePortfolioPosition = async (
         throw new Error("Cannot create closing trade");
       }
 
-      // TODO Submit trade for processing
+      const processTrade = new StoqeyStockExchangeApi().processTrade(createdClosingTrade.id);
+
+      if(!processTrade){
+        throw new Error('Error processing trade from the stoqey stock exchange');
+      }
 
       return { trade: createdClosingTrade, position: existingPortfolio };
     }
 
-    throw new Error('Error closing position, please try again later');
+    throw new Error('Error position not found, please try again later');
 
   } catch (error) {
     console.error(error);
