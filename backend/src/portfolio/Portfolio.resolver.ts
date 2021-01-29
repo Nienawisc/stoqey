@@ -5,20 +5,13 @@ import {
   Arg,
 } from "type-graphql";
 import isEmpty from "lodash/isEmpty";
-import TradeModel, {
-  TradeType,
-} from "./Trade.model";
 import {
   ResType,
-  SymbolSecType,
-  ActionType,
-  TradingEnvType,
 } from "../shared";
-import { log } from "../log";
 import PortfolioModel, { closePortfolioPosition, PortfolioType } from "./Portfolio.model";
 
 @Resolver()
-export class TradeResolver {
+export class PortfolioResolver {
 
   @Query(() => [PortfolioModel])
   async portfolios(
@@ -66,4 +59,4 @@ export class TradeResolver {
 
 }
 
-export default TradeResolver;
+export default PortfolioResolver;
