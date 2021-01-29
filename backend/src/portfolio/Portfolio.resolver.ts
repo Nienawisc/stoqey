@@ -36,6 +36,29 @@ export class PortfolioResolver {
   }
 
   @Mutation(() => ResType)
+  async startPortfolio(
+    @Arg("owner") owner: string,
+    @Arg("amount") amount: number,
+  ): Promise<ResType> {
+    try {
+      // If updating
+      if (!isEmpty(portfolioId)) {
+        // update trade now
+        const closePosition = await closePortfolioPosition(portfolioId);
+        if (!isEmpty(closePosition)) {
+          // TODO remove amount from user account and remove position
+          return { success: true, data: closePosition };
+        }
+      }
+
+      throw new Error('Error closing portfolio')
+    } catch (err) {
+      console.error(err);
+      return { success: false, message: err && err.message };
+    }
+  }
+
+  @Mutation(() => ResType)
   async closePortfolio(
     @Arg("id") portfolioId: string,
   ): Promise<ResType> {

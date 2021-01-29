@@ -41,7 +41,7 @@ export class TradeType extends CommonType {
 
   @Field({ nullable: true })
   averageCost?: number;
-  @Field({ nullable: true })
+  // @Field({ nullable: true })
   marketPrice?: number;
 
   @Field({ nullable: true })
