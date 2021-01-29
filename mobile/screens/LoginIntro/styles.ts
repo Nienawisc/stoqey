@@ -5,7 +5,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        backgroundColor: 'rgb(255,255,255)',
+        // backgroundColor: 'rgb(255,255,255)',
     },
     background: {
         flex: 1,

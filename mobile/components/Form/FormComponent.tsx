@@ -5,11 +5,6 @@ import {  scale, verticalScale } from 'react-native-size-matters';
 import { Colors } from '../../enums';
 import TextInput from '../../components/TextHorder/TextInput';
 import PatButton from '../../components/patButton';
-
-{/* <Ionicons name="person-outline" size={24} color="black" /> */ }
-{/* <MaterialCommunityIcons name="lock" size={24} color="black" /> */ }
-{/* <MaterialIcons name="person" size={24} color="black" /> */ }
-{/* <MaterialIcons name="lock" size={24} color="black" /> */ }
 export interface IField {
   name: string;
   label: string;
