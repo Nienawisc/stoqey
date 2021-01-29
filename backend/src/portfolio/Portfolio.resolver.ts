@@ -15,7 +15,7 @@ import {
   TradingEnvType,
 } from "../shared";
 import { log } from "../log";
-import PortfolioModel, { PortfolioType } from "./Portfolio.model";
+import PortfolioModel, { closePortfolioPosition, PortfolioType } from "./Portfolio.model";
 
 @Resolver()
 export class TradeResolver {
@@ -50,65 +50,20 @@ export class TradeResolver {
       // If updating
       if (!isEmpty(portfolioId)) {
         // update trade now
-        const existing = await PortfolioModel.findById(portfolioId);
-        if (!isEmpty(existing)) {
-          existing.action = action;
-          existing.size = size;
-          existing.execNow = execNow;
-          await TradeModel.save(existing);
-          return { success: true, data: existing };
+        const closePosition = await closePortfolioPosition(portfolioId);
+        if (!isEmpty(closePosition)) {
+          // TODO remove amount from user account and remove position
+          return { success: true, data: closePosition };
         }
       }
 
-      //   create new trade
-      const newTrade: TradeType = {
-        symbol,
-        secType,
-        action,
-        size,
-        owner: "",
-        tradeEnv,
-        entryTime: new Date(),
-      };
-
-      const created = await TradeModel.create(newTrade);
-
-      //   TODO submit if execNow
-      return { success: true, data: created };
+      throw new Error('Error closing portfolio')
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return { success: false, message: err && err.message };
     }
   }
 
-  //   TODO
-  // Exec trade
-  // Delete trade
-  // Get my trades, active and not active, using time and date
-
-//   @Mutation(() => LoginResponseType)
-//   async execTrade(
-//     @Arg("tradeId") email: string,
-//     @Ctx() { res }: ContextType
-//   ): Promise<LoginResponseType> {
-//     const { rows } = await UserModel().find({ email });
-//     const user = rows[0];
-//     if (!user) {
-//       throw new Error("could not find user");
-//     }
-
-//     const valid = await compare(password, user.password);
-//     if (!valid) {
-//       throw new Error("password not valid");
-//     }
-
-//     sendRefreshToken(res, createRefreshToken(user));
-
-//     return {
-//       accessToken: createAccessToken(user),
-//       user,
-//     };
-//   }
 }
 
 export default TradeResolver;
