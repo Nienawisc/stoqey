@@ -137,7 +137,7 @@ export const closePortfolioPosition = async (
 interface StartPosition {
   size: number;
   owner: string;
-  symbol: string; // = 'STQ';
+  symbol?: string; // = 'STQ';
   action: ActionType;
 }
 export const startPortfolioPosition = async (args: StartPosition): Promise<{ position: PortfolioType; trade: TradeType }> => {
