@@ -19,6 +19,10 @@ export class TradeType extends CommonType {
   secType: SymbolSecType;
   @Field(() => ActionType)
   action: ActionType;
+
+  @Field(() => ActionType)
+  positionAction?: ActionType; // this is used for when closing portfolio
+  
   @Field({ nullable: true })
   exchange?: string;
 
