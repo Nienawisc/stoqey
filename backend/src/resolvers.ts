@@ -1,3 +1,6 @@
+
+import {NonEmptyArray} from "type-graphql/dist/interfaces/NonEmptyArray";
+
 import UserResolver from './user/User.resolver';
 import UserResolverAdmin from './user/User.resolver.admin';
 import WalletResolver from './wallet/Wallet.resolver';
@@ -6,8 +9,9 @@ import TradeResolver from './trade/Trade.resolver';
 import TransactionResolver from './transaction/Transaction.resolver';
 import TransactionAdminResolver from './transaction/Transaction.resolver.admin';
 import PaymentMethodResolver from './payment/PaymentMethod.resolver';
+import PortfolioResolver from './portfolio/Portfolio.resolver';
 
-import {NonEmptyArray} from "type-graphql/dist/interfaces/NonEmptyArray";
 
 
-export const Resolvers: NonEmptyArray<Function> | any = () => [UserResolver, UserResolverAdmin, WalletResolver, MarketDataResolver, TradeResolver, TransactionResolver, TransactionAdminResolver, PaymentMethodResolver]
+
+export const Resolvers: NonEmptyArray<Function> | any = () => [UserResolver, UserResolverAdmin, WalletResolver, MarketDataResolver, TradeResolver, TransactionResolver, TransactionAdminResolver, PaymentMethodResolver, PortfolioResolver]
