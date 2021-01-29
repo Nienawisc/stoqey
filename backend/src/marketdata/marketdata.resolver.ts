@@ -1,5 +1,5 @@
 import { Resolver, Query, Subscription, Ctx, Root, Arg } from "type-graphql";
-import { MarketDataType, MarketSymbolInfo } from "./marketdata.model";
+import { MarketDataType, MarketSymbolInfo } from "./Marketdata.model";
 import { TOPICS } from "../topics";
 import { Resolution } from "./marketdata.interfaces";
 import { log } from "../log";

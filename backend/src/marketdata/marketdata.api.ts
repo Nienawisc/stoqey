@@ -9,7 +9,7 @@ import {
   TickData,
 } from "./marketdata.interfaces";
 import { log } from "../log";
-import { MarketDataType, MarketSymbolInfo } from "./marketdata.model";
+import { MarketDataType, MarketSymbolInfo } from "./Marketdata.model";
 
 const round = (num: number) => Math.round(num);
 
