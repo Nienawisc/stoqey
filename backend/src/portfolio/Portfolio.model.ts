@@ -219,4 +219,8 @@ export const startPortfolioPosition = async (args: StartPosition): Promise<{ pos
   }
 };
 
+export const refundTransaction = (transactionId: string) => {
+
+}
+
 export default PortfolioModel;
