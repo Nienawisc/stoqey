@@ -25,9 +25,9 @@ export class StoqeyStockExchangeApi {
   /**
    * processTrade
    */
-  public async processTrade(tradeId: string, portfolioId: string): Promise<boolean> {
+  public async processTrade(tradeId: string, portfolioId: string, tradeType: 'exit' | 'enter'): Promise<boolean> {
     try {
-      const { status } = await this.api.post(`process`, { tradeId, portfolioId });
+      const { status } = await this.api.post(`process`, { tradeId, portfolioId, tradeType });
       if(status === 200){
         return true;
       }

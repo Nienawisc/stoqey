@@ -89,6 +89,9 @@ export const closePortfolioPosition = async (
         throw new Error("Cannot close this portfolio, failed to get quote");
       }
 
+      // TODO Add amount to user account
+      // TODO close portfolio
+
       // Create new trade and submit to processor
       const closingTrade: TradeType = {
         owner,
