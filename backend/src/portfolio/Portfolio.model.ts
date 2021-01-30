@@ -116,7 +116,8 @@ export const closePortfolioPosition = async (
 
       const processTrade = await new StoqeyStockExchangeApi().processTrade(
         createdClosingTrade.id,
-        portfolioId
+        portfolioId,
+        'exit'
       );
 
       if (!processTrade) {
@@ -203,7 +204,8 @@ export const startPortfolioPosition = async (args: StartPosition): Promise<{ pos
 
     const processTrade = await new StoqeyStockExchangeApi().processTrade(
       createdTrade.id,
-      createdPortfolio.id
+      createdPortfolio.id,
+      'enter'
     );
 
     if (!processTrade) {
