@@ -146,7 +146,7 @@ export class MarketDataAPI {
    * Save marketdata into influxdb
    * @param MarketDataItem data 
    */
-  public async saveMarketdata(data: MarketDataItem): Promise<boolean> {
+  public async saveMarketdata(data: MarketDataItem | MarketDataItem[]): Promise<boolean> {
     try {
       const { status } = await this.api.post(`v1/insert`,data);
 
@@ -159,6 +159,11 @@ export class MarketDataAPI {
       return false;
     }
   }
+
+
+  // delete time entry
+  // TODO used to refund
+  
 }
 
 export default MarketDataAPI;
