@@ -1,17 +1,18 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import isEmpty from "lodash/isEmpty";
+import { ActionType } from "@stoqey/client-graphql";
 import { ResType } from "../shared";
 import PortfolioModel, {
   closePortfolioPosition,
   PortfolioType,
   startPortfolioPosition,
 } from "./Portfolio.model";
-import { ActionType } from "@stoqey/client-graphql";
+
 
 @Resolver()
 export class PortfolioResolver {
   @Query(() => [PortfolioType])
-  async portfolios(
+  async myPortfolios(
     @Arg("owner") userId: string,
     @Arg("page") page: number,
     @Arg("limit") limit: number

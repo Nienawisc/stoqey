@@ -8,7 +8,6 @@ import PortfolioModel, {
 export class PortfolioResolverAdmin {
   @Query(() => [PortfolioType])
   async portfolios(
-    @Arg("owner") userId: string,
     @Arg("page") page: number,
     @Arg("limit") limit: number
   ): Promise<ResType> {
@@ -27,12 +26,12 @@ export class PortfolioResolverAdmin {
           "averageCost",
           "createdAt",
         ],
-        where: { owner: { $eq: userId } },
+        // where: { owner: { $eq: userId } },
         limit,
         page,
       });
 
-      console.log(`portfolios returned are ${data && data.length}`);
+      console.log(`all portfolios returned are ${data && data.length}`);
       return {success: true, data};
     } catch (error) {
       console.log(error);
