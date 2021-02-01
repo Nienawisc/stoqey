@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { log } from "../log";
-import { ResType, StatusType, TradingEnvType } from "../shared";
+import { ResType, StatusType, TradingEnvType } from "@stoqey/client-graphql";
 import { TransactionModel, TransactionType } from "../transaction";
 import UserModel from "./User.model";
 
