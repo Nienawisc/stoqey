@@ -226,7 +226,9 @@ export const startPortfolioPosition = async (args: StartPosition): Promise<{ pos
 };
 
 export const refundTransaction = (transactionId: string) => {
-
+    // Find the transaction
+    // update it false
+    // add to user account
 }
 
 export default PortfolioModel;
