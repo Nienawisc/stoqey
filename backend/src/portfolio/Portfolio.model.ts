@@ -2,16 +2,15 @@ import { Model } from "@stoqey/sofa";
 import isEmpty from "lodash/isEmpty";
 import {
   ActionType,
-  SymbolSecType,
   TradingStatusType,
   TradingEnvType,
 } from "@stoqey/client-graphql";
 import { ObjectType, Field, Int } from "type-graphql";
 import TradeModel, { TradeType } from "../trade/Trade.model";
-import { CommonSchema, CommonType } from "../shared";
-import MarketDataAPI from "src/marketdata/marketdata.api";
-import StoqeyStockExchangeApi from "src/exchange/sse.api";
-import { UserModel } from "src/user";
+import { CommonSchema, CommonType, SymbolSecType } from "../shared";
+import MarketDataAPI from "../marketdata/marketdata.api";
+import StoqeyStockExchangeApi from "../exchange/sse.api";
+import { UserModel } from "../user";
 
 const modelName = "Portfolio";
 /**
@@ -21,7 +20,7 @@ const modelName = "Portfolio";
 export class PortfolioType extends CommonType {
   @Field({ nullable: true })
   symbol: string;
-  @Field(() => SymbolSecType)
+  @Field(type => SymbolSecType)
   secType: SymbolSecType;
   @Field(() => ActionType)
   action: ActionType;
@@ -170,6 +169,7 @@ export const startPortfolioPosition = async (args: StartPosition): Promise<{ pos
     }
 
     // TODO check if user has proper amount to run this trade
+    // TODO Then remove amount from this user
 
     const newPortfolio: PortfolioType = {
       owner,

@@ -1,9 +1,14 @@
 import { Model } from '@stoqey/sofa';
-import { ObjectType, Field } from "type-graphql";
-import { ActionType, CommonType, SymbolSecType, TradingStatusType } from "../shared";
+import { ObjectType, Field, registerEnumType } from "type-graphql";
+import { ActionType, TradingStatusType } from "@stoqey/client-graphql";
+import { CommonType, SymbolSecType } from '../shared'
 
 const modelName = "Trade";
 
+registerEnumType(SymbolSecType, {
+  name: "SymbolSecType", // this one is mandatory
+  description: "Sec type, ai, stock, forex, crypto", // this one is optional
+});
 /**
  * GraphQL Types start
  */

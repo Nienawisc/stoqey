@@ -10,12 +10,12 @@ import { ActionType } from "@stoqey/client-graphql";
 
 @Resolver()
 export class PortfolioResolver {
-  @Query(() => [PortfolioModel])
+  @Query(() => [PortfolioType])
   async portfolios(
     @Arg("owner") userId: string,
     @Arg("page") page: number,
     @Arg("limit") limit: number
-  ): Promise<PortfolioType[]> {
+  ): Promise<ResType> {
     try {
       const data = await PortfolioModel.pagination({
         select: [
@@ -37,10 +37,10 @@ export class PortfolioResolver {
       });
 
       console.log(`portfolios returned are ${data && data.length}`);
-      return data;
+      return {success: true, data};
     } catch (error) {
       console.log(error);
-      return [];
+      return {success: false, data: []};
     }
   }
 
