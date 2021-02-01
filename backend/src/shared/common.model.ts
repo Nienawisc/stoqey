@@ -37,6 +37,16 @@ registerEnumType(WithdrawOrDeposit, {
   description: "Transaction type withdraw or deposit", // this one is optional
 });
 
+export {
+    StatusType,
+    SymbolSecType,
+    ActionType,
+    TradingStatusType,
+    TradingEnvType,
+    WithdrawOrDeposit
+};
+
+
 @ObjectType()
 export class CommonType {
   @Field(() => String)

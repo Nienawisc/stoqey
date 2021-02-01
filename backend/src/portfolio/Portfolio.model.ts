@@ -4,10 +4,11 @@ import {
   ActionType,
   TradingStatusType,
   TradingEnvType,
+  SymbolSecType
 } from "@stoqey/client-graphql";
 import { ObjectType, Field, Int } from "type-graphql";
 import TradeModel, { TradeType } from "../trade/Trade.model";
-import { CommonSchema, CommonType, SymbolSecType } from "../shared";
+import { CommonSchema, CommonType } from "../shared";
 import MarketDataAPI from "../marketdata/marketdata.api";
 import StoqeyStockExchangeApi from "../exchange/sse.api";
 import { UserModel } from "../user";
