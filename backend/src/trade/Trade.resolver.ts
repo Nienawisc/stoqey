@@ -5,16 +5,17 @@ import {
   Arg,
 } from "type-graphql";
 import isEmpty from "lodash/isEmpty";
+import {
+  SymbolSecType,
+  ActionType,
+  TradingEnvType
+} from '@stoqey/client-graphql'
 import TradeModel, {
   TradeType,
 } from "./Trade.model";
 import {
   ResType,
-  SymbolSecType,
-  ActionType,
-  TradingEnvType,
 } from "../shared";
-import { log } from "../log";
 
 @Resolver()
 export class TradeResolver {
