@@ -20,7 +20,7 @@ const appEvents = AppEvents.Instance;
 
 // eslint-disable-next-line no-unused-vars
 function getApolloClient(token?: string): ApolloClient<any> {
-  const { ws: wsUrl, host: hostUrl } = getEnvironment();
+  const { ws: wsUrl, api: hostUrl } = getEnvironment();
   log.info('apollo url', hostUrl);
 
   // Create an http link:

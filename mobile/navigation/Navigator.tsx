@@ -24,7 +24,10 @@ import {
   ForgotPasswordScreen,
   SettingsScreen,
   FundsScreen,
-  PortfolioScreen
+  PortfolioScreen,
+  ProfileScreen, 
+  withDrawer,
+  Receiver,
 } from '../screens';
 import { screenWithoutHeader, bottomNavigationOptions, screenWithHeader } from './options';
 import { Colors } from '../enums';
@@ -202,7 +205,7 @@ const TabsNavigator = () => (
 // Auth represents Auth Screen
 const AuthStacks = createStackNavigator();
 const AuthStackScreens = () => (
-  <AuthStacks.Navigator initialRouteName="LoginIntro">
+  <AuthStacks.Navigator initialRouteName="ProfileScreen">
     <AuthStacks.Screen
       name="PayPal"
       component={PayPalScreen}
@@ -227,6 +230,9 @@ const AuthStackScreens = () => (
     <AuthStacks.Screen name="SignUp" component={SignUpScreen} options={props => screenWithoutHeader(props)} />
     <AuthStacks.Screen name="Funds" component={FundsScreen} options={props => screenWithoutHeader(props)} />
     <AuthStacks.Screen name="Home" component={TabsNavigator} options={props => screenWithoutHeader(props)} />
+    <AuthStacks.Screen name="ProfileScreen" component={ProfileScreen} options={props => screenWithoutHeader(props)} />
+    <AuthStacks.Screen name="WithDrawer" component={withDrawer} options={props => screenWithoutHeader(props)} />
+    <AuthStacks.Screen name="Receiver" component={Receiver} options={props => screenWithoutHeader(props)} />
   </AuthStacks.Navigator>
 );
 

@@ -19,3 +19,7 @@ export { default as FundsScreen } from './Funds';
 export { default as StoqeyScreen } from './Stoqey/Stoqey';
 export { default as TradeScreen } from './Trades/Trades';
 export { default as TransactionsScreen } from './Transactions/Transactions';
+export { default as ProfileScreen } from './Profile/profileScreen';
+export { default as withDrawer } from './Profile/withDrawer';
+export { default as Receiver } from './Profile/addReceiver';
+
