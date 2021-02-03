@@ -4,63 +4,77 @@ import {
   Mutation,
   Arg,
   Ctx,
-  UseMiddleware
+  UseMiddleware,
 } from "type-graphql";
-import {
-  UserType,
-  UserModel,
-  LoginResponseType,
-} from "./User.model";
+import isEmpty from "lodash/isEmpty";
+import { UserType, UserModel, LoginResponseType } from "./User.model";
 import { ContextType, ResType } from "../shared";
-import { log } from '../log';
+import { log } from "../log";
 
-import { updateUserWallet } from './User.methods'
+import { createNewUser, login, updateUserWallet } from "./User.methods";
 import { FirebaseTokenVerify } from "src/middlewares/firebaseToken.middleware";
-import { createAccessToken, createRefreshToken, sendRefreshToken } from "src/auth";
+import {
+  createAccessToken,
+  createRefreshToken,
+  sendRefreshToken,
+} from "src/auth";
 
 @Resolver()
 export class UserResolverWeb {
-
   @Mutation(() => LoginResponseType)
   @UseMiddleware(FirebaseTokenVerify)
-  async webPhoneLogin(
-    @Arg("phone") email: string,
+  async phoneLogin(
+    @Arg("phone") phone: string,
     @Arg("firebaseToken") token: string,
     @Arg("createNew") createNew: boolean,
     @Ctx() { res }: ContextType
   ): Promise<LoginResponseType> {
-
     try {
-      const username = email.toLowerCase();
-  
-      log(`LOGIN: username=${email}`);
+      let response: LoginResponseType;
+      const username = phone;
+
+      log(`LOGIN: phone=${phone}`);
 
       const users = await UserModel.pagination({
         select: "*",
         where: {
-          $or: [{ email: { $eq: username } }, { phone: username }, { phone: `+1${username}` }],
+          $or: [
+            { email: { $eq: username } },
+            { phone: username },
+            { phone: `+1${username}` },
+          ],
         },
       });
 
       const user = users[0]; // get first document
 
-      if (!user && !createNew) { // should not create new user
-        throw new Error("could not find user");
+      // user is not found
+      if (isEmpty(user)) {
+        // should not create new user
+        if (!createNew) {
+          throw new Error("could not find user");
+        } else {
+          // create a new user here
+          // else create new user from here
+          response = await createNewUser({
+            email: "",
+            fullname: "",
+            phone,
+            hashedPassword: "",
+          });
+        }
       }
 
-      const refreshToken = createRefreshToken(user);
-      const accessToken = createAccessToken(user);
+      response = await login(user); // login user without password
+
+      const { refreshToken } = response;
 
       sendRefreshToken(res, refreshToken);
 
-      return {
-        success: true,
-        accessToken,
-        refreshToken,
-        user,
-      };
+      return response;
+
     } catch (error) {
-      console.log("error login in", error);
+      console.error(error);
       return ({
         success: false,
         message: error && error.message,

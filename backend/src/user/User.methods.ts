@@ -4,6 +4,7 @@ import { ResType, StatusType, TradingEnvType } from "@stoqey/client-graphql";
 import { TransactionModel, TransactionType } from "../transaction";
 import UserModel, { LoginResponseType, UserType } from "./User.model";
 import { createAccessToken, createRefreshToken, sendRefreshToken } from "../auth";
+import { compare } from "bcryptjs";
 
 export const updateUserWallet = async (
   userId: string,
@@ -54,10 +55,10 @@ export const updateUserWallet = async (
 
 
 interface CreateNewUser {
-  email: string;
-  fullname: string;
+  email?: string;
+  fullname?: string;
   phone: string;
-  hashedPassword: string;
+  hashedPassword?: string;
 };
 
 /**
@@ -88,7 +89,9 @@ export const createNewUser = async (args: CreateNewUser): Promise<LoginResponseT
       // @ts-ignore
       lastname,
       phone,
+      // @ts-ignore
       email,
+      // @ts-ignore
       password: hashedPassword,
       balance: 0,
       currency: "USD",
@@ -114,13 +117,41 @@ export const createNewUser = async (args: CreateNewUser): Promise<LoginResponseT
     };
   } catch (err) {
     console.error(err);
-    return ({
-      success: false,
-      message: err && err.message,
-      user: null,
-      accessToken: null,
-      refreshToken: null,
-    } as unknown) as LoginResponseType;
+    throw err;
+  }
+}
+
+/**
+ * Shared user login experience
+ * @param user 
+ * @param password 
+ */
+export const login = async(user: UserType, password?: string): Promise<LoginResponseType> => {
+  try {
+    if (!user) {
+      throw new Error("could not find user");
+    }
+
+    // Verify user password
+    if(password){
+      const valid = await compare(password, user.password);
+      if (!valid) {
+        throw new Error("password not valid");
+      }  
+    }
+
+    const refreshToken = createRefreshToken(user);
+    const accessToken = createAccessToken(user);
+
+    return {
+      success: true,
+      accessToken,
+      refreshToken,
+      user,
+    };
+  } catch (error) {
+    console.error("error login in", error);
+    throw error;
   }
 }
 
