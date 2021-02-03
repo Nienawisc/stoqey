@@ -1,23 +1,20 @@
 import {
   Resolver,
-  Query,
   Mutation,
   Arg,
   Ctx,
   UseMiddleware,
 } from "type-graphql";
 import isEmpty from "lodash/isEmpty";
-import { UserType, UserModel, LoginResponseType } from "./User.model";
-import { ContextType, ResType } from "../shared";
+import { UserModel, LoginResponseType } from "./User.model";
+import { ContextType } from "../shared";
 import { log } from "../log";
 
-import { createNewUser, login, updateUserWallet } from "./User.methods";
-import { FirebaseTokenVerify } from "src/middlewares/firebaseToken.middleware";
+import { createNewUser, login } from "./User.methods";
+import { FirebaseTokenVerify } from "../middlewares/firebaseToken.middleware";
 import {
-  createAccessToken,
-  createRefreshToken,
   sendRefreshToken,
-} from "src/auth";
+} from "../auth";
 
 @Resolver()
 export class UserResolverWeb {
@@ -25,7 +22,6 @@ export class UserResolverWeb {
   @UseMiddleware(FirebaseTokenVerify)
   async phoneLogin(
     @Arg("phone") phone: string,
-    @Arg("firebaseToken") token: string,
     @Arg("createNew") createNew: boolean,
     @Ctx() { res }: ContextType
   ): Promise<LoginResponseType> {
