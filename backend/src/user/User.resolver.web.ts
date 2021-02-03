@@ -22,6 +22,7 @@ export class UserResolverWeb {
   @UseMiddleware(FirebaseTokenVerify)
   async phoneLogin(
     @Arg("phone") phone: string,
+    @Arg("firebaseToken") _firebaseToken: string,
     @Arg("createNew") createNew: boolean,
     @Ctx() { res }: ContextType
   ): Promise<LoginResponseType> {
