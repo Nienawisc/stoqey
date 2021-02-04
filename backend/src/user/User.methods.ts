@@ -62,7 +62,7 @@ interface CreateNewUser {
 };
 
 /**
- * Create new user method
+ * Shared Create user method
  * @param args 
  */
 export const createNewUser = async (args: CreateNewUser): Promise<LoginResponseType> => {

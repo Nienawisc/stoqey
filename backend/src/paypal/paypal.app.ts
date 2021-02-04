@@ -33,7 +33,7 @@ interface OrderResults {
   orderId: string;
 }
 
-export const verifyPayment = async (orderId: string): Promise<OrderResults | null> => {
+export const verifyPayment = async (orderId: string): Promise<OrderResults> => {
   console.log(`verifyPayment`, orderId);
   try {
     // Construct orderApi
@@ -59,7 +59,7 @@ export const verifyPayment = async (orderId: string): Promise<OrderResults | nul
 
   } catch (error) {
     console.log("error running payment verify", error);
-    return null;
+    throw error;
   }
 };
 
