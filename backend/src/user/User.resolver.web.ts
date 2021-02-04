@@ -30,7 +30,7 @@ export class UserResolverWeb {
       let response: LoginResponseType;
       const username = phone;
 
-      log(`LOGIN: phone=${phone}`);
+      console.log(`LOGIN: phone=${phone} _firebaseToken=${_firebaseToken}`);
 
       const users = await UserModel.pagination({
         select: "*",
