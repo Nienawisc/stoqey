@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Arg } from "type-graphql";
 import { ResType } from "../shared";
 import { verifyPayment } from "./paypal.app";
-import { updateUserWallet } from "src/user/User.methods";
+import { updateUserWallet } from "../user/User.methods";
 
 @Resolver()
 export class PayPalResolver {
