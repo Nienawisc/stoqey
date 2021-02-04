@@ -1,9 +1,5 @@
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
-import { log } from "../log";
-import PaymentMethodModel, { PaymentMethodType } from "./PaymentMethod.model";
-import { ResType, StatusType, TradingEnvType } from "../shared";
-import { TransactionModel, TransactionType } from "../transaction";
-import { UserModel, UserType } from "../user";
+import { Resolver, Mutation, Arg } from "type-graphql";
+import { ResType } from "../shared";
 import { verifyPayment } from "./paypal.app";
 import { updateUserWallet } from "src/user/User.methods";
 
