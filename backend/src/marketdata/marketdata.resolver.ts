@@ -19,6 +19,13 @@ export class MarketDataResolver {
     return { ...quote, id: (quote && quote.symbol) || "" };
   }
 
+  @Subscription(() => MarketDataType, {
+    topics: TOPICS.STQ_QUOTE,
+  })
+  onCurrency(@Root() quote: MarketDataType): MarketDataType {
+    return { ...quote, id: (quote && quote.symbol) || "" };
+  }
+
   @Query(() => [MarketDataType])
   async getMarketData(
     @Arg("symbol") symbol: string,
