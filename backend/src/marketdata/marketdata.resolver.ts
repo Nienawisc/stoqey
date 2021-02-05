@@ -22,7 +22,7 @@ export class MarketDataResolver {
   @Subscription(() => MarketDataType, {
     topics: TOPICS.STQ_QUOTE,
   })
-  onCurrency(@Root() quote: MarketDataType): MarketDataType {
+  onCurrency(@Root() quote: MarketDataType, @Arg("symbol") symbol: string): MarketDataType {
     return { ...quote, id: (quote && quote.symbol) || "" };
   }
 
