@@ -58,6 +58,7 @@ export class UserResolver {
     return `This is user ${JSON.stringify(payload)}`;
   }
 
+  @UseMiddleware(isAuth)
   @Query(() => UserType, { nullable: true })
   async me(@Ctx() context: ContextType): Promise<UserType | null> {
     const authorization = context.req.headers["authorization"];
@@ -72,7 +73,7 @@ export class UserResolver {
       const user = await UserModel.findById(verified.userId);
       return user;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return null;
     }
   }

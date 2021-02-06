@@ -1,5 +1,5 @@
 import { Resolver, Query, Subscription, Ctx, Root, Arg } from "type-graphql";
-import { MarketDataType, MarketSymbolInfo } from "./marketdata.model";
+import { MarketDataType, MarketSymbolInfo } from "./Marketdata.model";
 import { TOPICS } from "../topics";
 import { Resolution } from "./marketdata.interfaces";
 import { log } from "../log";
@@ -16,6 +16,13 @@ export class MarketDataResolver {
     topics: TOPICS.STQ_QUOTE,
   })
   subQuote(@Root() quote: MarketDataType): MarketDataType {
+    return { ...quote, id: (quote && quote.symbol) || "" };
+  }
+
+  @Subscription(() => MarketDataType, {
+    topics: TOPICS.STQ_QUOTE,
+  })
+  onCurrency(@Root() quote: MarketDataType, @Arg("symbol") symbol: string): MarketDataType {
     return { ...quote, id: (quote && quote.symbol) || "" };
   }
 

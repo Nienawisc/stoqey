@@ -1,6 +1,7 @@
 import { Model } from '@stoqey/sofa';
-import { ObjectType, Field } from "type-graphql";
-import { ActionType, CommonType, SymbolSecType, TradingStatusType } from "../shared";
+import { ObjectType, Field, registerEnumType } from "type-graphql";
+import { ActionType, TradingStatusType, SymbolSecType } from "@stoqey/client-graphql";
+import { CommonType } from '../shared';
 
 const modelName = "Trade";
 
@@ -19,6 +20,10 @@ export class TradeType extends CommonType {
   secType: SymbolSecType;
   @Field(() => ActionType)
   action: ActionType;
+
+  @Field(() => ActionType)
+  positionAction?: ActionType; // this is used for when closing portfolio
+  
   @Field({ nullable: true })
   exchange?: string;
 
@@ -37,7 +42,7 @@ export class TradeType extends CommonType {
 
   @Field({ nullable: true })
   averageCost?: number;
-  @Field({ nullable: true })
+  // @Field({ nullable: true })
   marketPrice?: number;
 
   @Field({ nullable: true })
@@ -47,7 +52,6 @@ export class TradeType extends CommonType {
 
   // @Field({ nullable: true })
   // payment?: any; // for buying actualSymbol
-
 }
 
 /**
