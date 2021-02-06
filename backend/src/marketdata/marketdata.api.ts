@@ -9,7 +9,7 @@ import {
   TickData,
 } from "./marketdata.interfaces";
 import { log } from "../log";
-import { MarketDataType, MarketSymbolInfo } from "./Marketdata.model";
+import { MarketDataType, MarketSymbolInfo } from "./arketdata.model";
 
 const round = (num: number) => Math.round(num);
 
@@ -163,7 +163,7 @@ export class MarketDataAPI {
 
   // delete time entry
   // TODO used to refund
-  
+
 }
 
 export default MarketDataAPI;
