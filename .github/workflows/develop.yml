@@ -17,8 +17,8 @@ env:
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
   NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} 
   CLUSTER: cloudx
-  DEPLOYMENT_NAME: stq-backend-dev
-  IMAGE: stq-backend-dev
+  DEPLOYMENT: stqbackend
+  IMAGE: stqbackend-dev
 
 jobs:
   setup-build-publish-deploy:
@@ -74,4 +74,4 @@ jobs:
 
     # Deploy the Docker image to the GKE cluster
     - name: Deploy to k8s
-      run: kubectl set image deployment/$IMAGE $IMAGE=gcr.io/$GKE_PROJECT/$IMAGE:${GITHUB_SHA:0:7}
+      run: kubectl set image deployment/$DEPLOYMENT $DEPLOYMENT=gcr.io/$GKE_PROJECT/$IMAGE:${GITHUB_SHA:0:7}
