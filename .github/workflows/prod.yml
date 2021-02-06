@@ -16,7 +16,7 @@ env:
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
   NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} 
-  CLUSTER: cloudx
+  CLUSTER: stoqey
   DEPLOYMENT_NAME: stqbackend
   IMAGE: stqbackend
 
