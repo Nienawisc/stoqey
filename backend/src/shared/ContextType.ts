@@ -25,6 +25,6 @@ export class ResType {
   @Field({ nullable: true })
   message?: string;
 
-  @Field(type => GraphQLJSON)
+  @Field(type => GraphQLJSON, { nullable: true })
   data?: any;
 }
