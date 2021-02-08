@@ -106,6 +106,7 @@ export class StqNetworkWS extends EventEmitter {
     }
 
     this.socket.on("message", (data: OnSocketData): void => {
+     
       // @ts-ignore
       const parsedData: any = JSONDATA(data);
 
@@ -113,22 +114,20 @@ export class StqNetworkWS extends EventEmitter {
         return;
       }
 
+      // log('marketdata -> WS -> message', data);
+
     //   Check if trade
     
       if (parsedData && parsedData.action ) {
-
         const dataToSend = parsedData;
         // log('onTradeData', dataToSend);
-
         self.emit(StqNetworkWSEvents.onTrade, dataToSend);
       }
 
 
-      if (parsedData && parsedData.close ) {
-
+      if (parsedData && parsedData.asset ) {
         const dataToSend = parsedData
         // log('onQuote', dataToSend);
-
         self.emit(StqNetworkWSEvents.onQuote, dataToSend);
       }
     });
