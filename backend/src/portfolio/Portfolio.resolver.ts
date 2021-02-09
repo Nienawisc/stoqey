@@ -82,7 +82,7 @@ export class PortfolioResolver {
   }
 
   @Mutation(() => ResType)
-  async closePortfolio(@Arg("id") portfolioId: string): Promise<ResType> {
+  async closePortfolio(@Arg("id") portfolioId: string,  @Arg("owner") owner: string): Promise<ResType> {
     try {
       // If updating
       if (!isEmpty(portfolioId)) {
