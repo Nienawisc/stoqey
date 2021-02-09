@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import isEmpty from "lodash/isEmpty";
-import { ActionType } from "@stoqey/client-graphql";
+import { ActionType, StatusType } from "@stoqey/client-graphql";
 import { ResType } from "../shared";
 import PortfolioModel, {
   closePortfolioPosition,
@@ -11,13 +11,25 @@ import PortfolioModel, {
 
 @Resolver()
 export class PortfolioResolver {
+
   @Query(() => [PortfolioType])
   async myPortfolios(
-    @Arg("owner") userId: string,
-    @Arg("page") page: number,
-    @Arg("limit") limit: number
+    @Arg("filter", { nullable: true }) filter: StatusType,
+    @Arg("owner") owner: string,
+    @Arg("page", { nullable: true }) page: number,
+    @Arg("limit", { nullable: true }) limit: number
   ): Promise<ResType> {
     try {
+
+      const wheres: any = {
+        owner: { $eq: owner },
+      }
+
+      // If filter by status
+      if(filter){
+        wheres.type = { $eq: filter }
+      };
+
       const data = await PortfolioModel.pagination({
         select: [
           "id",
@@ -32,7 +44,7 @@ export class PortfolioResolver {
           "averageCost",
           "createdAt",
         ],
-        where: { owner: { $eq: userId } },
+        where: wheres,
         limit,
         page,
       });
