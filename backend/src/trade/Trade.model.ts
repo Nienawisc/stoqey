@@ -58,7 +58,7 @@ export class TradeType extends CommonType {
  * GraphQL Types end
  */
 
-export const TradeModel: Model = new Model(modelName);
+export const TradeModel: Model = new Model(modelName, { schema: { entryTime: 'date', exitTime: 'date'  }});
 
 /**
  * Methods

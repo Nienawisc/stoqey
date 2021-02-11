@@ -49,7 +49,7 @@ export class PortfolioType extends CommonType {
  * GraphQL Types end
  */
 
-export const PortfolioModel: Model = new Model(modelName);
+export const PortfolioModel: Model = new Model(modelName, { schema: { entryTime: 'date', exitTime: 'date'  }});
 
 /**
  * Methods
