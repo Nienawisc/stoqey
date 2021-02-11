@@ -18,7 +18,7 @@ export class PortfolioResolver {
     @Arg("owner") owner: string,
     @Arg("page", { nullable: true }) page: number,
     @Arg("limit", { nullable: true }) limit: number
-  ): Promise<ResType> {
+  ): Promise<PortfolioType[]> {
     try {
 
       const wheres: any = {
@@ -50,10 +50,10 @@ export class PortfolioResolver {
       });
 
       console.log(`portfolios returned are ${data && data.length}`);
-      return {success: true, data};
+      return data;
     } catch (error) {
       console.log(error);
-      return {success: false, data: []};
+      return [];
     }
   }
 

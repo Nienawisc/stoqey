@@ -21,19 +21,19 @@ const modelName = "Portfolio";
 export class PortfolioType extends CommonType {
   @Field({ nullable: true })
   symbol: string;
-  @Field(type => SymbolSecType)
+  @Field(type => SymbolSecType, { nullable: true })
   secType: SymbolSecType;
-  @Field(() => ActionType)
+  @Field(() => ActionType, { nullable: true })
   action: ActionType;
   @Field({ nullable: true })
   exchange: string;
 
-  @Field(() => TradingStatusType)
+  @Field(() => TradingStatusType, { nullable: true })
   status: TradingStatusType;
 
   @Field({ nullable: true })
   size: number; // number of shares
-  @Field({ nullable: true })
+
   @Field({ nullable: true })
   averageCost: number;
   @Field({ nullable: true })
