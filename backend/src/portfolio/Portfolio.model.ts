@@ -12,6 +12,7 @@ import { CommonSchema, CommonType } from "../shared";
 import MarketDataAPI from "../marketdata/marketdata.api";
 import StoqeyStockExchangeApi from "../exchange/sse.api";
 import { UserModel } from "../user";
+import { checkIfUserHasAmount } from "src/user/User.methods";
 
 const modelName = "Portfolio";
 /**
@@ -169,8 +170,13 @@ export const startPortfolioPosition = async (args: StartPosition): Promise<{ pos
       throw new Error("Cannot close this portfolio, failed to get quote");
     }
 
-    // TODO check if user has proper amount to run this trade
-    // TODO Then remove amount from this user
+    const amountToRemove = size * gotQuote.close;
+
+    const doesUserHaveAmount = checkIfUserHasAmount(owner, amountToRemove);
+
+    if(!doesUserHaveAmount){
+      throw new Error(`you don't have enough money on your account`)
+    }
 
     const newPortfolio: PortfolioType = {
       owner,
