@@ -27,7 +27,6 @@ export class UserResolverWeb {
     @Ctx() { res }: ContextType
   ): Promise<LoginResponseType> {
     try {
-      let response: LoginResponseType;
       const username = phone;
 
       console.log(`LOGIN: phone=${phone} _firebaseToken=${_firebaseToken}`);
@@ -43,26 +42,37 @@ export class UserResolverWeb {
         },
       });
 
-      const user = users[0]; // get first document
+      console.log(`users found are users=${users.length}`);
 
-      // user is not found
-      if (isEmpty(user)) {
+      // users are not found
+      if (isEmpty(users)) {
         // should not create new user
         if (!createNew) {
           throw new Error("could not find user");
         } else {
           // create a new user here
           // else create new user from here
-          response = await createNewUser({
+          const response = await createNewUser({
             email: "",
             fullname: "",
             phone,
             hashedPassword: "",
           });
+
+          console.log(`creating new user =${JSON.stringify(response)}`);
+
+          const { refreshToken } = response;
+
+          sendRefreshToken(res, refreshToken);
+    
+          return response;
         }
       }
 
-      response = await login(user); // login user without password
+      // user is found
+      let user = users[0]; // get first document
+
+      const response = await login(user); // login user without password
 
       const { refreshToken } = response;
 
