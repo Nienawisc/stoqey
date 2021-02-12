@@ -52,6 +52,13 @@ export default class ServerConfig {
       res.send("hello");
     });
 
+    // TODO protected route only accessible by SSE
+    appExpress.post("/updateUserWallet", (_, res) => {
+      res.send("hello");
+    });
+
+
+
     // Add paypal routes
     expressfyPayPal(appExpress);
 
