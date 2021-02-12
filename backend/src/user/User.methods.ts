@@ -93,7 +93,7 @@ export const createNewUser = async (args: CreateNewUser): Promise<LoginResponseT
       email,
       // @ts-ignore
       password: hashedPassword,
-      balance: 0,
+      balance: 1,
       currency: "USD",
     };
 
