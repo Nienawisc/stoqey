@@ -29,7 +29,7 @@ export class UserResolverWeb {
     try {
       const username = phone;
 
-      console.log(`LOGIN: phone=${phone} _firebaseToken=${_firebaseToken}`);
+      log(`LOGIN: phone=${phone} _firebaseToken=${_firebaseToken}`);
 
       const users = await UserModel.pagination({
         select: "*",
@@ -42,7 +42,7 @@ export class UserResolverWeb {
         },
       });
 
-      console.log(`users found are users=${users.length}`);
+      log(`users found are users=${users.length}`);
 
       // users are not found
       if (isEmpty(users)) {
@@ -59,7 +59,7 @@ export class UserResolverWeb {
             hashedPassword: "",
           });
 
-          console.log(`creating new user =${JSON.stringify(response)}`);
+          log(`creating new user =${JSON.stringify(response)}`);
 
           const { refreshToken } = response;
 
