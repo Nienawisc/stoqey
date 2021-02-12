@@ -12,7 +12,7 @@ import { CommonSchema, CommonType } from "../shared";
 import MarketDataAPI from "../marketdata/marketdata.api";
 import StoqeyStockExchangeApi from "../exchange/sse.api";
 import { UserModel } from "../user";
-import { checkIfUserHasAmount } from "src/user/User.methods";
+import { checkIfUserHasAmount } from "../user/User.methods";
 
 const modelName = "Portfolio";
 /**
@@ -172,7 +172,7 @@ export const startPortfolioPosition = async (args: StartPosition): Promise<{ pos
 
     const amountToRemove = size * gotQuote.close;
 
-    const doesUserHaveAmount = checkIfUserHasAmount(owner, amountToRemove);
+    const doesUserHaveAmount = await checkIfUserHasAmount(owner, amountToRemove);
 
     if(!doesUserHaveAmount){
       throw new Error(`you don't have enough money on your account`)

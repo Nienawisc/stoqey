@@ -20,7 +20,10 @@ export const checkIfUserHasAmount = async (
 
     if (!isEmpty(existingUser)) {
       const currentBalance = existingUser.balance || 0;
-      return currentBalance >= amount;
+      const userHasAmount = currentBalance >= amount;
+
+      log(`User has amount currentBalance=${currentBalance} and userHasAmount=${userHasAmount}`)
+      return userHasAmount;
     }
 
     throw new Error("error getting user");
