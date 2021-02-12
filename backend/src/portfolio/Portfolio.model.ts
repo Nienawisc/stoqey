@@ -69,7 +69,7 @@ export const closePortfolioPosition = async (
         throw new Error("Portfolio does not exist");
       }
       if (existingPortfolio.status !== TradingStatusType.LIVE) {
-        throw new Error("Cannot close this portfolio");
+        throw new Error("Cannot close this portfolio, not LIVE");
       }
 
       const {

@@ -27,7 +27,7 @@ export class PortfolioResolver {
 
       // If filter by status
       if(filter){
-        wheres.type = { $eq: filter }
+        wheres.status = { $eq: filter }
       };
 
       const data = await PortfolioModel.pagination({
