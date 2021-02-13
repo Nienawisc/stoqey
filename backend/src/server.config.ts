@@ -7,6 +7,7 @@ import _get from 'lodash/get';
 
 // import { createConnection } from "./couchbase";
 import { expressfyPayPal } from "./paypal/paypal.app";
+import { exchangeServerApiInput } from "./exchange/sse.express";
 
 // import { verify } from "jsonwebtoken";
 // import { User } from "./user";
@@ -57,7 +58,8 @@ export default class ServerConfig {
       res.send("hello");
     });
 
-
+    // Add Stoqey exchange routes
+    exchangeServerApiInput(appExpress);
 
     // Add paypal routes
     expressfyPayPal(appExpress);
