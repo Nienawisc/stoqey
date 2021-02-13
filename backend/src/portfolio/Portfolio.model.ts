@@ -13,6 +13,7 @@ import MarketDataAPI from "../marketdata/marketdata.api";
 import StoqeyStockExchangeApi from "../exchange/sse.api";
 import { UserModel } from "../user";
 import { checkIfUserHasAmount } from "../user/User.methods";
+import { log } from "../log";
 
 const modelName = "Portfolio";
 /**
@@ -90,9 +91,6 @@ export const closePortfolioPosition = async (
         throw new Error("Cannot close this portfolio, failed to get quote");
       }
 
-      // TODO Add amount to user account
-      // TODO close portfolio
-
       // Create new trade and submit to processor
       const closingTrade: TradeType = {
         owner,
@@ -127,8 +125,6 @@ export const closePortfolioPosition = async (
         );
       }
 
-        // TODO Remove/Add amount from user's wallet and save
-
       return { trade: createdClosingTrade, position: existingPortfolio };
     }
 
@@ -147,6 +143,9 @@ interface StartPosition {
 }
 export const startPortfolioPosition = async (args: StartPosition): Promise<{ position: PortfolioType; trade: TradeType }> => {
   const { owner, symbol = 'STQ', action, size } = args;
+
+  log(`startPortfolioPosition ${JSON.stringify(args)}`);
+
   try {
     // Get user
     const user = await UserModel.findById(owner);
@@ -169,6 +168,10 @@ export const startPortfolioPosition = async (args: StartPosition): Promise<{ pos
     if (!gotQuote) {
       throw new Error("Cannot close this portfolio, failed to get quote");
     }
+
+    const quotePrice = gotQuote.close;
+
+    log(`Amount to remove from account`, { size, quotePrice })
 
     const amountToRemove = size * gotQuote.close;
 

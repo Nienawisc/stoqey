@@ -9,13 +9,13 @@ interface BodyProps {
 }
 
 export const exchangeServerApiInput = (appExpress: Express) => {
-  appExpress.post("/updateUserWallet", async (req, res) => {
+  appExpress.post("/sse", async (req, res) => {
     const body: BodyProps = req.body;
 
     const { userId, amount, source, sourceId } = body;
 
     const results = await updateUserWallet(userId, amount, source, sourceId);
 
-    res.json(results);
+    res.status(200).json(results);
   });
 };
