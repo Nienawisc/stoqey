@@ -7,6 +7,7 @@ import _get from 'lodash/get';
 
 // import { createConnection } from "./couchbase";
 import { expressfyPayPal } from "./paypal/paypal.app";
+import { exchangeServerApiInput } from "./exchange/sse.express";
 
 // import { verify } from "jsonwebtoken";
 // import { User } from "./user";
@@ -51,6 +52,14 @@ export default class ServerConfig {
     appExpress.get("/", (_, res) => {
       res.send("hello");
     });
+
+    // TODO protected route only accessible by SSE
+    appExpress.post("/updateUserWallet", (_, res) => {
+      res.send("hello");
+    });
+
+    // Add Stoqey exchange routes
+    exchangeServerApiInput(appExpress);
 
     // Add paypal routes
     expressfyPayPal(appExpress);

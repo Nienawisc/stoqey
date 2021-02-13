@@ -3,8 +3,35 @@ import { log } from "../log";
 import { ResType, StatusType, TradingEnvType } from "@stoqey/client-graphql";
 import { TransactionModel, TransactionType } from "../transaction";
 import UserModel, { LoginResponseType, UserType } from "./User.model";
-import { createAccessToken, createRefreshToken, sendRefreshToken } from "../auth";
+import {
+  createAccessToken,
+  createRefreshToken,
+  sendRefreshToken,
+} from "../auth";
 import { compare } from "bcryptjs";
+
+export const checkIfUserHasAmount = async (
+  userId: string,
+  amount: number
+): Promise<boolean> => {
+  try {
+    log("checkIfUserHasAmount", JSON.stringify({ userId, amount }));
+    const existingUser = await UserModel.findById(userId);
+
+    if (!isEmpty(existingUser)) {
+      const currentBalance = existingUser.balance || 0;
+      const userHasAmount = currentBalance >= amount;
+
+      log(`User has amount currentBalance=${currentBalance} and userHasAmount=${userHasAmount}`)
+      return userHasAmount;
+    }
+
+    throw new Error("error getting user");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 export const updateUserWallet = async (
   userId: string,
@@ -53,19 +80,20 @@ export const updateUserWallet = async (
   }
 };
 
-
 interface CreateNewUser {
   email?: string;
   fullname?: string;
   phone: string;
   hashedPassword?: string;
-};
+}
 
 /**
  * Shared Create user method
- * @param args 
+ * @param args
  */
-export const createNewUser = async (args: CreateNewUser): Promise<LoginResponseType> => {
+export const createNewUser = async (
+  args: CreateNewUser
+): Promise<LoginResponseType> => {
   const { email, fullname, phone, hashedPassword } = args;
   try {
     const findIfExits = await UserModel.pagination({
@@ -93,7 +121,7 @@ export const createNewUser = async (args: CreateNewUser): Promise<LoginResponseT
       email,
       // @ts-ignore
       password: hashedPassword,
-      balance: 0,
+      balance: 1,
       currency: "USD",
     };
 
@@ -119,25 +147,28 @@ export const createNewUser = async (args: CreateNewUser): Promise<LoginResponseT
     console.error(err);
     throw err;
   }
-}
+};
 
 /**
  * Shared user login experience
- * @param user 
- * @param password 
+ * @param user
+ * @param password
  */
-export const login = async(user: UserType, password?: string): Promise<LoginResponseType> => {
+export const login = async (
+  user: UserType,
+  password?: string
+): Promise<LoginResponseType> => {
   try {
     if (!user) {
       throw new Error("could not find user");
     }
 
     // Verify user password
-    if(password){
+    if (password) {
       const valid = await compare(password, user.password);
       if (!valid) {
         throw new Error("password not valid");
-      }  
+      }
     }
 
     const refreshToken = createRefreshToken(user);
@@ -153,6 +184,6 @@ export const login = async(user: UserType, password?: string): Promise<LoginResp
     console.error("error login in", error);
     throw error;
   }
-}
+};
 
 // TODO update user account

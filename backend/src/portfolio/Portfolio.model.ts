@@ -12,6 +12,8 @@ import { CommonSchema, CommonType } from "../shared";
 import MarketDataAPI from "../marketdata/marketdata.api";
 import StoqeyStockExchangeApi from "../exchange/sse.api";
 import { UserModel } from "../user";
+import { checkIfUserHasAmount } from "../user/User.methods";
+import { log } from "../log";
 
 const modelName = "Portfolio";
 /**
@@ -21,19 +23,19 @@ const modelName = "Portfolio";
 export class PortfolioType extends CommonType {
   @Field({ nullable: true })
   symbol: string;
-  @Field(type => SymbolSecType)
+  @Field(type => SymbolSecType, { nullable: true })
   secType: SymbolSecType;
-  @Field(() => ActionType)
+  @Field(() => ActionType, { nullable: true })
   action: ActionType;
   @Field({ nullable: true })
   exchange: string;
 
-  @Field(() => TradingStatusType)
+  @Field(() => TradingStatusType, { nullable: true })
   status: TradingStatusType;
 
   @Field({ nullable: true })
   size: number; // number of shares
-  @Field({ nullable: true })
+
   @Field({ nullable: true })
   averageCost: number;
   @Field({ nullable: true })
@@ -49,7 +51,7 @@ export class PortfolioType extends CommonType {
  * GraphQL Types end
  */
 
-export const PortfolioModel: Model = new Model(modelName);
+export const PortfolioModel: Model = new Model(modelName, { schema: { entryTime: 'date', exitTime: 'date'  }});
 
 /**
  * Methods
@@ -69,7 +71,7 @@ export const closePortfolioPosition = async (
         throw new Error("Portfolio does not exist");
       }
       if (existingPortfolio.status !== TradingStatusType.LIVE) {
-        throw new Error("Cannot close this portfolio");
+        throw new Error("Cannot close this portfolio, not LIVE");
       }
 
       const {
@@ -88,9 +90,6 @@ export const closePortfolioPosition = async (
       if (!gotQuote) {
         throw new Error("Cannot close this portfolio, failed to get quote");
       }
-
-      // TODO Add amount to user account
-      // TODO close portfolio
 
       // Create new trade and submit to processor
       const closingTrade: TradeType = {
@@ -126,8 +125,6 @@ export const closePortfolioPosition = async (
         );
       }
 
-        // TODO Remove/Add amount from user's wallet and save
-
       return { trade: createdClosingTrade, position: existingPortfolio };
     }
 
@@ -146,6 +143,9 @@ interface StartPosition {
 }
 export const startPortfolioPosition = async (args: StartPosition): Promise<{ position: PortfolioType; trade: TradeType }> => {
   const { owner, symbol = 'STQ', action, size } = args;
+
+  log(`startPortfolioPosition ${JSON.stringify(args)}`);
+
   try {
     // Get user
     const user = await UserModel.findById(owner);
@@ -169,8 +169,17 @@ export const startPortfolioPosition = async (args: StartPosition): Promise<{ pos
       throw new Error("Cannot close this portfolio, failed to get quote");
     }
 
-    // TODO check if user has proper amount to run this trade
-    // TODO Then remove amount from this user
+    const quotePrice = gotQuote.close;
+
+    log(`Amount to remove from account`, { size, quotePrice })
+
+    const amountToRemove = size * gotQuote.close;
+
+    const doesUserHaveAmount = await checkIfUserHasAmount(owner, amountToRemove);
+
+    if(!doesUserHaveAmount){
+      throw new Error(`you don't have enough money on your account`)
+    }
 
     const newPortfolio: PortfolioType = {
       owner,

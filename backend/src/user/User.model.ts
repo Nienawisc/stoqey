@@ -9,10 +9,10 @@ const modelName = "User";
  */
 @ObjectType()
 export class UserType extends CommonType {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   email: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   password: string;
 
   // Revoke accessToken

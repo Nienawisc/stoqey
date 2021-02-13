@@ -1,11 +1,12 @@
 import { MiddlewareFn } from "type-graphql";
 import { ContextType } from "../shared/ContextType";
 import { verify } from "jsonwebtoken";
+import { isEmpty } from "lodash";
 
 export const isAuth: MiddlewareFn<ContextType> = ({ context }, next) => {
-  const authorization = context.req.headers["authorization"];
+  const authorization = context.req.headers["authorization"] || '';
 
-  if (!authorization) {
+  if (isEmpty(authorization)) {
     throw new Error("Not Authenticated");
   }
 

@@ -10,25 +10,25 @@ export class MarketDataType {
   @Field(() => String)
   id?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   symbol: string;
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   volume: number;
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   open: number;
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   close: number;
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   high: number;
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   low: number;
 
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   date: Date;
 }
 

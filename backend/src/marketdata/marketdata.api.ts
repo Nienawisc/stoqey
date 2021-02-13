@@ -163,7 +163,7 @@ export class MarketDataAPI {
 
   // delete time entry
   // TODO used to refund
-  
+
 }
 
 export default MarketDataAPI;

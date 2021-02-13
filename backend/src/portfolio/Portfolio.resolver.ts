@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import isEmpty from "lodash/isEmpty";
-import { ActionType } from "@stoqey/client-graphql";
+import { ActionType, StatusType } from "@stoqey/client-graphql";
 import { ResType } from "../shared";
 import PortfolioModel, {
   closePortfolioPosition,
@@ -11,13 +11,25 @@ import PortfolioModel, {
 
 @Resolver()
 export class PortfolioResolver {
+
   @Query(() => [PortfolioType])
   async myPortfolios(
-    @Arg("owner") userId: string,
-    @Arg("page") page: number,
-    @Arg("limit") limit: number
-  ): Promise<ResType> {
+    @Arg("filter", { nullable: true }) filter: StatusType,
+    @Arg("owner") owner: string,
+    @Arg("page", { nullable: true }) page: number,
+    @Arg("limit", { nullable: true }) limit: number
+  ): Promise<PortfolioType[]> {
     try {
+
+      const wheres: any = {
+        owner: { $eq: owner },
+      }
+
+      // If filter by status
+      if(filter){
+        wheres.status = { $eq: filter }
+      };
+
       const data = await PortfolioModel.pagination({
         select: [
           "id",
@@ -32,16 +44,16 @@ export class PortfolioResolver {
           "averageCost",
           "createdAt",
         ],
-        where: { owner: { $eq: userId } },
+        where: wheres,
         limit,
         page,
       });
 
       console.log(`portfolios returned are ${data && data.length}`);
-      return {success: true, data};
+      return data;
     } catch (error) {
       console.log(error);
-      return {success: false, data: []};
+      return [];
     }
   }
 
@@ -70,7 +82,7 @@ export class PortfolioResolver {
   }
 
   @Mutation(() => ResType)
-  async closePortfolio(@Arg("id") portfolioId: string): Promise<ResType> {
+  async closePortfolio(@Arg("id") portfolioId: string,  @Arg("owner") owner: string): Promise<ResType> {
     try {
       // If updating
       if (!isEmpty(portfolioId)) {

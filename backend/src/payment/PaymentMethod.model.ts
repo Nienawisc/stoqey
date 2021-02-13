@@ -20,11 +20,6 @@ export class PaymentMethodType extends CommonType {
   info: string; // paypal, credit card, interact
 
 }
- 
-
-/**
- * GraphQL Types end
- */
 
 export const PaymentMethodModel: Model = new Model(modelName)
 
