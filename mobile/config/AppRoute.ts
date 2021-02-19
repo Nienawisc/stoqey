@@ -7,11 +7,12 @@ export enum AppRoute {
 
   //ProfileFunds
   PROFILE_FUNDS = 'profile_funds',
-  WITHDRAW_SEND = 'withdraw_send',
+  WITHDRAW_SEND = 'withDrawer',
+
 
   //Buying and selling
 
-  BUY_SELL = 'buy_sell',
+  BUY_SELL = 'buySell',
   // Home tabs
 
   MARKET = 'market',

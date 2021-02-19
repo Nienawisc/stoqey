@@ -14,7 +14,7 @@ import { RectButton, ScrollView, TouchableHighlight } from 'react-native-gesture
 import CountryPicker from 'react-native-country-picker-modal'
 import Stoqey from '../../assets/icon.png';
 import { FontAwesome5 } from '@expo/vector-icons';
-// import { AppRoute } from '../../navigation/AppRoute';
+import { AppRoute } from '../../config/AppRoute';
 
 
 let deviceWidth = Dimensions.get('window').width
@@ -62,14 +62,14 @@ const Profile = () => {
 
                     }}
                     visible={countryModal}
-                    onSelect={() => navigation.navigate(AppRoute.WITHDRAW_SEND)}
+                    onSelect={() => navigation.navigate('WithDrawer')}
                 />
             </View>
         )
     }
     return (
         <Container>
-            {/* <CountryNames/> */}
+            <CountryNames/>
             <View style={styles.container}>
                 <Image source={Stoqey} style={styles.logo} />
                 <Text style={styles.header}>Pa Muhi</Text>
