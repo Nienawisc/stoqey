@@ -1,4 +1,4 @@
-import {registerEnumType, ObjectType, Field} from "type-graphql";
+import { registerEnumType, ObjectType, Field } from "type-graphql";
 
 import {
   StatusType,
@@ -7,14 +7,22 @@ import {
   TradingStatusType,
   TradingEnvType,
   WithdrawOrDeposit,
+  OrderType as IOrderType,
 } from "@stoqey/client-graphql";
 
 /**
  * Register enums from here
  */
+
+registerEnumType(IOrderType, {
+  name: "IOrderType",
+  description: "The order type of the order, either market or limit",
+});
+
 registerEnumType(SymbolSecType, {
   name: "SymbolSecType", // this one is mandatory
-  description: "The security type of the symbol/ticker ai e.g STQ, stock, crypto, stock, forex", // this one is optional
+  description:
+    "The security type of the symbol/ticker ai e.g STQ, stock, crypto, stock, forex", // this one is optional
 });
 registerEnumType(TradingEnvType, {
   name: "TradingEnvType", // this one is mandatory
@@ -38,26 +46,25 @@ registerEnumType(WithdrawOrDeposit, {
 });
 
 export {
-    StatusType,
-    SymbolSecType,
-    ActionType,
-    TradingStatusType,
-    TradingEnvType,
-    WithdrawOrDeposit
+  IOrderType,
+  StatusType,
+  SymbolSecType,
+  ActionType,
+  TradingStatusType,
+  TradingEnvType,
+  WithdrawOrDeposit,
 };
-
 
 @ObjectType()
 export class CommonType {
   @Field(() => String)
   id?: string;
 
-  @Field(type => TradingEnvType, { nullable: true })
+  @Field((type) => TradingEnvType, { nullable: true })
   tradeEnv?: TradingEnvType;
 
   @Field({ nullable: true })
   owner?: string;
-
 
   @Field({ nullable: true })
   createdAt?: Date;
@@ -65,14 +72,13 @@ export class CommonType {
   updatedAt?: Date;
   @Field({ nullable: true })
   deleted?: boolean;
-
 }
 
-export  const CommonSchema = {
+export const CommonSchema = {
   id: String,
   tradeEnv: String,
   owner: String,
   createdAt: Date,
   updatedAt: Date,
   deleted: Boolean,
-}
+};
