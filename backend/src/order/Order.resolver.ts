@@ -11,20 +11,53 @@ import {
   TradingEnvType
 } from '@stoqey/client-graphql'
 import TradeModel, {
-  TradeType,
-} from "./Trade.model";
+  OrderType,
+} from "./Order.model";
 import {
   ResType,
 } from "../shared";
 
 @Resolver()
-export class TradeResolver {
+export class OrderResolver {
 
-  @Query(() => [TradeType])
-  async trades(
+  /**
+   * Only my orders
+   * @param owner 
+   * @param page 
+   * @param limit 
+   */
+  @Query(() => [OrderType])
+  async myOrders(
+    @Arg("owner") owner: string,
     @Arg("page") page: number,
     @Arg("limit") limit: number,
-  ): Promise<TradeType[]> {
+  ): Promise<OrderType[]> {
+    try {
+      const data = await TradeModel.pagination({
+        select: ['id', 'owner', 'symbol','status', 'secType','exchange', 'action', 'averageCost', 'marketPrice', 'createdAt'],
+        where:  { owner: { $eq: owner } },
+        limit,
+        page
+      });
+      
+      console.log(`trades data returned ${data && data.length}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
+  /**
+   * All orders
+   * @param page 
+   * @param limit 
+   */
+  @Query(() => [OrderType])
+  async orders(
+    @Arg("page") page: number,
+    @Arg("limit") limit: number,
+  ): Promise<OrderType[]> {
     try {
       const data = await TradeModel.pagination({
         select: ['id', 'owner', 'symbol','status', 'secType','exchange', 'action', 'averageCost', 'marketPrice', 'createdAt'],
@@ -42,7 +75,7 @@ export class TradeResolver {
   }
 
   @Mutation(() => ResType)
-  async createUpdateTrade(
+  async createOrder(
     @Arg("id") id: string,
     @Arg("symbol") symbol: string,
     @Arg("secType") secType: SymbolSecType,
@@ -66,7 +99,7 @@ export class TradeResolver {
       }
 
       //   create new trade
-      const newTrade: TradeType = {
+      const newTrade: OrderType = {
         symbol,
         secType,
         action,

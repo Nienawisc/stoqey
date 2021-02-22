@@ -1,2 +1,2 @@
-export * from './Trade.model';
-export * from './Trade.resolver';
+export * from './Order.model';
+export * from './Order.resolver';
