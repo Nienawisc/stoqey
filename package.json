@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/stoqey/stoqey#readme",
   "dependencies": {
-    "@stoqey/client-graphql": "^0.0.8",
+    "@stoqey/client-graphql": "^0.1.8",
     "typescript": "^3.9.3"
   }
 }
