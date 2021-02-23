@@ -4,6 +4,7 @@ import _ from "lodash";
 import { log } from "../log";
 import { JSONDATA } from "../utils";
 import { DIOREVENTS } from "./dior.event";
+import { OrderType } from "src/order";
 
 const DIOR_KEY = "mykey";
 
@@ -24,6 +25,12 @@ export enum diorWSEvents {
    * new Error()
    */
   onError = "onError",
+
+  ADD = 'add',
+  CANCEL = 'cancel',
+  UPDATE = 'update',
+  GET = 'get',
+
 }
 
 /**
@@ -88,7 +95,38 @@ export class DiorWebSocket extends EventEmitter {
 
     this.socket = new WebSocket(`${DIOR_WS}?token=${token}`);
 
+
+    /**
+     * SELF EVENTS
+     */
+
+    self.on(diorWSEvents.ADD, (order: OrderType) => {
+      const dataToSend = {
+        type: diorWSEvents.ADD,
+        data: order,
+      };
+      this.socket.send(dataToSend)
+    });
+
+    self.on(diorWSEvents.CANCEL, (orderId: string) => {
+      const dataToSend = {
+        type: diorWSEvents.CANCEL,
+        data: orderId,
+      };
+      this.socket.send(dataToSend)
+    });
+
+    self.on(diorWSEvents.UPDATE, (order: OrderType) => {
+      const dataToSend = {
+        type: diorWSEvents.UPDATE,
+        data: order,
+      };
+      this.socket.send(dataToSend)
+    });
+
     this.socket.on("open", () => {
+      // Send message to socket
+      this.socket.send({ })
       self.emit(diorWSEvents.onReady, true);
     });
 
