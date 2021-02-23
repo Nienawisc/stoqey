@@ -1,17 +1,17 @@
 import { EventEmitter } from "events";
 import WebSocket from "ws";
-import _ from 'lodash';
+import _ from "lodash";
 import { log } from "../log";
-import {JSONDATA} from "../utils";
+import { JSONDATA } from "../utils";
+import { DIOREVENTS } from "./dior.event";
 
-const DIOR_KEY = 'mykey';
+const DIOR_KEY = "mykey";
 
-const DIOR_WS = _.get(process.env, 'DIOR_WS', 'ws://localhost:6660')
+const DIOR_WS = _.get(process.env, "DIOR_WS", "ws://localhost:6660");
 /**
  * STQNETWORK websocket events
  */
 export enum StqNetworkWSEvents {
-
   onTrade = "onTrade",
   onQuote = "onQuote",
 
@@ -106,7 +106,6 @@ export class DiorWebSocket extends EventEmitter {
     }
 
     this.socket.on("message", (data: OnSocketData): void => {
-     
       // @ts-ignore
       const parsedData: any = JSONDATA(data);
 
@@ -120,19 +119,15 @@ export class DiorWebSocket extends EventEmitter {
       // and other times
       // log('marketdata -> WS -> message', data);
 
-    //   Check if trade
-    
-      if (parsedData && parsedData.action ) {
-        const dataToSend = parsedData;
-        // log('onTradeData', dataToSend);
-        self.emit(StqNetworkWSEvents.onTrade, dataToSend);
-      }
-
-
-      if (parsedData && parsedData.asset ) {
-        const dataToSend = parsedData
-        // log('onQuote', dataToSend);
-        self.emit(StqNetworkWSEvents.onQuote, dataToSend);
+      //   Check if trade
+      const event = parsedData.event;
+      switch (event) {
+        case DIOREVENTS.STQ_QUOTE:
+          self.emit(StqNetworkWSEvents.onQuote, parsedData);
+          break;
+        case DIOREVENTS.STQ_TRADE:
+          self.emit(StqNetworkWSEvents.onTrade, parsedData);
+          break;
       }
     });
   }
