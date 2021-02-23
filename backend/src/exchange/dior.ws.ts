@@ -84,7 +84,7 @@ export class DiorWebSocket extends EventEmitter {
       return;
     }
 
-    log("StqNetwork.init startup", (token || "").slice(0, 5));
+    log("DiorWS.init startup", (token || "").slice(0, 5));
 
     this.socket = new WebSocket(`${DIOR_WS}?token=${token}`);
 
@@ -106,6 +106,7 @@ export class DiorWebSocket extends EventEmitter {
     }
 
     this.socket.on("message", (data: OnSocketData): void => {
+      log(`this.socket.on -> message`, data);
       // @ts-ignore
       const parsedData: any = JSONDATA(data);
 
