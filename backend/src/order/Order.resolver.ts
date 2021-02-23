@@ -4,13 +4,9 @@ import {
   Mutation,
   Arg,
 } from "type-graphql";
-import isEmpty from "lodash/isEmpty";
 import {
-  SymbolSecType,
-  ActionType,
-  TradingEnvType
-} from '@stoqey/client-graphql'
-import TradeModel, {
+  ActionType} from '@stoqey/client-graphql'
+import {
   OrderType,
 } from "./Order.model";
 import {
@@ -33,8 +29,6 @@ export class OrderResolver {
   @Query(() => [OrderType])
   async myOrders(
     @Arg("owner") owner: string,
-    @Arg("page", { nullable: true }) page: number,
-    @Arg("limit", { nullable: true }) limit: number,
   ): Promise<OrderType[]> {
     try {
       const {success, data } = await diorApi.getOrders(owner);
@@ -59,8 +53,7 @@ export class OrderResolver {
    */
   @Query(() => [OrderType])
   async orders(
-    @Arg("page", { nullable: true }) page: number,
-    @Arg("limit", { nullable: true }) limit: number,
+    ,
   ): Promise<OrderType[]> {
     try {
       const {success, data } = await diorApi.getOrders();
@@ -155,4 +148,4 @@ export class OrderResolver {
 
 }
 
-export default TradeResolver;
+export default OrderResolver;
