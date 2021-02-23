@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import _ from "lodash";
+import { ResType } from "src/shared";
 import { OrderType } from "../order";
 
 /**
@@ -27,16 +28,16 @@ export class DiorExchangeApi {
    * Get all orders
    * @param clientId 
    */
-  public async getOrders(clientId: string): Promise<boolean> {
+  public async getOrders(clientId: string): Promise<ResType> {
     try {
-      const { status } = await this.api.get(`orders/clientId=${clientId}`);
+      const { status, data } = await this.api.get(`orders/clientId=${clientId}`);
       if(status === 200){
-        return true;
+        return { success: true, data: data.data }
       }
       throw new Error('Error sending ')
     } catch (error) {
       console.error(error);
-      return false;
+      return { success: false, message: error && error.message }
     }
   }
 
