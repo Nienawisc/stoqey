@@ -5,7 +5,7 @@ import {
   Arg,
 } from "type-graphql";
 import {
-  ActionType} from '@stoqey/client-graphql'
+  ActionType} from '@stoqey/client-graphql';
 import {
   OrderType,
 } from "./Order.model";
@@ -35,31 +35,6 @@ export class OrderResolver {
 
       if(!success) {
         throw new Error('error getting orders');
-      };
-
-      console.log(`order data returned ${data && data.length}`);
-      return data;
-
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
-  }
-
-  /**
-   * All orders
-   * @param page 
-   * @param limit 
-   */
-  @Query(() => [OrderType])
-  async orders(
-    ,
-  ): Promise<OrderType[]> {
-    try {
-      const {success, data } = await diorApi.getOrders();
-
-      if(!success) {
-        throw new Error('error getting all orders');
       };
 
       console.log(`order data returned ${data && data.length}`);
