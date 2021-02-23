@@ -53,8 +53,8 @@ export class OrderResolver {
     @Arg("action") action: ActionType,
     @Arg("size") size: number,
     @Arg("type") type: IOrderType,
-    @Arg("price", { nullable: true }) price?: number,
-    @Arg("stopPrice", { nullable: true }) stopPrice?: number,
+    @Arg("price", { nullable: true }) price: number = 0,
+    @Arg("stopPrice", { nullable: true }) stopPrice: number = 0,
   ): Promise<ResType> {
     try {
       // TODO check user wallet
@@ -64,7 +64,6 @@ export class OrderResolver {
         symbol,
         action,
         // TODO
-        params: [],
         gtc: true,
         gfd: true,
         gtd: false,
@@ -72,6 +71,7 @@ export class OrderResolver {
         instrument: symbol,
         clientId: owner,
         type,
+        price,
         qty: size,
         filledQty: 0,
         stopPrice: stopPrice,
@@ -79,7 +79,7 @@ export class OrderResolver {
         date: new Date()
       };
 
-      if(type === "limit"){
+      if(type === IOrderType.LIMIT){
         order.stop = true;
         order.stopPrice = price;
       };

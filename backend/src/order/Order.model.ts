@@ -14,8 +14,8 @@ export class OrderType extends CommonType {
   // Options
   @Field({ nullable: true })
   stop?: boolean;
-  @Field({ nullable: true })
-  params?: string[];
+  @Field(type => [IOrderType],{ nullable: true })
+  params?: IOrderType[];
   @Field({ nullable: true })
   gtc?: boolean;
   @Field({ nullable: true })
