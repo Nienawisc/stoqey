@@ -16,7 +16,7 @@ export class DiorExchangeApi {
       baseURL: _.get(
         process.env,
         "DIOR_HTTP",
-        "https://dior.cloudaxe.co"
+        "localhost:6660"
       ),
     });
     this.token = token
