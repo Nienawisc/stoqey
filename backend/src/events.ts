@@ -12,6 +12,7 @@ export const bindEventsToPubSub = (pubsub: PubSub) => {
      * Add stoqey marketdata to pubsub
      */
     const stqWs = new DiorWebSocket();
+    // TODO add update order, orders for client
     stqWs.on(diorWSEvents.onQuote, (data: any) => pubsub.publish(TOPICS.STQ_QUOTE, data));
     stqWs.on(diorWSEvents.onTrade, (data: any) => pubsub.publish(TOPICS.STQ_TRADE, data));
 }
