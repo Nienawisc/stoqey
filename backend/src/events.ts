@@ -1,5 +1,6 @@
 import { RedisPubSub as PubSub } from "graphql-redis-subscriptions";
-import { StqNetworkWSEvents, StqNetworkWS } from "./marketdata/marketdata.ws";
+import { DiorWebSocket, diorWSEvents } from "./exchange/dior.ws";
+import { DIOREVENTS } from "./exchange/dior.event";
 import { TOPICS } from "./topics";
 
 /**
@@ -10,7 +11,7 @@ export const bindEventsToPubSub = (pubsub: PubSub) => {
     /**
      * Add stoqey marketdata to pubsub
      */
-    const stqWs = new StqNetworkWS();
-    stqWs.on(StqNetworkWSEvents.onQuote, (data: any) => pubsub.publish(TOPICS.STQ_QUOTE, data));
-    stqWs.on(StqNetworkWSEvents.onTrade, (data: any) => pubsub.publish(TOPICS.STQ_TRADE, data));
+    const stqWs = new DiorWebSocket();
+    stqWs.on(diorWSEvents.onQuote, (data: any) => pubsub.publish(TOPICS.STQ_QUOTE, data));
+    stqWs.on(diorWSEvents.onTrade, (data: any) => pubsub.publish(TOPICS.STQ_TRADE, data));
 }

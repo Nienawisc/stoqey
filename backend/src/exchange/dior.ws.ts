@@ -11,7 +11,7 @@ const DIOR_WS = _.get(process.env, "DIOR_WS", "ws://localhost:6660");
 /**
  * STQNETWORK websocket events
  */
-export enum StqNetworkWSEvents {
+export enum diorWSEvents {
   onTrade = "onTrade",
   onQuote = "onQuote",
 
@@ -79,7 +79,7 @@ export class DiorWebSocket extends EventEmitter {
     // Emulate for test
     if (process.env.NODE_ENV === "test") {
       setTimeout(async () => {
-        self.emit(StqNetworkWSEvents.onReady, true);
+        self.emit(diorWSEvents.onReady, true);
       }, 3000);
       return;
     }
@@ -89,13 +89,13 @@ export class DiorWebSocket extends EventEmitter {
     this.socket = new WebSocket(`${DIOR_WS}?token=${token}`);
 
     this.socket.on("open", () => {
-      self.emit(StqNetworkWSEvents.onReady, true);
+      self.emit(diorWSEvents.onReady, true);
     });
 
     this.socket.on("error", (error: Error) => {
       log("on error connecting socket", error);
 
-      self.emit(StqNetworkWSEvents.onError, error);
+      self.emit(diorWSEvents.onError, error);
       setTimeout(() => self.config(), 2000);
       return;
     });
@@ -123,10 +123,10 @@ export class DiorWebSocket extends EventEmitter {
       const event = parsedData.event;
       switch (event) {
         case DIOREVENTS.STQ_QUOTE:
-          self.emit(StqNetworkWSEvents.onQuote, parsedData);
+          self.emit(diorWSEvents.onQuote, parsedData);
           break;
         case DIOREVENTS.STQ_TRADE:
-          self.emit(StqNetworkWSEvents.onTrade, parsedData);
+          self.emit(diorWSEvents.onTrade, parsedData);
           break;
       }
     });
