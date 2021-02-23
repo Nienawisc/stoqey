@@ -16,6 +16,9 @@ import TradeModel, {
 import {
   ResType,
 } from "../shared";
+import DiorExchangeApi from "src/exchange/dior.api";
+
+const diorApi = new DiorExchangeApi();
 
 @Resolver()
 export class OrderResolver {
@@ -29,19 +32,19 @@ export class OrderResolver {
   @Query(() => [OrderType])
   async myOrders(
     @Arg("owner") owner: string,
-    @Arg("page") page: number,
-    @Arg("limit") limit: number,
+    @Arg("page", { nullable: true }) page: number,
+    @Arg("limit", { nullable: true }) limit: number,
   ): Promise<OrderType[]> {
     try {
-      const data = await TradeModel.pagination({
-        select: ['id', 'owner', 'symbol','status', 'secType','exchange', 'action', 'averageCost', 'marketPrice', 'createdAt'],
-        where:  { owner: { $eq: owner } },
-        limit,
-        page
-      });
-      
-      console.log(`trades data returned ${data && data.length}`);
+      const {success, data } = await diorApi.getOrders(owner);
+
+      if(!success) {
+        throw new Error('error getting orders');
+      };
+
+      console.log(`order data returned ${data && data.length}`);
       return data;
+
     } catch (error) {
       console.log(error);
       return [];
