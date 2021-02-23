@@ -119,6 +119,19 @@ export class OrderResolver {
     }
   }
 
+  @Mutation(() => ResType)
+  async cancelOrder(
+    @Arg("id") id: string
+  ) : Promise<ResType> {
+
+    try { 
+
+    } catch(error){
+      console.log('error canceling order', error);
+    }
+    
+  }
+
   //   TODO
   // Exec trade
   // Delete trade
