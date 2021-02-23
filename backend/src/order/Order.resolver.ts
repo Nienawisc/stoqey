@@ -80,7 +80,7 @@ export class OrderResolver {
 
   @Mutation(() => ResType)
   async createOrder(
-    @Arg("owner") symbol: string = "STQ",
+    @Arg("symbol", { nullable: true }) symbol: string = "STQ",
     @Arg("owner") owner: string,
     @Arg("action") action: ActionType,
     @Arg("size") size: number,
@@ -137,8 +137,17 @@ export class OrderResolver {
   ) : Promise<ResType> {
     try { 
 
+      const sendCancel = await diorApi.cancelOrder(id);
+
+      if(!sendCancel){
+        throw new Error('error sending cancel order');
+      }
+
+      return { success: true, data: id}
+
     } catch(error){
-      console.log('error canceling order', error);
+      console.error('error canceling order', error);
+      return { success: false, message: error && error.message };
     }
     
   }
