@@ -123,12 +123,14 @@ export class DiorWebSocket extends EventEmitter {
       //   Check if trade
       const event = parsedData.event;
       switch (event) {
-        case DIOREVENTS.STQ_QUOTE:
-          self.emit(diorWSEvents.onQuote, parsedData);
-          break;
         case DIOREVENTS.STQ_TRADE:
           self.emit(diorWSEvents.onTrade, parsedData);
-          break;
+          return;
+
+        case DIOREVENTS.STQ_QUOTE:
+        default:
+          self.emit(diorWSEvents.onQuote, parsedData);
+          return;
       }
     });
   }
