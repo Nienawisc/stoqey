@@ -28,6 +28,9 @@ export class OrderType extends CommonType {
   action: ActionType;
 
   @Field({ nullable: true })
+  symbol?: string;
+
+  @Field({ nullable: true })
   instrument: string;
 
   @Field({ nullable: true })

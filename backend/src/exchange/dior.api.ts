@@ -28,9 +28,10 @@ export class DiorExchangeApi {
    * Get all orders
    * @param clientId 
    */
-  public async getOrders(clientId: string): Promise<ResType> {
+  public async getOrders(clientId?: string): Promise<ResType> {
     try {
-      const { status, data } = await this.api.get(`orders/clientId=${clientId}`);
+      const query = clientId? `orders/clientId=${clientId}` : 'orders';
+      const { status, data } = await this.api.get(query);
       if(status === 200){
         return { success: true, data: data.data }
       }

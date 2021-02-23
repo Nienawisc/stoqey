@@ -14,9 +14,10 @@ import TradeModel, {
   OrderType,
 } from "./Order.model";
 import {
+  IOrderType,
   ResType,
 } from "../shared";
-import DiorExchangeApi from "src/exchange/dior.api";
+import DiorExchangeApi from "../exchange/dior.api";
 
 const diorApi = new DiorExchangeApi();
 
@@ -58,19 +59,19 @@ export class OrderResolver {
    */
   @Query(() => [OrderType])
   async orders(
-    @Arg("page") page: number,
-    @Arg("limit") limit: number,
+    @Arg("page", { nullable: true }) page: number,
+    @Arg("limit", { nullable: true }) limit: number,
   ): Promise<OrderType[]> {
     try {
-      const data = await TradeModel.pagination({
-        select: ['id', 'owner', 'symbol','status', 'secType','exchange', 'action', 'averageCost', 'marketPrice', 'createdAt'],
-        // where:  { where: { _type: { $eq: "Trade" } } },
-        limit,
-        page
-      });
-      
-      console.log(`trades data returned ${data && data.length}`);
+      const {success, data } = await diorApi.getOrders();
+
+      if(!success) {
+        throw new Error('error getting all orders');
+      };
+
+      console.log(`order data returned ${data && data.length}`);
       return data;
+
     } catch (error) {
       console.log(error);
       return [];
@@ -79,43 +80,51 @@ export class OrderResolver {
 
   @Mutation(() => ResType)
   async createOrder(
-    @Arg("id") id: string,
-    @Arg("symbol") symbol: string,
-    @Arg("secType") secType: SymbolSecType,
+    @Arg("owner") symbol: string = "STQ",
+    @Arg("owner") owner: string,
     @Arg("action") action: ActionType,
     @Arg("size") size: number,
-    @Arg("execNow") execNow: boolean,
-    @Arg("tradeEnv") tradeEnv: TradingEnvType
+    @Arg("type") type: IOrderType,
+    @Arg("price", { nullable: true }) price?: number,
+    @Arg("stopPrice", { nullable: true }) stopPrice?: number,
   ): Promise<ResType> {
     try {
-      // If updating
-      if (!isEmpty(id)) {
-        // update trade now
-        const existing = await TradeModel.findById(id);
-        if (!isEmpty(existing)) {
-          existing.action = action;
-          existing.size = size;
-          existing.execNow = execNow;
-          await TradeModel.save(existing);
-          return { success: true, data: existing };
-        }
-      }
+      // TODO check user wallet
 
-      //   create new trade
-      const newTrade: OrderType = {
+      // @ts-ignore
+      let order: OrderType = { 
         symbol,
-        secType,
         action,
-        size,
-        owner: "",
-        tradeEnv,
-        entryTime: new Date(),
+        // TODO
+        params: [],
+        gtc: true,
+        gfd: true,
+        gtd: false,
+        // id: generateUUID,
+        instrument: symbol,
+        clientId: owner,
+        type,
+        qty: size,
+        filledQty: 0,
+        stopPrice: stopPrice,
+        canceled: false,
+        date: new Date()
       };
 
-      const created = await TradeModel.create(newTrade);
+      if(type === "limit"){
+        order.stop = true;
+        order.stopPrice = price;
+      };
 
-      //   TODO submit if execNow
-      return { success: true, data: created };
+      const submited = await diorApi.addOrder(order);
+
+      if(!submited){
+        throw new Error('order not added')
+      }
+
+      // If updating
+      // TODO Socket
+      return { success: true, data: order };
     } catch (err) {
       console.log(err);
       return { success: false, message: err && err.message };
@@ -126,7 +135,6 @@ export class OrderResolver {
   async cancelOrder(
     @Arg("id") id: string
   ) : Promise<ResType> {
-
     try { 
 
     } catch(error){
@@ -135,34 +143,7 @@ export class OrderResolver {
     
   }
 
-  //   TODO
-  // Exec trade
-  // Delete trade
-  // Get my trades, active and not active, using time and date
 
-//   @Mutation(() => LoginResponseType)
-//   async execTrade(
-//     @Arg("tradeId") email: string,
-//     @Ctx() { res }: ContextType
-//   ): Promise<LoginResponseType> {
-//     const { rows } = await UserModel().find({ email });
-//     const user = rows[0];
-//     if (!user) {
-//       throw new Error("could not find user");
-//     }
-
-//     const valid = await compare(password, user.password);
-//     if (!valid) {
-//       throw new Error("password not valid");
-//     }
-
-//     sendRefreshToken(res, createRefreshToken(user));
-
-//     return {
-//       accessToken: createAccessToken(user),
-//       user,
-//     };
-//   }
 }
 
 export default TradeResolver;
