@@ -19,19 +19,17 @@ export class MarketDataResolver {
     topics: TOPICS.STQ_QUOTE,
   })
   onCurrency(
-    @Root() quote: MarketDataType,
+    @Root() quote: MarketDataType & any,
     @Arg("symbol") symbol: string
   ): MarketDataType {
-    const data: IMarketDataType = _.pickBy(quote, _.identity) as any;
 
-    console.log("on currency", data);
-    const dataToReturn = {
+    const dataToReturn: any = {
       id: (quote && quote.symbol) || (quote && quote.instrument) || "",
       ...quote,
-      date: new Date(),
+      date: new Date(quote.date)
     };
 
-    return { ...dataToReturn, ...data };
+    return dataToReturn;
   }
 
   @Query(() => [MarketDataType])
