@@ -30,6 +30,15 @@ export class MarketDataType {
 
   @Field(() => Date, { nullable: true })
   date: Date;
+
+  @Field(() => String, { nullable: true })
+  name?: string;
+  @Field(() => String, { nullable: true })
+  instrument?: string;
+  @Field(() => Number, { nullable: true })
+  changePct?: number;
+  @Field(() => Number, { nullable: true })
+  change?: number;
 }
 
 @ObjectType()

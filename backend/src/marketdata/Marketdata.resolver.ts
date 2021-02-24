@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Resolver, Query, Subscription, Ctx, Root, Arg } from "type-graphql";
+import { MarketDataType as IMarketDataType } from "@stoqey/client-graphql";
 import { MarketDataType, MarketSymbolInfo } from "./Marketdata.model";
 import { TOPICS } from "../topics";
 import { Resolution } from "./marketdata.interfaces";
@@ -18,23 +19,17 @@ export class MarketDataResolver {
     topics: TOPICS.STQ_QUOTE,
   })
   onCurrency(
-    @Root() quote: MarketDataType,
+    @Root() quote: MarketDataType & any,
     @Arg("symbol") symbol: string
   ): MarketDataType {
 
-    const data: MarketDataType = _.pickBy(quote, _.identity) as any;
-    const dataToReturn = {
-      id: (quote && quote.symbol) || "",
-      symbol: 'STQ',
-      volume: 0,
-      open: 0,
-      close: 0,
-      high: 0,
-      low: 0,
-      date: new Date()
+    const dataToReturn: any = {
+      id: (quote && quote.symbol) || (quote && quote.instrument) || "",
+      ...quote,
+      date: new Date(quote.date)
     };
 
-    return { ...dataToReturn, ...data };
+    return dataToReturn;
   }
 
   @Query(() => [MarketDataType])

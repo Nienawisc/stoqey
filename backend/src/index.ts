@@ -58,7 +58,7 @@ ServerConfig.getExpress().then(({appExpress, pubsub}) => {
     });
 
     // Add events
-    // bindEventsToPubSub(pubsub);
+    bindEventsToPubSub(pubsub);
 
 }).catch((err) => {
     log(chalk.red(`Unable to start server on port ${PORT}`, err))
