@@ -100,53 +100,68 @@ export class DiorWebSocket extends EventEmitter {
      * SELF EVENTS
      */
 
-    self.on(diorWSEvents.ADD, (order: OrderType) => {
+    this.on(diorWSEvents.ADD, (order: OrderType) => {
       const dataToSend = {
         type: diorWSEvents.ADD,
         data: order,
       };
-      this.socket.send(dataToSend)
+      this.socket.send(dataToSend.toString())
     });
 
-    self.on(diorWSEvents.CANCEL, (orderId: string) => {
+    this.on(diorWSEvents.CANCEL, (orderId: string) => {
       const dataToSend = {
         type: diorWSEvents.CANCEL,
         data: orderId,
       };
-      this.socket.send(dataToSend)
+      this.socket.send(dataToSend.toString())
     });
 
-    self.on(diorWSEvents.UPDATE, (order: OrderType) => {
+    this.on(diorWSEvents.UPDATE, (order: OrderType) => {
       const dataToSend = {
         type: diorWSEvents.UPDATE,
         data: order,
       };
-      this.socket.send(dataToSend)
+      this.socket.send(dataToSend.toString())
     });
 
-    this.socket.on("open", () => {
+    this.socket.onopen = () => {
+      log("✅✅✅: DIOR: Successfully connected socket");
       // Send message to socket
-      this.socket.send({ })
-      self.emit(diorWSEvents.onReady, true);
-    });
+      this.socket.send({ type: DIOREVENTS.STQ_QUOTE }.toString())
+      this.emit(diorWSEvents.onReady, true);
+    };
 
-    this.socket.on("error", (error: Error) => {
-      log("on error connecting socket", error);
+    this.socket.onerror = (error: WebSocket.ErrorEvent) => {
+      log("❌❌❌: DIOR: error connecting socket", error);
 
-      self.emit(diorWSEvents.onError, error);
-      setTimeout(() => self.config(), 2000);
+      this.emit(diorWSEvents.onError, error);
+
+      this.socket.close();
+      return;
+    };
+
+    this.socket.onclose = (event: WebSocket.CloseEvent) => {
+      log(`❌❌❌: DIOR: Connection Close code=${event.code} message=${event.reason}`);
+
+      this.emit(diorWSEvents.onError, new Error(event.reason));
+      setTimeout(() => self.config(), 1000);
+      return;
+    };
+
+    this.socket.on("upgrade", () => {
+      log("⬆⬆⬆: DIOR: Connection Upgrade");
       return;
     });
 
-    interface OnSocketData {
-      data: { s: string; p: number; t: number; v: string }[];
-      type: string;
-    }
+    // interface OnSocketData {
+    //   data: { s: string; p: number; t: number; v: string }[];
+    //   type: string;
+    // }
 
-    this.socket.on("message", (data: OnSocketData): void => {
-      log(`this.socket.on -> message`, data);
+    this.socket.onmessage = (data: WebSocket.MessageEvent): void => {
+      log(`⟁⟁⟁: DIOR -> message`, data.data);
       // @ts-ignore
-      const parsedData: any = JSONDATA(data);
+      const parsedData: any = JSONDATA(data.data);
 
       if (!parsedData) {
         return;
@@ -162,15 +177,15 @@ export class DiorWebSocket extends EventEmitter {
       const event = parsedData.event;
       switch (event) {
         case DIOREVENTS.STQ_TRADE:
-          self.emit(diorWSEvents.onTrade, parsedData);
+          this.emit(diorWSEvents.onTrade, parsedData);
           return;
 
         case DIOREVENTS.STQ_QUOTE:
         default:
-          self.emit(diorWSEvents.onQuote, parsedData);
+          this.emit(diorWSEvents.onQuote, parsedData);
           return;
       }
-    });
+    };
   }
 }
 
