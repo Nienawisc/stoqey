@@ -15,6 +15,7 @@ const DIOR_WS = _.get(process.env, "DIOR_WS", "ws://localhost:6660");
 export enum diorWSEvents {
   onTrade = "onTrade",
   onQuote = "onQuote",
+  onOrders = "onOrders",
 
   /**
    * true / false
@@ -176,6 +177,10 @@ export class DiorWebSocket extends EventEmitter {
       //   Check if trade
       const event = parsedData.event;
       switch (event) {
+        case DIOREVENTS.STQ_ORDERS:
+          this.emit(diorWSEvents.onOrders, parsedData.data);
+          return;
+          
         case DIOREVENTS.STQ_TRADE:
           this.emit(diorWSEvents.onTrade, parsedData);
           return;

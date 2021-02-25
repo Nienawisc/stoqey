@@ -16,4 +16,5 @@ export enum DIOREVENTS {
 
     STQ_QUOTE = 'stq_quote',
     STQ_TRADE = 'stq_trade',
+    STQ_ORDERS = 'stq_orders',
 }
