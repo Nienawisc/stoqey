@@ -3,43 +3,46 @@ import {
   Query,
   Mutation,
   Arg,
+  Subscription,
+  Root,
 } from "type-graphql";
-import {
-  ActionType} from '@stoqey/client-graphql';
-import {
-  OrderType,
-} from "./Order.model";
-import {
-  IOrderType,
-  ResType,
-} from "../shared";
+import { ActionType } from "@stoqey/client-graphql";
+import { OrderType } from "./Order.model";
+import { IOrderType, ResType } from "../shared";
 import DiorExchangeApi from "../exchange/dior.api";
+import { DIOREVENTS } from "src/exchange/dior.event";
 
 const diorApi = new DiorExchangeApi();
 
 @Resolver()
 export class OrderResolver {
+  // Only admins
+  @Subscription(() => [OrderType], {
+    topics: DIOREVENTS.STQ_QUOTE,
+  })
+  onOrders(@Root() data: OrderType[] = []): OrderType[] {
+    const diorApi = new DiorExchangeApi();
+    const dataToReturn: any = data.map((i) => diorApi.parseOrder(i));
+    return dataToReturn;
+  }
 
   /**
    * Only my orders
-   * @param owner 
-   * @param page 
-   * @param limit 
+   * @param owner
+   * @param page
+   * @param limit
    */
   @Query(() => [OrderType])
-  async myOrders(
-    @Arg("owner") owner: string,
-  ): Promise<OrderType[]> {
+  async myOrders(@Arg("owner") owner: string): Promise<OrderType[]> {
     try {
-      const {success, data } = await diorApi.getOrders(owner);
+      const { success, data } = await diorApi.getOrders(owner);
 
-      if(!success) {
-        throw new Error('error getting orders');
-      };
+      if (!success) {
+        throw new Error("error getting orders");
+      }
 
       console.log(`order data returned ${data && data.length}`);
       return data;
-
     } catch (error) {
       console.log(error);
       return [];
@@ -54,13 +57,13 @@ export class OrderResolver {
     @Arg("size") size: number,
     @Arg("type") type: IOrderType,
     @Arg("price", { nullable: true }) price: number = 0,
-    @Arg("stopPrice", { nullable: true }) stopPrice: number = 0,
+    @Arg("stopPrice", { nullable: true }) stopPrice: number = 0
   ): Promise<ResType> {
     try {
       // TODO check user wallet
 
       // @ts-ignore
-      let order: OrderType = { 
+      let order: OrderType = {
         symbol,
         action,
         // TODO
@@ -76,18 +79,18 @@ export class OrderResolver {
         filledQty: 0,
         stopPrice: stopPrice,
         canceled: false,
-        date: new Date()
+        date: new Date(),
       };
 
-      if(type === IOrderType.LIMIT){
+      if (type === IOrderType.LIMIT) {
         order.stop = true;
         order.stopPrice = price;
-      };
+      }
 
       const submited = await diorApi.addOrder(order);
 
-      if(!submited){
-        throw new Error('order not added')
+      if (!submited) {
+        throw new Error("order not added");
       }
 
       // If updating
@@ -100,27 +103,20 @@ export class OrderResolver {
   }
 
   @Mutation(() => ResType)
-  async cancelOrder(
-    @Arg("id") id: string
-  ) : Promise<ResType> {
-    try { 
-
+  async cancelOrder(@Arg("id") id: string): Promise<ResType> {
+    try {
       const sendCancel = await diorApi.cancelOrder(id);
 
-      if(!sendCancel){
-        throw new Error('error sending cancel order');
+      if (!sendCancel) {
+        throw new Error("error sending cancel order");
       }
 
-      return { success: true, data: id}
-
-    } catch(error){
-      console.error('error canceling order', error);
+      return { success: true, data: id };
+    } catch (error) {
+      console.error("error canceling order", error);
       return { success: false, message: error && error.message };
     }
-    
   }
-
-
 }
 
 export default OrderResolver;
