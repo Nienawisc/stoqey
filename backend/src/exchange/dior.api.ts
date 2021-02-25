@@ -25,6 +25,32 @@ export class DiorExchangeApi {
   }
 
   /**
+   * Parse Order before sending it to client
+   * @param order 
+   */
+  parseOrder = (order: OrderType): OrderType => {
+
+    // TODO parse all data fields like dates
+    const parsedOrder = {
+      ...order
+    };
+
+    if(order.date){
+      parsedOrder.date = new Date(order.date);
+    }
+
+    if(order.createdAt){
+      parsedOrder.createdAt = new Date(order.createdAt);
+    }
+
+    if(order.updatedAt){
+      parsedOrder.updatedAt = new Date(order.updatedAt);
+    }
+
+    return parsedOrder;
+  }
+
+  /**
    * Get all orders
    * @param clientId 
    */
@@ -32,8 +58,11 @@ export class DiorExchangeApi {
     try {
       const query = clientId? `orders/clientId=${clientId}` : 'orders';
       const { status, data } = await this.api.get(query);
+
+      const orders: OrderType[] = data.data || [];
+    
       if(status === 200){
-        return { success: true, data: data.data }
+        return { success: true, data: (orders).map(i => this.parseOrder(i)) }
       }
       throw new Error('Error sending ')
     } catch (error) {
