@@ -14,7 +14,10 @@ export const bindEventsToPubSub = (pubsub: PubSub) => {
      */
     const stqWs = new DiorWebSocket();
     // TODO add update order, orders for client
-    stqWs.on(diorWSEvents.onReady, () => log(`DiorWebSocket Ready`));
+    stqWs.on(diorWSEvents.onReady, () => {
+        log(`DiorWebSocket Ready`);
+        stqWs.emit(DIOREVENTS.GET_STQ_ORDERS); // get all orders
+    });
     stqWs.on(diorWSEvents.onOrders, (data: any) => pubsub.publish(DIOREVENTS.STQ_ORDERS, data));
     stqWs.on(diorWSEvents.onQuote, (data: any) => pubsub.publish(DIOREVENTS.STQ_QUOTE, data));
     stqWs.on(diorWSEvents.onTrade, (data: any) => pubsub.publish(DIOREVENTS.STQ_TRADE, data));

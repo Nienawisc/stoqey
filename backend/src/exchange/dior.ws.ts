@@ -42,8 +42,6 @@ export enum diorWSEvents {
 export class DiorWebSocket extends EventEmitter {
   private socket: WebSocket = null as any;
 
-  private symbols: string[] = [];
-
   token: string = DIOR_KEY;
 
   constructor(token?: string) {
@@ -106,7 +104,7 @@ export class DiorWebSocket extends EventEmitter {
         type: diorWSEvents.ADD,
         data: order,
       };
-      this.socket.send(dataToSend.toString())
+      this.socket.send(JSON.stringify(dataToSend))
     });
 
     this.on(diorWSEvents.CANCEL, (orderId: string) => {
@@ -114,7 +112,7 @@ export class DiorWebSocket extends EventEmitter {
         type: diorWSEvents.CANCEL,
         data: orderId,
       };
-      this.socket.send(dataToSend.toString())
+      this.socket.send(JSON.stringify(dataToSend))
     });
 
     this.on(diorWSEvents.UPDATE, (order: OrderType) => {
@@ -122,13 +120,21 @@ export class DiorWebSocket extends EventEmitter {
         type: diorWSEvents.UPDATE,
         data: order,
       };
-      this.socket.send(dataToSend.toString())
+      this.socket.send(JSON.stringify(dataToSend))
+    });
+
+    this.on(DIOREVENTS.GET_STQ_ORDERS, () => {
+      const dataToSend = {
+        type: DIOREVENTS.GET_STQ_ORDERS,
+        data: true,
+      };
+      this.socket.send(JSON.stringify(dataToSend))
     });
 
     this.socket.onopen = () => {
       log("✅✅✅: DIOR: Successfully connected socket");
       // Send message to socket
-      this.socket.send({ type: DIOREVENTS.STQ_QUOTE }.toString())
+      this.socket.send(JSON.stringify({ type: DIOREVENTS.STQ_QUOTE }))
       this.emit(diorWSEvents.onReady, true);
     };
 
@@ -180,7 +186,7 @@ export class DiorWebSocket extends EventEmitter {
         case DIOREVENTS.STQ_ORDERS:
           this.emit(diorWSEvents.onOrders, parsedData.data);
           return;
-          
+
         case DIOREVENTS.STQ_TRADE:
           this.emit(diorWSEvents.onTrade, parsedData);
           return;

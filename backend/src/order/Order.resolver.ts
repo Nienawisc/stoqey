@@ -10,7 +10,7 @@ import { ActionType } from "@stoqey/client-graphql";
 import { OrderType } from "./Order.model";
 import { IOrderType, ResType } from "../shared";
 import DiorExchangeApi from "../exchange/dior.api";
-import { DIOREVENTS } from "src/exchange/dior.event";
+import { DIOREVENTS } from "../exchange/dior.event";
 
 const diorApi = new DiorExchangeApi();
 
